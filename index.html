@@ -454,11 +454,81 @@ function buildChart({labels,datasets},mi,gv){
 window.renderCompare=function(){
   const el=document.getElementById('compareContent');if(!el)return;
   if(state.members.length<2){el.innerHTML=`<div class="empty"><p>至少需要 2 位成員才能對比</p></div>`;return;}
-  let html=`<div style="font-size:13px;color:var(--muted);margin-bottom:8px">選擇成員 A <span style="color:var(--teal)">●</span></div><div class="compare-grid">${state.members.map(m=>`<button class="compare-member ${compareA===m.id?'sel-a':''}" onclick="compareA='${m.id}';renderCompare()">${m.name}</button>`).join('')}</div><div style="font-size:13px;color:var(--muted);margin:10px 0 8px">選擇成員 B <span style="color:var(--yellow)">●</span></div><div class="compare-grid">${state.members.map(m=>`<button class="compare-member ${compareB===m.id?'sel-b':''}" onclick="compareB='${m.id}';renderCompare()">${m.name}</button>`).join('')}</div>`;
-  if(compareA&&compareB&&compareA!==compareB){
-    const mA=state.members.find(m=>m.id===compareA),mB=state.members.find(m=>m.id===compareB),lA=getRecords(compareA).slice(-1)[0],lB=getRecords(compareB).slice(-1)[0];
-    html+=`<div class="card" style="margin-top:14px"><div style="display:flex;justify-content:space-between;margin-bottom:14px"><div style="font-size:14px;font-weight:700;color:var(--teal)">${mA.name}</div><div style="font-size:14px;font-weight:700;color:var(--yellow)">${mB.name}</div></div>${METRICS.map(m=>{const vA=lA?parseFloat(lA[m.key]):null,vB=lB?parseFloat(lB[m.key]):null;if(!vA&&!vB)return'';const mx=Math.max(vA||0,vB||0)||1;return`<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">${m.label}${m.unit?' ('+m.unit+')':''}</div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:600;color:var(--teal);width:44px;text-align:right">${vA??'—'}</span><div style="flex:1"><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;display:flex"><div style="width:${vA?vA/mx*50:0}%;background:var(--teal);border-radius:4px 0 0 4px;margin-left:auto"></div><div style="width:${vB?vB/mx*50:0}%;background:var(--yellow);border-radius:0 4px 4px 0"></div></div></div><span style="font-size:12px;font-weight:600;color:var(--yellow);width:44px">${vB??'—'}</span></div></div>`;}).join('')}</div>`;
+
+  const mA=compareA?state.members.find(m=>m.id===compareA):null;
+  const mB=compareB?state.members.find(m=>m.id===compareB):null;
+  const lA=mA?getRecords(compareA).slice(-1)[0]:null;
+  const lB=mB?getRecords(compareB).slice(-1)[0]:null;
+
+  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">`;
+
+  // Card A
+  html+=`<div style="border-radius:16px;border:2px solid ${compareA?'var(--teal)':'rgba(255,255,255,0.08)'};background:${compareA?'rgba(78,205,196,0.07)':'rgba(255,255,255,0.02)'};overflow:hidden">
+    <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--teal)"></div>
+      <span style="font-size:11px;color:var(--teal);font-weight:600">成員 A</span>
+    </div>
+    <div style="padding:6px">
+      ${state.members.map(m=>`<button onclick="compareA='${m.id}';${compareB===m.id?'compareB=null;':''}renderCompare()"
+        style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareA===m.id?'700':'400'};text-align:left;background:${compareA===m.id?'rgba(78,205,196,0.2)':'rgba(255,255,255,0.04)'};color:${compareA===m.id?'var(--teal)':'#bbb'};opacity:${compareB===m.id?'0.3':'1'}">${compareA===m.id?'✓ ':''}${m.name}</button>`).join('')}
+    </div>
+  </div>`;
+
+  // Card B
+  html+=`<div style="border-radius:16px;border:2px solid ${compareB?'var(--yellow)':'rgba(255,255,255,0.08)'};background:${compareB?'rgba(255,230,109,0.05)':'rgba(255,255,255,0.02)'};overflow:hidden">
+    <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--yellow)"></div>
+      <span style="font-size:11px;color:var(--yellow);font-weight:600">成員 B</span>
+    </div>
+    <div style="padding:6px">
+      ${state.members.map(m=>`<button onclick="compareB='${m.id}';${compareA===m.id?'compareA=null;':''}renderCompare()"
+        style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareB===m.id?'700':'400'};text-align:left;background:${compareB===m.id?'rgba(255,230,109,0.18)':'rgba(255,255,255,0.04)'};color:${compareB===m.id?'var(--yellow)':'#bbb'};opacity:${compareA===m.id?'0.3':'1'}">${compareB===m.id?'✓ ':''}${m.name}</button>`).join('')}
+    </div>
+  </div>`;
+
+  html+=`</div>`;
+
+  if(!compareA||!compareB){
+    html+=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:14px;background:rgba(255,255,255,0.02);border-radius:16px;border:1px dashed rgba(255,255,255,0.08)">${!compareA&&!compareB?'請從左右各選一位成員':!compareA?'請選擇成員 A':'請選擇成員 B'}</div>`;
+    el.innerHTML=html;return;
   }
+
+  html+=`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--teal)"></div>
+        <span style="font-size:15px;font-weight:700;color:var(--teal)">${mA.name}</span>
+        <span style="font-size:11px;color:var(--muted)">${lA?lA.date:'無紀錄'}</span>
+      </div>
+      <span style="color:var(--muted);font-size:16px">vs</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">${lB?lB.date:'無紀錄'}</span>
+        <span style="font-size:15px;font-weight:700;color:var(--yellow)">${mB.name}</span>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--yellow)"></div>
+      </div>
+    </div>
+    ${METRICS.map(m=>{
+      const vA=lA?parseFloat(lA[m.key]):null,vB=lB?parseFloat(lB[m.key]):null;
+      if(!vA&&!vB)return'';
+      const mx=Math.max(vA||0,vB||0)||1;
+      const lowerBetter=m.key==='bodyFat'||m.key==='visceralFat'||m.key==='bodyAge';
+      const winner=vA&&vB?(lowerBetter?vA<vB?'A':vA>vB?'B':'tie':vA>vB?'A':vA<vB?'B':'tie'):null;
+      return '<div style="margin-bottom:14px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+        +'<span style="font-size:12px;color:var(--muted)">'+m.label+(m.unit?' ('+m.unit+')':'')+'</span>'
+        +(winner&&winner!=='tie'?'<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:'+(winner==='A'?'rgba(78,205,196,0.15)':'rgba(255,230,109,0.15)')+';color:'+(winner==='A'?'var(--teal)':'var(--yellow)')+'">▲ '+(winner==='A'?mA.name:mB.name)+'</span>':'')
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+        +'<span style="font-size:13px;font-weight:700;color:var(--teal);width:48px;text-align:right">'+(vA??'—')+'</span>'
+        +'<div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;display:flex">'
+        +'<div style="width:'+(vA?vA/mx*50:0)+'%;background:var(--teal);border-radius:4px 0 0 4px;margin-left:auto"></div>'
+        +'<div style="width:'+(vB?vB/mx*50:0)+'%;background:var(--yellow);border-radius:0 4px 4px 0"></div>'
+        +'</div>'
+        +'<span style="font-size:13px;font-weight:700;color:var(--yellow);width:48px">'+(vB??'—')+'</span>'
+        +'</div></div>';
+    }).join('')}
+  </div>`;
+
   el.innerHTML=html;
 };
 
