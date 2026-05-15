@@ -202,6 +202,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
   <!-- HOME -->
   <div class="view active" id="view-home">
     <div class="chips-row" id="homeChips"></div>
+    <div id="chipHint" style="display:none;font-size:10px;color:#333;margin:-12px 0 14px;letter-spacing:0.04em">長按成員名稱可編輯或刪除</div>
     <div id="homeContent"></div>
   </div>
 
@@ -440,13 +441,55 @@ window.showSubView=function(name){
 // ── CHIPS ──
 function renderChips(elId,onClickFn,showAdd=true){
   const el=document.getElementById(elId);if(!el)return;
-  el.innerHTML=state.members.map(m=>`<button class="chip ${m.id===currentMemberId?'active':''}" onclick="${onClickFn}('${m.id}')" style="display:flex;align-items:center;gap:6px">${m.avatar||'👤'} ${m.name}</button>`).join('')
+  el.innerHTML=state.members.map(m=>`
+    <button class="chip ${m.id===currentMemberId?'active':''}"
+      onclick="${onClickFn}('${m.id}')"
+      oncontextmenu="event.preventDefault();chipEditMenu('${m.id}')"
+      ontouchstart="chipTouchStart('${m.id}')" ontouchend="chipTouchEnd()" ontouchmove="chipTouchEnd()"
+      style="display:flex;align-items:center;gap:6px;position:relative">
+      ${m.avatar||'👤'} ${m.name}
+    </button>`).join('')
     +(showAdd?`<button class="chip add" onclick="goAddMember()">＋ 新增</button>`:'');
 }
+
+// Long-press logic
+let chipPressTimer=null;
+window.chipTouchStart=function(id){chipPressTimer=setTimeout(()=>chipEditMenu(id),600);};
+window.chipTouchEnd=function(){clearTimeout(chipPressTimer);};
+window.chipEditMenu=function(id){
+  const m=state.members.find(x=>x.id===id);if(!m)return;
+  // Show inline menu below chip
+  const existing=document.getElementById('chipMenu');if(existing)existing.remove();
+  const menu=document.createElement('div');
+  menu.id='chipMenu';
+  menu.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;border:1px solid #222;border-radius:16px;padding:8px;z-index:500;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.8)';
+  menu.innerHTML=`
+    <div style="padding:12px 16px;font-size:13px;color:#666;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:8px">
+      <span style="font-size:20px">${m.avatar||'👤'}</span>
+      <span style="color:#fff;font-weight:700">${m.name}</span>
+    </div>
+    <button onclick="document.getElementById('chipMenu').remove();currentMemberId='${id}';goEditMember()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#fff;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;border-bottom:1px solid #1a1a1a">✏️ 編輯成員資料</button>
+    <button onclick="document.getElementById('chipMenu').remove();chipDeleteConfirm('${id}')" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#FF6B6B;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;border-bottom:1px solid #1a1a1a">🗑 刪除成員</button>
+    <button onclick="document.getElementById('chipMenu').remove()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#666;font-size:15px;font-family:inherit;text-align:center;cursor:pointer">取消</button>
+  `;
+  document.body.appendChild(menu);
+  // Tap outside to close
+  setTimeout(()=>document.addEventListener('click',function h(e){if(!menu.contains(e.target)){menu.remove();document.removeEventListener('click',h);}},true),100);
+};
+window.chipDeleteConfirm=async function(id){
+  const m=state.members.find(x=>x.id===id);if(!m)return;
+  if(!confirm(`確定要刪除「${m.name}」及所有量測紀錄？`))return;
+  await _db.deleteMember(id);
+  if(currentMemberId===id)currentMemberId=null;
+  refreshView();
+};
 
 // ── HOME ──
 window.renderHome=function(){
   renderChips('homeChips','selectMember');
+  // Add long-press hint if members exist
+  const hintEl=document.getElementById('chipHint');
+  if(hintEl)hintEl.style.display=state.members.length>0?'block':'none';
   const el=document.getElementById('homeContent');if(!el)return;
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
@@ -540,9 +583,18 @@ window.renderHome=function(){
       </div>
     </div>`;
   } else {
-    html+=`<div style="padding:40px 0;border-bottom:1px solid #111;text-align:center">
-      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px">${m.name}</div>
-      <div style="font-size:14px;color:#333;margin:20px 0">尚無量測紀錄</div>
+    html+=`<div style="padding:24px 0;border-bottom:1px solid #111">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:36px">${m.avatar||'👤'}</span>
+          <div>
+            <div style="font-size:18px;font-weight:800;color:#fff">${m.name}</div>
+            <div style="font-size:11px;color:#555">${m.remindTime?m.remindTime+' 量測':'尚未設定提醒時間'}</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px" onclick="goEditMember()">✏️ 編輯</button>
+      </div>
+      <div style="font-size:14px;color:#333;padding:20px 0;text-align:center">尚無量測紀錄</div>
     </div>`;
   }
 
