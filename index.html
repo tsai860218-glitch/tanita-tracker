@@ -5,119 +5,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tanita BC-730 體組成管理</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--mint:#00FF87;--yellow:#FFE66D;--red:#FF6B6B;--orange:#FFB347;--text:#ffffff;--muted:#888888;--dim:#444444;--border:#111111;--border2:#1a1a1a;}
+:root{--mint:#00FF87;--yellow:#FFE66D;--red:#FF6B6B;--orange:#FFB347;--blue:#5BB8FF;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#000;min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:#fff;padding-bottom:90px;}
+body{background:#000;min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:#fff;padding-bottom:80px;}
+
+/* LOGIN */
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
-.login-logo{font-size:64px;margin-bottom:20px;}
+.sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #1a1a1a;border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:24px;letter-spacing:0.05em;}
 .login-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.3;letter-spacing:-0.03em;}
-.login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;line-height:1.9;}
-.sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #1a1a1a;border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:20px;letter-spacing:0.05em;}
+.login-sub{font-size:14px;color:#666;margin-bottom:40px;line-height:1.9;}
 .google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#111;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .google-btn svg{width:20px;height:20px;flex-shrink:0;}
-header{background:#000;border-bottom:1px solid #111;padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
-.logo-sub{font-size:9px;color:var(--mint);letter-spacing:4px;text-transform:uppercase;font-weight:500;}
-.logo-main{font-size:17px;font-weight:800;letter-spacing:-0.03em;}
-.user-chip{display:flex;align-items:center;gap:8px;}
-.user-avatar{width:28px;height:28px;border-radius:50%;border:1px solid #222;}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #111;display:flex;z-index:200;}
-.nav-btn{flex:1;padding:10px 4px 10px;background:none;border:none;color:#444;font-family:inherit;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;letter-spacing:0.03em;text-transform:uppercase;}
-.nav-btn .nav-icon{font-size:18px;}
-.nav-btn.active{color:var(--mint);}
-.view{display:none;padding:24px 20px;}
-.view.active{display:block;}
+
+/* LOADING */
 #loadingOverlay{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
 .spinner{width:32px;height:32px;border:2px solid #111;border-top-color:var(--mint);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.card{border-bottom:1px solid #111;padding:20px 0;margin-bottom:0;}
-.member-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
-.chip{padding:8px 16px;border-radius:20px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#666;font-size:13px;transition:all 0.2s;font-family:inherit;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* HEADER */
+header{background:#000;border-bottom:1px solid #111;padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
+.logo-sub{font-size:9px;color:var(--mint);letter-spacing:4px;text-transform:uppercase;font-weight:500;}
+.logo-main{font-size:17px;font-weight:800;letter-spacing:-0.03em;}
+.user-chip{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:28px;height:28px;border-radius:50%;border:1px solid #222;}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite;}
+
+/* NAV */
+nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #111;display:flex;z-index:200;}
+.nav-btn{flex:1;padding:10px 4px;background:none;border:none;color:#444;font-family:inherit;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;letter-spacing:0.03em;text-transform:uppercase;}
+.nav-icon{font-size:20px;line-height:1;}
+.nav-btn.active{color:var(--mint);}
+
+/* VIEWS */
+.view{display:none;padding:20px;}
+.view.active{display:block;}
+
+/* MEMBER CHIPS */
+.chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;}
+.chip{padding:7px 16px;border-radius:20px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#666;font-size:13px;transition:all 0.2s;font-family:inherit;white-space:nowrap;flex-shrink:0;}
 .chip.active{border-color:var(--mint);color:var(--mint);font-weight:700;}
-.chip.add{border:1px dashed #222;color:#444;background:none;}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#111;border:1px solid #111;border-radius:0;overflow:hidden;margin:0 -20px;}
-.stat-cell{background:#000;padding:16px 12px;}
-.stat-label{font-size:9px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;}
-.stat-value{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
-.stat-unit{font-size:10px;font-weight:400;color:var(--muted);margin-left:1px;}
-.stat-delta{font-size:10px;margin-top:3px;}
+.chip.add{border:1px dashed #222;color:#444;}
+
+/* BUTTONS */
 .btn{border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all 0.2s;}
-.btn-teal{background:none;border:1px solid #1a3a38;color:var(--mint);}
+.btn-ghost{background:none;border:1px solid #1a1a1a;color:#888;}
+.btn-red{background:none;border:1px solid #2a0000;color:var(--red);}
+.btn-mint{background:none;border:1px solid #003a1a;color:var(--mint);}
 .btn-yellow{background:none;border:1px solid #3a3010;color:var(--yellow);}
-.btn-red{background:none;border:1px solid #3a1010;color:var(--red);}
 .btn-purple{background:none;border:1px solid #2a1a3a;color:#C3B1E1;}
 .btn-green{background:none;border:1px solid #1a3020;color:#A8E6CF;}
-.btn-full{display:block;width:100%;padding:16px 20px;border-radius:12px;font-size:15px;font-weight:800;text-align:center;letter-spacing:-0.01em;}
-.btn-primary{background:var(--mint);color:#000;}
-.btn-danger{background:var(--red);color:#fff;}
-.btn-ghost{background:none;border:1px solid #1a1a1a;color:#888;}
-.btn:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-full{display:block;width:100%;padding:16px;border-radius:12px;font-size:15px;font-weight:800;text-align:center;}
+.btn-primary{background:var(--mint);color:#000;border:none;}
+.btn-danger{background:var(--red);color:#fff;border:none;}
 .btn-row{display:flex;gap:10px;margin-top:16px;}
-.back-bar{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
-.back-bar h2{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
-.field{margin-bottom:0;border-bottom:1px solid #111;padding:14px 0;}
-.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
-.field input,.field select{width:100%;padding:0;border:none;background:none;color:#fff;font-size:18px;font-weight:700;font-family:inherit;outline:none;letter-spacing:-0.02em;}
-.field input::placeholder{color:#333;}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* FORM FIELDS */
+.field{border-bottom:1px solid #111;padding:14px 0;}
+.field label{display:block;font-size:9px;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
+.field input,.field select{width:100%;padding:0;border:none;background:none;color:#fff;font-size:20px;font-weight:700;font-family:inherit;outline:none;letter-spacing:-0.02em;}
+.field input::placeholder{color:#2a2a2a;}
 .field input:focus{color:var(--mint);}
-.section-label{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin:24px 0 4px;}
+.sec-label{font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;padding:20px 0 4px;}
 .gender-toggle{display:flex;gap:10px;}
 .gender-btn{flex:1;padding:12px;text-align:center;border-radius:10px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#444;font-weight:600;font-family:inherit;font-size:15px;transition:all 0.2s;}
 .gender-btn.active{border-color:var(--mint);color:var(--mint);}
-.metric-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+
+/* RECORD TABLE */
+.rec-table{width:100%;border-collapse:collapse;font-size:14px;}
+.rec-table th{font-size:10px;color:#555;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-align:center;padding:10px 8px;border-bottom:1px solid #111;}
+.rec-table th:first-child{text-align:left;}
+.rec-table td{padding:14px 8px;border-bottom:1px solid #0d0d0d;text-align:center;vertical-align:middle;}
+.rec-table td:first-child{text-align:left;font-size:13px;color:#fff;}
+.rec-table tr:hover td{background:#080808;}
+
+/* TIME RANGE TABS */
+.range-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid #1a1a1a;border-radius:10px;overflow:hidden;}
+.range-tab{flex:1;padding:8px 4px;background:none;border:none;color:#555;font-family:inherit;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.2s;text-align:center;}
+.range-tab.active{background:#1a1a1a;color:#fff;font-weight:700;}
+
+/* METRIC PILLS */
+.metric-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
 .metric-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #1a1a1a;font-family:inherit;font-weight:400;color:#666;background:none;transition:all 0.2s;}
-.chart-wrap{position:relative;height:200px;margin:10px 0;}
-.record-item{border-bottom:1px solid #111;padding:16px 0;}
-.record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.record-date{font-size:13px;font-weight:700;color:var(--mint);}
-.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.record-metric{font-size:12px;color:#fff;}
-.record-metric span{color:var(--muted);}
-.empty{text-align:center;padding:60px 20px;}
-.empty p{color:var(--dim);font-size:14px;margin-bottom:20px;}
-.legend{display:flex;gap:14px;padding:4px 0;margin-top:8px;flex-wrap:wrap;}
-.legend span{font-size:11px;color:var(--muted);}
-.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.top-row .actions{display:flex;gap:8px;flex-wrap:wrap;}
-.no-trend{text-align:center;color:var(--dim);padding:60px 20px;font-size:14px;}
-.score-ring{display:flex;align-items:baseline;gap:16px;padding:12px 0 20px;}
-.score-num{font-size:64px;font-weight:800;line-height:1;letter-spacing:-0.04em;}
-.score-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
-.score-desc{font-size:14px;font-weight:700;}
-.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.compare-member{padding:10px 14px;border-radius:10px;cursor:pointer;background:none;border:1px solid #1a1a1a;font-size:13px;color:#666;font-family:inherit;transition:all 0.2s;text-align:center;}
-.compare-member.sel-a{border-color:var(--mint);color:var(--mint);font-weight:700;}
-.compare-member.sel-b{border-color:var(--yellow);color:var(--yellow);font-weight:700;}
-.analysis-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.analysis-label{font-size:11px;color:var(--muted);width:56px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
-.analysis-bar-wrap{flex:1;}
-.analysis-val{font-size:13px;font-weight:700;width:52px;text-align:right;flex-shrink:0;color:#fff;}
+.metric-pill.active{background:var(--mint);color:#000;border-color:var(--mint);font-weight:700;}
+
+/* CHART */
+.chart-wrap{position:relative;height:200px;margin:8px 0;}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:#0d0d0d;border:1px solid #0d0d0d;border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.cal-day-header{background:#000;padding:8px 4px;text-align:center;font-size:10px;color:#444;letter-spacing:0.04em;}
+.cal-day{background:#000;padding:6px 4px;min-height:54px;cursor:pointer;transition:background 0.15s;}
+.cal-day:hover{background:#0a0a0a;}
+.cal-day.today{background:#0a1a0a;}
+.cal-day.other-month{opacity:0.3;}
+.cal-num{font-size:12px;font-weight:600;color:#888;margin-bottom:2px;text-align:center;}
+.cal-num.today-num{color:var(--mint);}
+.cal-weight{font-size:11px;font-weight:700;color:#fff;text-align:center;line-height:1.3;}
+
+/* ANALYSIS */
+.analysis-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.analysis-label{font-size:11px;color:#666;width:56px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
 .badge-ok{border:1px solid #003a1a;color:var(--mint);}
 .badge-warn{border:1px solid #3a2000;color:var(--orange);}
 .badge-bad{border:1px solid #3a0000;color:var(--red);}
+
+/* COMPARE */
+.cmp-card{border-top:1px solid #111;padding-top:20px;margin-top:4px;}
+
+/* DATA MGMT */
 .mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
 .mgmt-info{flex:1;}
-.mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;color:#fff;}
-.mgmt-desc{font-size:12px;color:var(--muted);}
+.mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.mgmt-desc{font-size:12px;color:#666;}
 .target-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #0d0d0d;}
-.target-key{font-size:12px;color:var(--muted);width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
+.target-key{font-size:11px;color:#666;width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
 .target-input{flex:1;padding:0;border:none;background:none;color:#fff;font-size:16px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
+
+/* BACK BAR */
+.back-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.back-bar h2{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;}
+.empty p{color:#444;font-size:14px;margin-bottom:20px;}
+
+/* PAGE TITLE */
+.page-title{font-size:9px;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
+
+/* LEGEND */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
+.legend span{font-size:11px;color:#666;}
+
+/* NO DATA */
+.no-data{text-align:center;color:#333;padding:60px 20px;font-size:14px;}
 </style>
 </head>
 <body>
 
 <div id="loadingOverlay">
   <div class="spinner"></div>
-  <div style="font-size:11px;color:#444;letter-spacing:0.1em;text-transform:uppercase">連線中</div>
+  <div style="font-size:10px;color:#333;letter-spacing:0.12em;text-transform:uppercase;margin-top:8px">連線中</div>
 </div>
 
 <div id="loginScreen" style="display:none">
-  <div style="font-size:56px;margin-bottom:20px;filter:hue-rotate(100deg)">🧬</div>
-  <div class="sync-badge">☁️ 即時雲端同步</div>
+  <div style="font-size:52px;margin-bottom:20px">🧬</div>
+  <div class="sync-badge">☁ 即時雲端同步</div>
   <div class="login-title">Tanita BC-730<br>體組成管理</div>
   <div class="login-sub">登入後資料自動同步至雲端<br>手機、電腦、家人裝置皆可共用</div>
   <button class="google-btn" onclick="signInWithGoogle()">
@@ -130,123 +167,138 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
   <header>
     <div><div class="logo-sub">TANITA BC-730</div><div class="logo-main">體組成管理</div></div>
     <div class="user-chip">
-      <div class="sync-dot" title="已連線同步"></div>
+      <div class="sync-dot"></div>
       <img class="user-avatar" id="userAvatar" src="" alt="">
-      <button style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit;letter-spacing:0.05em" onclick="signOut()">登出</button>
+      <button style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit" onclick="signOut()">登出</button>
     </div>
   </header>
+
   <nav>
-    <button class="nav-btn active" id="nav-dashboard" onclick="switchNav('dashboard')"><span class="nav-icon">◎</span>首頁</button>
-    <button class="nav-btn" id="nav-analysis" onclick="switchNav('analysis')"><span class="nav-icon">△</span>分析</button>
+    <button class="nav-btn active" id="nav-home" onclick="switchNav('home')"><span class="nav-icon">⌂</span>首頁</button>
+    <button class="nav-btn" id="nav-calendar" onclick="switchNav('calendar')"><span class="nav-icon">▦</span>日曆</button>
     <button class="nav-btn" id="nav-trend" onclick="switchNav('trend')"><span class="nav-icon">⌇</span>趨勢</button>
-    <button class="nav-btn" id="nav-compare" onclick="switchNav('compare')"><span class="nav-icon">⊕</span>對比</button>
-    <button class="nav-btn" id="nav-data" onclick="switchNav('data')"><span class="nav-icon">≡</span>資料</button>
+    <button class="nav-btn" id="nav-table" onclick="switchNav('table')"><span class="nav-icon">≡</span>表格</button>
+    <button class="nav-btn" id="nav-more" onclick="switchNav('more')"><span class="nav-icon">⊙</span>更多</button>
   </nav>
-  <div class="view active" id="view-dashboard"><div class="member-chips" id="memberChips"></div><div id="dashContent"></div></div>
-  <div class="view" id="view-analysis"><div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">健康分析</div><div class="member-chips" id="analysisChips"></div><div id="analysisContent"></div></div>
+
+  <!-- HOME -->
+  <div class="view active" id="view-home">
+    <div class="chips-row" id="homeChips"></div>
+    <div id="homeContent"></div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="view" id="view-calendar">
+    <div class="page-title">日曆</div>
+    <div class="chips-row" id="calChips"></div>
+    <div id="calContent"></div>
+  </div>
+
+  <!-- TREND -->
   <div class="view" id="view-trend">
-    <div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px" id="trendTitle">趨勢圖</div>
-    <div class="member-chips" id="trendChips"></div>
+    <div class="page-title" id="trendTitle">趨勢圖</div>
+    <div class="chips-row" id="trendChips"></div>
     <div class="metric-pills" id="metricPills"></div>
-    <div id="compareToggleWrap" style="margin-bottom:12px;display:none"><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#888;cursor:pointer"><input type="checkbox" id="showAllToggle" onchange="renderTrend()" style="accent-color:var(--teal)"> 顯示所有成員對比</label></div>
-    <div id="trendCard" style="padding:0"><div class="no-trend">選擇成員後顯示趨勢圖</div></div>
+    <div id="trendCard"><div class="no-data">選擇成員後顯示趨勢圖</div></div>
   </div>
-  <div class="view" id="view-compare"><div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">成員對比</div><div id="compareContent"></div></div>
-  <div class="view" id="view-data">
-    <div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">資料管理</div>
-    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📥 匯出 CSV</div><div class="mgmt-desc">下載所有量測紀錄為試算表格式</div></div><div style="display:flex;gap:8px"><button class="btn btn-teal" onclick="exportCSV('current')">目前成員</button><button class="btn btn-ghost" onclick="exportCSV('all')">全部成員</button></div></div>
-    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">💾 備份資料</div><div class="mgmt-desc">匯出 JSON 備份檔</div></div><button class="btn btn-purple" onclick="exportJSON()">匯出備份</button></div>
-    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📤 還原資料</div><div class="mgmt-desc">從備份 JSON 合併至雲端</div></div><button class="btn btn-yellow" onclick="document.getElementById('importFile').click()">選擇檔案</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"></div>
-    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">🎯 目標設定</div><div class="mgmt-desc">為每位成員設定體重、體脂率目標</div></div><button class="btn btn-green" onclick="goTargets()">設定</button></div>
-    <div class="mgmt-item" style="border-color:rgba(255,107,107,0.2)"><div class="mgmt-info"><div class="mgmt-title" style="color:var(--red)">🗑 清除所有資料</div><div class="mgmt-desc">從雲端永久刪除所有資料</div></div><button class="btn btn-red" onclick="clearAll()">清除</button></div>
-    <div style="margin-top:20px;padding:16px 0;border-top:1px solid #111"><div style="font-size:9px;color:#444;margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase">雲端同步狀態</div><div id="storageInfo" style="font-size:13px;color:#fff"></div></div>
+
+  <!-- TABLE -->
+  <div class="view" id="view-table">
+    <div class="page-title">體重紀錄表</div>
+    <div class="chips-row" id="tableChips"></div>
+    <div class="range-tabs" id="rangeTabs"></div>
+    <div id="tableContent"></div>
   </div>
-  <div class="view" id="view-records">
-    <div class="back-bar" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:12px"><button class="btn btn-ghost" onclick="switchNav('dashboard')">← 返回</button><h2 id="recordsTitle">量測紀錄</h2></div><button class="btn btn-teal" onclick="goAddRecord()">＋ 新增</button></div>
-    <div id="recordsList"></div>
+
+  <!-- MORE -->
+  <div class="view" id="view-more">
+    <div class="page-title">更多</div>
+    <div id="moreContent"></div>
   </div>
+
+  <!-- ADD RECORD (sub) -->
   <div class="view" id="view-addRecord">
-    <div class="back-bar"><button class="btn btn-ghost" onclick="showSubView('records')">← 返回</button><h2>新增量測</h2></div>
+    <div class="back-bar"><button class="btn btn-ghost" onclick="goBackFromRecord()">← 返回</button><h2 id="addRecordTitle">新增量測</h2></div>
     <div class="field"><label>日期</label><input type="date" id="recDate"></div>
-    <div class="section-label">主要指數</div>
+    <div class="sec-label">主要指數</div>
     <div id="mainFields"></div>
-    <div style="margin-top:14px"><button class="btn btn-full btn-primary" onclick="saveRecord()">儲存紀錄</button></div>
+    <div style="margin-top:20px"><button class="btn btn-full btn-primary" onclick="saveRecord()">儲存紀錄</button></div>
   </div>
-  <div class="view" id="view-addMember">
-    <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('dashboard')">← 返回</button><h2 id="memberFormTitle">新增成員</h2></div>
+
+  <!-- MEMBER FORM (sub) -->
+  <div class="view" id="view-member">
+    <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('home')">← 返回</button><h2 id="memberFormTitle">新增成員</h2></div>
     <div class="field"><label>姓名</label><input type="text" id="mName" placeholder="請輸入姓名"></div>
-    <div class="field"><label>性別</label><div class="gender-toggle"><button class="gender-btn active" id="gBtn男" onclick="selectGender('男')">男</button><button class="gender-btn" id="gBtn女" onclick="selectGender('女')">女</button></div></div>
-    <div class="field"><label>出生年</label><input type="number" id="mBirth" value="1990" min="1920" max="2020"></div>
-    <div class="field"><label>身高 (cm)</label><input type="number" id="mHeight" value="170" min="50" max="250"></div>
-    <div class="btn-row"><button class="btn btn-full btn-primary" id="saveMemberBtn" onclick="saveMember()">建立成員</button><button class="btn btn-full btn-danger" id="deleteMemberBtn" onclick="deleteMember()" style="display:none;flex:0 0 auto;width:auto;padding:14px 20px">刪除</button></div>
+    <div class="field"><label>性別</label>
+      <div class="gender-toggle" style="margin-top:4px">
+        <button class="gender-btn active" id="gBtn男" onclick="selectGender('男')">男</button>
+        <button class="gender-btn" id="gBtn女" onclick="selectGender('女')">女</button>
+      </div>
+    </div>
+    <div class="field"><label>出生年</label><input type="number" id="mBirth" value="1990"></div>
+    <div class="field"><label>身高 (cm)</label><input type="number" id="mHeight" value="170"></div>
+    <div class="field"><label>量測提醒時間</label><input type="time" id="mRemind" value="07:00"></div>
+    <div class="btn-row">
+      <button class="btn btn-full btn-primary" id="saveMemberBtn" onclick="saveMember()">建立成員</button>
+      <button class="btn btn-full btn-danger" id="deleteMemberBtn" onclick="deleteMember()" style="display:none;flex:0 0 auto;width:auto;padding:16px 20px">刪除</button>
+    </div>
   </div>
+
+  <!-- TARGETS (sub) -->
   <div class="view" id="view-targets">
-    <div class="back-bar"><button class="btn btn-ghost" onclick="showSubView('data')">← 返回</button><h2>目標設定</h2></div>
+    <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('more')">← 返回</button><h2>目標設定</h2></div>
     <div id="targetsContent"></div>
+  </div>
+
+  <!-- ANALYSIS (sub) -->
+  <div class="view" id="view-analysis">
+    <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('home')">← 返回</button><h2 id="analysisTitle">健康分析</h2></div>
+    <div id="analysisContent"></div>
+  </div>
+
+  <!-- COMPARE (sub) -->
+  <div class="view" id="view-compare">
+    <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('more')">← 返回</button><h2>成員對比</h2></div>
+    <div id="compareContent"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     Firebase SDK
-════════════════════════════════════════════════════════ -->
+<!-- FIREBASE -->
 <script type="module">
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged,
-         signOut as fbSignOut }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, collection, setDoc, getDocs,
-         deleteDoc, onSnapshot, writeBatch }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut as fbSignOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,doc,collection,setDoc,getDocs,deleteDoc,onSnapshot,writeBatch}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ═══════════════════════════════════════════════════════
-//  🔧 步驟一：把下面換成你的 Firebase 專案設定
-//     Firebase Console → 專案設定 → 你的應用程式 → 設定物件
-// ═══════════════════════════════════════════════════════
-const firebaseConfig = {
-  apiKey:            "AIzaSyACNfOJ2eoK0OvW4i8bl7dKQEvQLYDYDtw",
-  authDomain:        "tanita-tracker.firebaseapp.com",
-  projectId:         "tanita-tracker",
-  storageBucket:     "tanita-tracker.firebasestorage.app",
-  messagingSenderId: "55222704289",
-  appId:             "1:55222704289:web:772e8797e4149ab0dd78e0"
-};
-// ═══════════════════════════════════════════════════════
-
-const fbApp  = initializeApp(firebaseConfig);
-const auth   = getAuth(fbApp);
-const db     = getFirestore(fbApp);
-
-let unsubListeners = [];
-
-// ── Firestore path helpers ──
-const membersCol = uid => collection(db,'users',uid,'members');
-const recordsCol = (uid,mid) => collection(db,'users',uid,'members',mid,'records');
-const userDocRef = uid => doc(db,'users',uid);
-
-// ── Expose to global scope ──
-window.signInWithGoogle = async () => {
-  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch(e) { console.error(e); alert('登入失敗，請再試一次'); }
-};
-window.signOut = async () => {
-  if(!confirm('確定要登出？')) return;
-  unsubListeners.forEach(u=>u());
-  unsubListeners=[];
-  await fbSignOut(auth);
+const firebaseConfig={
+  apiKey:"AIzaSyACNfOJ2eoK0OvW4i8bl7dKQEvQLYDYDtw",
+  authDomain:"tanita-tracker.firebaseapp.com",
+  projectId:"tanita-tracker",
+  storageBucket:"tanita-tracker.firebasestorage.app",
+  messagingSenderId:"55222704289",
+  appId:"1:55222704289:web:772e8797e4149ab0dd78e0"
 };
 
-// ── Auth state ──
-onAuthStateChanged(auth, user => {
+const fbApp=initializeApp(firebaseConfig);
+const auth=getAuth(fbApp);
+const db=getFirestore(fbApp);
+let unsubListeners=[];
+
+const membersCol=uid=>collection(db,'users',uid,'members');
+const recordsCol=(uid,mid)=>collection(db,'users',uid,'members',mid,'records');
+const userDocRef=uid=>doc(db,'users',uid);
+
+window.signInWithGoogle=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){console.error(e);alert('登入失敗');}};
+window.signOut=async()=>{if(!confirm('確定要登出？'))return;unsubListeners.forEach(u=>u());unsubListeners=[];await fbSignOut(auth);};
+
+onAuthStateChanged(auth,user=>{
   document.getElementById('loadingOverlay').style.display='none';
   if(user){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('mainApp').style.display='block';
-    document.getElementById('userAvatar').src = user.photoURL||'';
+    document.getElementById('userAvatar').src=user.photoURL||'';
     initListeners(user.uid);
-    switchNav('dashboard');
-  } else {
-    unsubListeners.forEach(u=>u()); unsubListeners=[];
+  }else{
+    unsubListeners.forEach(u=>u());unsubListeners=[];
     state={members:[],records:{},targets:{}};
     document.getElementById('mainApp').style.display='none';
     document.getElementById('loginScreen').style.display='flex';
@@ -254,20 +306,12 @@ onAuthStateChanged(auth, user => {
 });
 
 function initListeners(uid){
-  unsubListeners.forEach(u=>u()); unsubListeners=[];
-
-  // Members (realtime)
-  const unsubM = onSnapshot(membersCol(uid), snap => {
-    state.members = snap.docs
-      .map(d=>({id:d.id,...d.data()}))
-      .sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
-
-    // Records per member (realtime)
-    state.members.forEach(m => {
-      const unsubR = onSnapshot(recordsCol(uid,m.id), rSnap => {
-        state.records[m.id] = rSnap.docs
-          .map(d=>({id:d.id,...d.data()}))
-          .sort((a,b)=>a.date.localeCompare(b.date));
+  unsubListeners.forEach(u=>u());unsubListeners=[];
+  const unsubM=onSnapshot(membersCol(uid),snap=>{
+    state.members=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+    state.members.forEach(m=>{
+      const unsubR=onSnapshot(recordsCol(uid,m.id),rSnap=>{
+        state.records[m.id]=rSnap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.date.localeCompare(b.date));
         refreshView();
       });
       unsubListeners.push(unsubR);
@@ -275,77 +319,68 @@ function initListeners(uid){
     refreshView();
   });
   unsubListeners.push(unsubM);
-
-  // Targets (realtime)
-  const unsubT = onSnapshot(userDocRef(uid), snap => {
-    state.targets = snap.exists() ? (snap.data().targets||{}) : {};
+  const unsubT=onSnapshot(userDocRef(uid),snap=>{
+    state.targets=snap.exists()?(snap.data().targets||{}):{};
     refreshView();
   });
   unsubListeners.push(unsubT);
 }
 
-// ── DB write helpers (exposed globally) ──
-window._db = {
-  async saveMember(m){
-    const uid=auth.currentUser.uid;
-    await setDoc(doc(membersCol(uid),m.id),{name:m.name,gender:m.gender,birthYear:m.birthYear,height:m.height,createdAt:m.createdAt||Date.now()});
-  },
-  async deleteMember(mid){
-    const uid=auth.currentUser.uid;
-    const rSnap=await getDocs(recordsCol(uid,mid));
-    const batch=writeBatch(db);
-    rSnap.forEach(r=>batch.delete(r.ref));
-    batch.delete(doc(membersCol(uid),mid));
-    await batch.commit();
-  },
-  async saveRecord(mid,rec){
-    const uid=auth.currentUser.uid;
-    const{id,...data}=rec;
-    await setDoc(doc(recordsCol(uid,mid),id),data);
-  },
-  async deleteRecord(mid,rid){
-    const uid=auth.currentUser.uid;
-    await deleteDoc(doc(recordsCol(uid,mid),rid));
-  },
-  async saveTargets(targets){
-    const uid=auth.currentUser.uid;
-    await setDoc(userDocRef(uid),{targets},{merge:true});
-  },
-  async clearAll(){
-    const uid=auth.currentUser.uid;
-    const mSnap=await getDocs(membersCol(uid));
-    const batch=writeBatch(db);
-    for(const m of mSnap.docs){
-      const rSnap=await getDocs(recordsCol(uid,m.id));
-      rSnap.forEach(r=>batch.delete(r.ref));
-      batch.delete(m.ref);
-    }
-    batch.delete(userDocRef(uid));
-    await batch.commit();
-  }
+window._db={
+  async saveMember(m){const uid=auth.currentUser.uid;await setDoc(doc(membersCol(uid),m.id),{name:m.name,gender:m.gender,birthYear:m.birthYear,height:m.height,remindTime:m.remindTime||'07:00',createdAt:m.createdAt||Date.now()});},
+  async deleteMember(mid){const uid=auth.currentUser.uid;const rSnap=await getDocs(recordsCol(uid,mid));const batch=writeBatch(db);rSnap.forEach(r=>batch.delete(r.ref));batch.delete(doc(membersCol(uid),mid));await batch.commit();},
+  async saveRecord(mid,rec){const uid=auth.currentUser.uid;const{id,...data}=rec;await setDoc(doc(recordsCol(uid,mid),id),data);},
+  async deleteRecord(mid,rid){const uid=auth.currentUser.uid;await deleteDoc(doc(recordsCol(uid,mid),rid));},
+  async saveTargets(targets){const uid=auth.currentUser.uid;await setDoc(userDocRef(uid),{targets},{merge:true});},
+  async clearAll(){const uid=auth.currentUser.uid;const mSnap=await getDocs(membersCol(uid));const batch=writeBatch(db);for(const m of mSnap.docs){const rSnap=await getDocs(recordsCol(uid,m.id));rSnap.forEach(r=>batch.delete(r.ref));batch.delete(m.ref);}batch.delete(userDocRef(uid));await batch.commit();}
 };
 </script>
 
-<!-- ═══════════════════════════════════════════════════════
-     App Logic
-════════════════════════════════════════════════════════ -->
+<!-- APP LOGIC -->
 <script>
 const METRICS=[
-  {key:"weight",     label:"體重",     unit:"kg",   color:"#4ECDC4",normal:[50,80],   goalable:true },
-  {key:"bmi",        label:"BMI",      unit:"",     color:"#FFE66D",normal:[18.5,24.9],goalable:false},
-  {key:"bodyFat",    label:"體脂率",   unit:"%",    color:"#FF6B6B",normal:[10,25],   goalable:true },
-  {key:"muscleMass", label:"肌肉量",   unit:"kg",   color:"#A8E6CF",normal:[30,60],   goalable:true },
-  {key:"boneMass",   label:"骨量",     unit:"kg",   color:"#C3B1E1",normal:[2,3.5],   goalable:false},
-  {key:"visceralFat",label:"內臟脂肪",unit:"級",   color:"#FFB347",normal:[1,9],      goalable:false},
-  {key:"bmr",        label:"基礎代謝",unit:"kcal", color:"#87CEEB",normal:[1200,2000],goalable:false},
-  {key:"bodyAge",    label:"身體年齡",unit:"歲",   color:"#DDA0DD",normal:[20,40],    goalable:false},
-  {key:"waterContent",label:"身體水分",unit:"%",  color:"#00CED1",normal:[45,65],    goalable:false},
+  {key:"weight",    label:"體重",    unit:"kg",  color:"#00FF87",normal:[50,80],   goalable:true},
+  {key:"bmi",       label:"BMI",     unit:"",    color:"#FFE66D",normal:[18.5,24], goalable:false},
+  {key:"bodyFat",   label:"體脂率",  unit:"%",   color:"#FF6B6B",normal:[15,25],   goalable:true},
+  {key:"muscleMass",label:"肌肉量",  unit:"kg",  color:"#5BB8FF",normal:[30,60],   goalable:true},
+  {key:"boneMass",  label:"骨量",    unit:"kg",  color:"#C3B1E1",normal:[2,3.5],   goalable:false},
+  {key:"visceralFat",label:"內臟脂肪",unit:"級", color:"#FFB347",normal:[1,9],     goalable:false},
+  {key:"bmr",       label:"基礎代謝",unit:"kcal",color:"#87CEEB",normal:[1200,2000],goalable:false},
+  {key:"bodyAge",   label:"身體年齡",unit:"歲",  color:"#DDA0DD",normal:[20,40],   goalable:false},
+  {key:"waterContent",label:"身體水分",unit:"%", color:"#00CED1",normal:[45,65],   goalable:false},
 ];
+
+const WEEKDAYS=['日','一','二','三','四','五','六'];
+const RANGES=[
+  {label:'一週',days:7},{label:'兩週',days:14},{label:'三週',days:21},
+  {label:'一個月',days:30},{label:'三個月',days:90},{label:'六個月',days:180}
+];
+
+// BMI標準（衛福部）
+function getBMIStatus(bmi){
+  if(!bmi)return null;
+  const v=parseFloat(bmi);
+  if(v<18.5)return{label:'過輕',cls:'badge-warn'};
+  if(v<24)return{label:'正常',cls:'badge-ok'};
+  if(v<27)return{label:'過重',cls:'badge-warn'};
+  if(v<30)return{label:'輕度肥胖',cls:'badge-bad'};
+  if(v<35)return{label:'中度肥胖',cls:'badge-bad'};
+  return{label:'重度肥胖',cls:'badge-bad'};
+}
+// 體脂率（依性別）
+function getBodyFatStatus(val,gender){
+  if(!val)return null;
+  const v=parseFloat(val);
+  const[lo,hi]=gender==='女'?[20,30]:[15,25];
+  if(v<lo)return{label:'偏低',cls:'badge-warn'};
+  if(v<=hi)return{label:'正常',cls:'badge-ok'};
+  return{label:'偏高',cls:'badge-bad'};
+}
 
 let state={members:[],records:{},targets:{}};
 let currentMemberId=null,currentGender='男',editingMemberId=null;
 let activeMetric='weight',compareA=null,compareB=null;
-let trendChart=null,compareChart=null,currentNav='dashboard';
+let trendChart=null,currentNav='home',tableRange=7,calYear=null,calMonth=null,recordFromView='home';
 
 const uid=()=>Math.random().toString(36).slice(2,10);
 const currentMember=()=>state.members.find(m=>m.id===currentMemberId)||null;
@@ -353,11 +388,11 @@ const getRecords=id=>(state.records[id]||[]).sort((a,b)=>a.date.localeCompare(b.
 const currentRecords=()=>getRecords(currentMemberId);
 
 function refreshView(){
-  if(currentNav==='dashboard') renderDashboard();
-  else if(currentNav==='analysis') renderAnalysis();
-  else if(currentNav==='trend') renderTrend();
-  else if(currentNav==='compare') renderCompare();
-  updateStorageInfo();
+  if(currentNav==='home')renderHome();
+  else if(currentNav==='calendar')renderCalendar();
+  else if(currentNav==='trend')renderTrend();
+  else if(currentNav==='table')renderTable();
+  else if(currentNav==='more')renderMore();
 }
 
 window.switchNav=function(name){
@@ -375,228 +410,560 @@ window.showSubView=function(name){
 };
 
 // ── CHIPS ──
-function renderChips(elId,onClick){
+function renderChips(elId,onClickFn,showAdd=true){
   const el=document.getElementById(elId);if(!el)return;
-  el.innerHTML=state.members.map(m=>`<button class="chip ${m.id===currentMemberId?'active':''}" onclick="${onClick}('${m.id}')">${m.name}</button>`).join('')
-    +`<button class="chip add" onclick="goAddMember()">+ 新增</button>`;
+  el.innerHTML=state.members.map(m=>`<button class="chip ${m.id===currentMemberId?'active':''}" onclick="${onClickFn}('${m.id}')">${m.name}</button>`).join('')
+    +(showAdd?`<button class="chip add" onclick="goAddMember()">＋ 新增</button>`:'');
 }
 
-// ── DASHBOARD ──
-window.renderDashboard=function(){
-  renderChips('memberChips','selectMember');
-  const el=document.getElementById('dashContent');if(!el)return;
+// ── HOME ──
+window.renderHome=function(){
+  renderChips('homeChips','selectMember');
+  const el=document.getElementById('homeContent');if(!el)return;
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
-      ?`<div class="empty"><div style="font-size:48px;margin-bottom:16px">🧬</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px">開始記錄</div><p>新增家庭成員，追蹤每次<br>Tanita BC-730 的量測結果</p><button class="btn btn-full btn-primary" style="max-width:240px;margin:20px auto 0" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
+      ?`<div class="empty"><div style="font-size:48px;margin-bottom:16px">🧬</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px">開始記錄</div><p>新增家庭成員<br>追蹤每次量測結果</p><button class="btn btn-full btn-primary" style="max-width:240px;margin:0 auto" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
       :`<div class="empty"><p>請選擇上方成員</p></div>`;
     return;
   }
-  const recs=currentRecords(),latest=recs.length?recs[recs.length-1]:null,prev=recs.length>1?recs[recs.length-2]:null;
-  const targets=state.targets[currentMemberId]||{};let html='';
-  if(!latest){
-    html=`<div class="card" style="text-align:center;padding:40px;border-style:dashed;border-color:rgba(78,205,196,0.3)"><div style="font-size:40px;margin-bottom:10px">📊</div><div style="color:var(--muted);font-size:14px">尚無量測紀錄</div></div>`;
-  }else{
-    const sc=calcScore(latest),scC=sc>=80?'#4ECDC4':sc>=60?'#FFE66D':'#FF6B6B',scL=sc>=80?'優良 💪':sc>=60?'尚可 📈':'需改善 ⚠️';
-    html+=`<div style="padding:0 0 24px;border-bottom:1px solid #111;margin-bottom:0">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+  const m=currentMember();
+  const recs=currentRecords();
+  const latest=recs.length?recs[recs.length-1]:null;
+  const prev=recs.length>1?recs[recs.length-2]:null;
+  const targets=state.targets[currentMemberId]||{};
+  let html='';
+
+  // ── Header: big weight ──
+  if(latest){
+    const w=latest.weight;
+    const pw=prev?.weight;
+    const wd=w&&pw?(parseFloat(w)-parseFloat(pw)):null;
+    const bmiSt=getBMIStatus(latest.bmi);
+    const bfSt=getBodyFatStatus(latest.bodyFat,m.gender);
+
+    // Score
+    let score=0,scoreCount=0;
+    const bmiV=parseFloat(latest.bmi);
+    if(bmiV){const s=bmiV>=18.5&&bmiV<24?100:bmiV>=24&&bmiV<27?60:20;score+=s;scoreCount++;}
+    const bfV=parseFloat(latest.bodyFat);
+    if(bfV){const[lo,hi]=m.gender==='女'?[20,30]:[15,25];const s=bfV>=lo&&bfV<=hi?100:(bfV>=lo*0.9&&bfV<=hi*1.1)?60:20;score+=s;scoreCount++;}
+    const sc=scoreCount?Math.round(score/scoreCount):0;
+    const scC=sc>=80?'#00FF87':sc>=60?'#FFB347':'#FF6B6B';
+
+    html+=`<div style="padding:0 0 20px;border-bottom:1px solid #111">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
         <div>
-          <div style="font-size:9px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">${currentMember()?.name||''}</div>
-          <div style="font-size:9px;color:#444;letter-spacing:0.06em">${latest.date}</div>
+          <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px">${m.name}　${m.remindTime||''}${m.remindTime?' 量測':''}${latest.date?' · '+latest.date:''}</div>
         </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost" onclick="goViewRecords()" style="font-size:11px;padding:6px 12px">紀錄</button>
-          <button class="btn btn-ghost" onclick="goEditMember()" style="font-size:11px;padding:6px 12px">編輯</button>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="goEditMember()">編輯</button>
+          <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="showAnalysis()">分析</button>
         </div>
       </div>
-      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
-        <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#fff">${latest.weight||'—'}</span>
-        <span style="font-size:18px;color:#444;font-weight:400">kg</span>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
+        <span style="font-size:80px;font-weight:800;letter-spacing:-0.04em;line-height:1">${w||'—'}</span>
+        <span style="font-size:20px;color:#444;font-weight:400">kg</span>
       </div>
-      <div style="font-size:12px;color:#888;margin-bottom:20px">健康評分 <span style="color:${scC};font-weight:700">${sc}</span> / 100 &nbsp;·&nbsp; <span style="color:${scC}">${scL}</span></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        ${wd!=null?`<span style="font-size:13px;color:${wd>0?'#FF6B6B':'#00FF87'};font-weight:600">${wd>0?'▲':'▼'} ${Math.abs(wd).toFixed(1)} kg</span>`:''}
+        ${bmiSt?`<span class="badge ${bmiSt.cls}">BMI ${latest.bmi} ${bmiSt.label}</span>`:''}
+        ${bfSt?`<span class="badge ${bfSt.cls}">體脂 ${latest.bodyFat}% ${bfSt.label}</span>`:''}
+      </div>
+      <div style="font-size:11px;color:#555;margin-bottom:8px">健康評分 <span style="color:${scC};font-weight:800;font-size:16px">${sc}</span> <span style="color:#333">/ 100</span></div>
     </div>`;
-    html+=`<div class="card"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">量測數值</div><div class="stat-grid">${METRICS.map(m=>{const v=latest[m.key],pv=prev?.[m.key],d=v&&pv?(parseFloat(v)-parseFloat(pv)):null,ds=d!=null?`<div class="stat-delta" style="color:${d>0?'#FF6B6B':d<0?'#4ECDC4':'#666'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}${m.unit}</div>`:'',gs=targets[m.key]?`<div style="font-size:10px;color:#666;margin-top:2px">目標 ${targets[m.key]}${m.unit}</div>`:'';return`<div class="stat-cell" style="border:1px solid ${m.color}22"><div class="stat-label">${m.label}</div><div class="stat-value" style="color:${m.color}">${v||'—'}<span class="stat-unit">${m.unit}</span></div>${ds}${gs}</div>`;}).join('')}</div></div>`;
-    const gks=METRICS.filter(m=>m.goalable&&targets[m.key]&&latest[m.key]);
-    if(gks.length){html+=`<div style="padding:20px 0;border-bottom:1px solid #111">
-      <div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">目標進度</div>
-      ${gks.map(m=>{
-        const c=parseFloat(latest[m.key]),g=parseFloat(targets[m.key]),f=getRecords(currentMemberId).find(r=>r[m.key]),s=f?parseFloat(f[m.key]):c,p=Math.min(100,Math.max(0,Math.abs(c-s)/Math.abs(g-s||1)*100));
-        return`<div style="margin-bottom:16px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-            <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.04em">${m.label}</span>
-            <span style="font-size:13px;font-weight:700;color:#fff">${c}${m.unit} <span style="color:#333">→</span> <span style="color:#00FF87">${g}${m.unit}</span></span>
-          </div>
-          <div style="height:1.5px;background:#111;border-radius:1px;overflow:hidden">
-            <div style="width:${p}%;height:100%;background:#00FF87;border-radius:1px;transition:width 0.6s"></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-top:5px">
-            <span style="font-size:9px;color:#333">${s.toFixed(1)}${m.unit}</span>
-            <span style="font-size:9px;color:#333">${Math.round(p)}%</span>
-            <span style="font-size:9px;color:#333">${g}${m.unit}</span>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;}
+
+    // Target progress
+    const tw=targets.weight;
+    if(tw&&w){
+      const cur=parseFloat(w),goal=parseFloat(tw);
+      const firstRec=recs.find(r=>r.weight);
+      const start=firstRec?parseFloat(firstRec.weight):cur;
+      const pct=Math.min(100,Math.max(0,Math.abs(cur-start)/Math.abs(goal-start||1)*100));
+      html+=`<div style="padding:16px 0;border-bottom:1px solid #111">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:11px;color:#666;text-transform:uppercase;letter-spacing:0.06em">目標體重進度</span>
+          <span style="font-size:13px;font-weight:700">${cur} <span style="color:#333">→</span> <span style="color:#00FF87">${goal} kg</span></span>
+        </div>
+        <div style="height:2px;background:#111;border-radius:1px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:#00FF87;border-radius:1px;transition:width 0.6s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="font-size:10px;color:#333">${start.toFixed(1)} kg</span>
+          <span style="font-size:10px;color:#00FF87">${Math.round(pct)}%</span>
+          <span style="font-size:10px;color:#333">${goal} kg</span>
+        </div>
+      </div>`;
+    }
+
+    // Metrics grid
+    html+=`<div style="margin:0 -20px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#0d0d0d">
+        ${METRICS.map(m2=>{
+          const v=latest[m2.key];if(!v)return'';
+          const pv=prev?.[m2.key];
+          const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
+          const ds=d!=null?`<div style="font-size:10px;margin-top:3px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
+          return`<div style="background:#000;padding:14px 12px">
+            <div style="font-size:9px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
+            <div style="font-size:19px;font-weight:800;letter-spacing:-0.03em;color:#fff">${v}<span style="font-size:10px;font-weight:400;color:#444;margin-left:1px">${m2.unit}</span></div>
+            ${ds}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  } else {
+    html+=`<div style="padding:40px 0;border-bottom:1px solid #111;text-align:center">
+      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px">${m.name}</div>
+      <div style="font-size:14px;color:#333;margin:20px 0">尚無量測紀錄</div>
+    </div>`;
   }
-  html+=`<div style="padding:20px 0"><button class="btn btn-full btn-primary" onclick="goAddRecord()">＋ 新增量測</button></div>`;
+
+  html+=`<div style="padding:16px 0"><button class="btn btn-full btn-primary" onclick="goAddRecord('home')">＋ 新增量測</button></div>`;
   el.innerHTML=html;
 };
-window.selectMember=function(id){currentMemberId=id;renderDashboard();};
-function calcScore(rec){let t=0,c=0;[{key:'bmi',lo:18.5,hi:24.9},{key:'bodyFat',lo:10,hi:25},{key:'visceralFat',lo:1,hi:9},{key:'waterContent',lo:45,hi:65}].forEach(x=>{const v=parseFloat(rec[x.key]);if(!v)return;t+=(v>=x.lo&&v<=x.hi)?100:(v>=x.lo*0.9&&v<=x.hi*1.1)?60:20;c++;});return c?Math.round(t/c):0;}
 
-// ── ANALYSIS ──
-window.renderAnalysis=function(){
-  renderChips('analysisChips','selectMemberA');
-  const el=document.getElementById('analysisContent');if(!el)return;
+window.selectMember=function(id){currentMemberId=id;refreshView();};
+window.showAnalysis=function(){
+  const m=currentMember();if(!m)return;
+  document.getElementById('analysisTitle').textContent=m.name+' 的分析';
+  renderAnalysis();
+  showSubView('analysis');
+};
+
+// ── CALENDAR ──
+window.renderCalendar=function(){
+  renderChips('calChips','selectMemberCal');
+  const el=document.getElementById('calContent');if(!el)return;
   if(!currentMemberId){el.innerHTML=`<div class="empty"><p>請選擇成員</p></div>`;return;}
-  const recs=currentRecords();if(!recs.length){el.innerHTML=`<div class="empty"><p>尚無量測紀錄</p></div>`;return;}
-  const latest=recs[recs.length-1],prev=recs.length>1?recs[recs.length-2]:null;
-  let out=`<div style="padding:0"><div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">指數評估</div>${METRICS.map(m=>{const v=parseFloat(latest[m.key]);if(!v||!m.normal)return'';const[lo,hi]=m.normal,st=v<lo?'偏低':v>hi?'偏高':'正常',bc=st==='正常'?'badge-ok':st==='偏低'?'badge-warn':'badge-bad',pct=Math.min(100,Math.max(0,(v-lo*0.8)/((hi*1.2-lo*0.8))*100)),d=prev&&prev[m.key]?(parseFloat(latest[m.key])-parseFloat(prev[m.key])).toFixed(1):null;return`<div class="analysis-row"><div class="analysis-label">${m.label}</div><div class="analysis-bar-wrap"><div style="height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;position:relative"><div style="position:absolute;left:${(lo-lo*0.8)/((hi*1.2-lo*0.8))*100}%;width:${(hi-lo)/((hi*1.2-lo*0.8))*100}%;height:100%;background:rgba(78,205,196,0.15)"></div><div style="position:absolute;left:${pct}%;transform:translateX(-50%);width:6px;height:8px;background:${m.color};border-radius:2px"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#444;margin-top:2px"><span>${lo}</span><span>${hi}</span></div></div><div class="analysis-val" style="color:${m.color}">${v}${m.unit}</div><span class="badge ${bc}">${st}</span>${d?`<span style="font-size:11px;color:${parseFloat(d)>0?'#FF6B6B':'#4ECDC4'};margin-left:4px">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}</div>`;}).join('')}</div>`;
-  if(recs.length>1){const first=recs[0];out+=`<div style="padding:20px 0 0"><div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">累計變化</div>${METRICS.filter(m=>first[m.key]&&latest[m.key]).map(m=>{const df=(parseFloat(latest[m.key])-parseFloat(first[m.key])).toFixed(1);return`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #0d0d0d"><span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.04em">${m.label}</span><span style="font-size:14px;font-weight:600;color:${parseFloat(df)>0?'#FF6B6B':'#4ECDC4'}">${parseFloat(df)>0?'+':''}${df} ${m.unit}</span></div>`;}).join('')}</div>`;}
-  el.innerHTML=out;
-};
-window.selectMemberA=function(id){currentMemberId=id;renderAnalysis();};
+  const now=new Date();
+  if(!calYear){calYear=now.getFullYear();calMonth=now.getMonth();}
+  const recs=currentRecords();
+  const recMap={};
+  recs.forEach(r=>{if(r.weight)recMap[r.date]=r;});
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const todayStr=now.toISOString().split('T')[0];
 
-// ── TREND ──
-window.renderTrend=function(){
-  renderChips('trendChips','selectMemberT');
-  document.getElementById('trendTitle').textContent=currentMember()?(currentMember().name+' 趨勢圖'):'趨勢圖';
-  document.getElementById('compareToggleWrap').style.display=state.members.length>1?'block':'none';
-  document.getElementById('metricPills').innerHTML=METRICS.map(m=>`<button class="metric-pill ${activeMetric===m.key?'active':''}" style="${activeMetric===m.key?'background:#00FF87;color:#000;border-color:#00FF87;font-weight:700':'border-color:#1a1a1a'}" onclick="setMetric('${m.key}')">${m.label}</button>`).join('');
-  const mi=METRICS.find(x=>x.key===activeMetric),card=document.getElementById('trendCard'),showAll=document.getElementById('showAllToggle')?.checked&&state.members.length>1;
-  if(showAll){
-    const COLS=['#4ECDC4','#FFE66D','#FF6B6B','#A8E6CF','#DDA0DD'];
-    const datasets=state.members.map((m,i)=>{const recs=getRecords(m.id).filter(r=>r[activeMetric]);return{label:m.name,data:recs.map(r=>({x:r.date.slice(5),y:parseFloat(r[activeMetric])})),borderColor:COLS[i%5],backgroundColor:COLS[i%5]+'22',borderWidth:2,pointRadius:4,tension:0.3,fill:false};}).filter(d=>d.data.length);
-    if(!datasets.length){card.innerHTML=`<div class="no-trend">尚無資料</div>`;return;}
-    card.innerHTML=`<div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label} 成員對比</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div>`;
-    buildChart({datasets},mi);
-  }else{
-    if(!currentMemberId){card.innerHTML=`<div class="no-trend">請先選擇成員</div>`;return;}
-    const recs=currentRecords().filter(r=>r[activeMetric]);
-    if(recs.length<2){if(trendChart){trendChart.destroy();trendChart=null;}card.innerHTML=`<div class="no-trend">至少需要 2 筆「${mi.label}」紀錄</div>`;return;}
-    const labels=recs.map(r=>r.date.slice(5)),values=recs.map(r=>parseFloat(r[activeMetric])),gv=(state.targets[currentMemberId]||{})[activeMetric];
-    card.innerHTML=`<div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div><div class="legend">${mi.normal?`<span style="color:#4ECDC4">─ 正常下限 ${mi.normal[0]}</span><span style="color:#FF6B6B">─ 正常上限 ${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#FFE66D">─ 目標 ${gv}</span>`:''}</div>`;
-    buildChart({labels,datasets:[{label:mi.label,data:values,borderColor:'#00FF87',backgroundColor:'rgba(0,255,135,0.04)',borderWidth:1.5,pointBackgroundColor:'#00FF87',pointRadius:3,pointHoverRadius:6,tension:0.4,fill:true}]},mi,gv);
-  }
-};
-window.selectMemberT=function(id){currentMemberId=id;renderTrend();};
-window.setMetric=function(k){activeMetric=k;renderTrend();};
-function buildChart({labels,datasets},mi,gv){
-  if(trendChart){trendChart.destroy();trendChart=null;}
-  const refPlugin={id:'refs',afterDraw(chart){const{ctx,chartArea:{left,right},scales:{y}}=chart;const ls=[];if(mi.normal){ls.push({val:mi.normal[0],color:'rgba(78,205,196,0.4)'});ls.push({val:mi.normal[1],color:'rgba(255,107,107,0.4)'});}if(gv)ls.push({val:parseFloat(gv),color:'rgba(255,230,109,0.6)'});ls.forEach(l=>{try{const yp=y.getPixelForValue(l.val);ctx.save();ctx.strokeStyle=l.color;ctx.setLineDash([5,5]);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(right,yp);ctx.stroke();ctx.restore();}catch{}});}};
-  trendChart=new Chart(document.getElementById('trendCanvas'),{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1,labels:{color:'#888',font:{size:11}}},tooltip:{backgroundColor:'#0a0a0a',borderColor:'#1a1a1a',borderWidth:1,titleColor:'#666',bodyColor:'#fff',bodyFont:{size:16,weight:'800'},callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+' '+mi.unit}}},scales:{x:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d',drawBorder:false}},y:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d',drawBorder:false}}}},plugins:[refPlugin]});
-}
-
-// ── COMPARE ──
-window.renderCompare=function(){
-  const el=document.getElementById('compareContent');if(!el)return;
-  if(state.members.length<2){el.innerHTML=`<div class="empty"><p>至少需要 2 位成員才能對比</p></div>`;return;}
-
-  const mA=compareA?state.members.find(m=>m.id===compareA):null;
-  const mB=compareB?state.members.find(m=>m.id===compareB):null;
-  const lA=mA?getRecords(compareA).slice(-1)[0]:null;
-  const lB=mB?getRecords(compareB).slice(-1)[0]:null;
-
-  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">`;
-
-  // Card A
-  html+=`<div style="border-radius:16px;border:2px solid ${compareA?'var(--teal)':'rgba(255,255,255,0.08)'};background:${compareA?'rgba(78,205,196,0.07)':'rgba(255,255,255,0.02)'};overflow:hidden">
-    <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--teal)"></div>
-      <span style="font-size:11px;color:var(--teal);font-weight:600">成員 A</span>
-    </div>
-    <div style="padding:6px">
-      ${state.members.map(m=>`<button onclick="compareA='${m.id}';${compareB===m.id?'compareB=null;':''}renderCompare()"
-        style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareA===m.id?'700':'400'};text-align:left;background:${compareA===m.id?'rgba(78,205,196,0.2)':'rgba(255,255,255,0.04)'};color:${compareA===m.id?'var(--teal)':'#bbb'};opacity:${compareB===m.id?'0.3':'1'}">${compareA===m.id?'✓ ':''}${m.name}</button>`).join('')}
-    </div>
-  </div>`;
-
-  // Card B
-  html+=`<div style="border-radius:16px;border:2px solid ${compareB?'var(--yellow)':'rgba(255,255,255,0.08)'};background:${compareB?'rgba(255,230,109,0.05)':'rgba(255,255,255,0.02)'};overflow:hidden">
-    <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--yellow)"></div>
-      <span style="font-size:11px;color:var(--yellow);font-weight:600">成員 B</span>
-    </div>
-    <div style="padding:6px">
-      ${state.members.map(m=>`<button onclick="compareB='${m.id}';${compareA===m.id?'compareA=null;':''}renderCompare()"
-        style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareB===m.id?'700':'400'};text-align:left;background:${compareB===m.id?'rgba(255,230,109,0.18)':'rgba(255,255,255,0.04)'};color:${compareB===m.id?'var(--yellow)':'#bbb'};opacity:${compareA===m.id?'0.3':'1'}">${compareB===m.id?'✓ ':''}${m.name}</button>`).join('')}
-    </div>
-  </div>`;
-
-  html+=`</div>`;
-
-  if(!compareA||!compareB){
-    html+=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:14px;background:rgba(255,255,255,0.02);border-radius:16px;border:1px dashed rgba(255,255,255,0.08)">${!compareA&&!compareB?'請從左右各選一位成員':!compareA?'請選擇成員 A':'請選擇成員 B'}</div>`;
-    el.innerHTML=html;return;
-  }
-
-  html+=`<div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:10px;height:10px;border-radius:50%;background:var(--teal)"></div>
-        <span style="font-size:15px;font-weight:700;color:var(--teal)">${mA.name}</span>
-        <span style="font-size:11px;color:var(--muted)">${lA?lA.date:'無紀錄'}</span>
-      </div>
-      <span style="color:var(--muted);font-size:16px">vs</span>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:11px;color:var(--muted)">${lB?lB.date:'無紀錄'}</span>
-        <span style="font-size:15px;font-weight:700;color:var(--yellow)">${mB.name}</span>
-        <div style="width:10px;height:10px;border-radius:50%;background:var(--yellow)"></div>
-      </div>
-    </div>
-    ${METRICS.map(m=>{
-      const vA=lA?parseFloat(lA[m.key]):null,vB=lB?parseFloat(lB[m.key]):null;
-      if(!vA&&!vB)return'';
-      const mx=Math.max(vA||0,vB||0)||1;
-      const lowerBetter=m.key==='bodyFat'||m.key==='visceralFat'||m.key==='bodyAge';
-      const winner=vA&&vB?(lowerBetter?vA<vB?'A':vA>vB?'B':'tie':vA>vB?'A':vA<vB?'B':'tie'):null;
-      return '<div style="margin-bottom:14px">'
-        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
-        +'<span style="font-size:12px;color:var(--muted)">'+m.label+(m.unit?' ('+m.unit+')':'')+'</span>'
-        +(winner&&winner!=='tie'?'<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:'+(winner==='A'?'rgba(78,205,196,0.15)':'rgba(255,230,109,0.15)')+';color:'+(winner==='A'?'var(--teal)':'var(--yellow)')+'">▲ '+(winner==='A'?mA.name:mB.name)+'</span>':'')
-        +'</div>'
-        +'<div style="display:flex;align-items:center;gap:8px">'
-        +'<span style="font-size:13px;font-weight:700;color:var(--teal);width:48px;text-align:right">'+(vA??'—')+'</span>'
-        +'<div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;display:flex">'
-        +'<div style="width:'+(vA?vA/mx*50:0)+'%;background:var(--teal);border-radius:4px 0 0 4px;margin-left:auto"></div>'
-        +'<div style="width:'+(vB?vB/mx*50:0)+'%;background:var(--yellow);border-radius:0 4px 4px 0"></div>'
-        +'</div>'
-        +'<span style="font-size:13px;font-weight:800;color:var(--yellow);width:48px">'+(vB??'—')+'</span>'
-        +'</div></div>';
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <button class="btn btn-ghost" style="padding:6px 12px" onclick="calPrev()">‹</button>
+    <span style="font-size:16px;font-weight:700">${calYear}年${calMonth+1}月</span>
+    <button class="btn btn-ghost" style="padding:6px 12px" onclick="calNext()">›</button>
+  </div>
+  <div class="cal-grid">
+    ${WEEKDAYS.map(d=>`<div class="cal-day-header">${d}</div>`).join('')}
+    ${Array(firstDay).fill('<div class="cal-day other-month"></div>').join('')}
+    ${Array.from({length:daysInMonth},(_,i)=>{
+      const d=i+1;
+      const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const rec=recMap[dateStr];
+      const isToday=dateStr===todayStr;
+      return`<div class="cal-day ${isToday?'today':''}" onclick="calDayClick('${dateStr}')">
+        <div class="cal-num ${isToday?'today-num':''}">${d}</div>
+        ${rec?`<div class="cal-weight" style="color:${rec.weight?'#00FF87':'#555'}">${rec.weight||''}</div>`:''}
+      </div>`;
     }).join('')}
   </div>`;
 
+  // Recent records list
+  const recent=[...recs].reverse().slice(0,5);
+  if(recent.length){
+    html+=`<div style="margin-top:4px">
+      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">最近紀錄</div>
+      ${recent.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #0d0d0d">
+        <span style="font-size:13px;color:#888">${r.date}</span>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-size:22px;font-weight:800;color:#fff">${r.weight||'—'}</span>
+          <span style="font-size:11px;color:#444">kg</span>
+        </div>
+        <button class="btn btn-red" style="font-size:11px;padding:4px 8px" onclick="deleteRecord('${r.id}')">刪除</button>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  html+=`<div style="padding:16px 0"><button class="btn btn-full btn-primary" onclick="goAddRecord('calendar')">＋ 新增量測</button></div>`;
   el.innerHTML=html;
+};
+window.selectMemberCal=function(id){currentMemberId=id;calYear=null;renderCalendar();};
+window.calPrev=function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();};
+window.calNext=function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();};
+window.calDayClick=function(dateStr){
+  document.getElementById('recDate').value=dateStr;
+  document.getElementById('addRecordTitle').textContent='新增量測 · '+dateStr;
+  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');
+  recordFromView='calendar';
+  showSubView('addRecord');
+};
+
+// ── TABLE ──
+window.renderTable=function(){
+  renderChips('tableChips','selectMemberTable');
+  // Range tabs
+  const rt=document.getElementById('rangeTabs');
+  if(rt)rt.innerHTML=RANGES.map((r,i)=>`<button class="range-tab ${r.days===tableRange?'active':''}" onclick="setTableRange(${r.days})">${r.label}</button>`).join('');
+  const el=document.getElementById('tableContent');if(!el)return;
+  if(!currentMemberId){el.innerHTML=`<div class="empty"><p>請選擇成員</p></div>`;return;}
+  const recs=currentRecords();
+  if(!recs.length){el.innerHTML=`<div class="empty"><p>尚無量測紀錄</p></div>`;return;}
+
+  // Build date range
+  const today=new Date();
+  const dates=[];
+  for(let i=0;i<tableRange;i++){
+    const d=new Date(today);d.setDate(today.getDate()-i);
+    dates.push(d.toISOString().split('T')[0]);
+  }
+
+  const recMap={};recs.forEach(r=>{recMap[r.date]=r;});
+  const firstRec=recs[0];
+  const firstWeight=firstRec?.weight?parseFloat(firstRec.weight):null;
+
+  let html=`<div style="overflow-x:auto">
+    <table class="rec-table">
+      <thead><tr>
+        <th>日期</th>
+        <th>體重</th>
+        <th>與昨天相比</th>
+        <th>與第一天...</th>
+      </tr></thead>
+      <tbody>
+        ${dates.map((dateStr,i)=>{
+          const rec=recMap[dateStr];
+          const w=rec?.weight?parseFloat(rec.weight):null;
+          const d=new Date(dateStr);
+          const dayLabel=`${d.getMonth()+1}/${d.getDate()}（週${WEEKDAYS[d.getDay()]}）`;
+
+          // vs yesterday
+          const prevDateStr=dates[i+1];
+          const prevRec=prevDateStr?recMap[prevDateStr]:null;
+          const pw=prevRec?.weight?parseFloat(prevRec.weight):null;
+          const diff=w&&pw?(w-pw):null;
+
+          // vs first day
+          const totalDiff=w&&firstWeight?(w-firstWeight):null;
+
+          return`<tr>
+            <td>${dayLabel}</td>
+            <td style="font-size:16px;font-weight:800;color:#fff">${w?w.toFixed(1):'<span style="color:#333">-</span>'}</td>
+            <td style="font-weight:700;color:${diff==null?'#333':diff>0?'#FF6B6B':diff<0?'#00FF87':'#888'};font-size:14px">${diff==null?'<span style="color:#333">-</span>':(diff>0?'+':'')+diff.toFixed(1)}</td>
+            <td style="font-weight:700;color:${totalDiff==null?'#333':totalDiff>0?'#FF6B6B':totalDiff<0?'#00FF87':'#888'};font-size:14px">${totalDiff==null?'<span style="color:#333">-</span>':(totalDiff>0?'+':'')+totalDiff.toFixed(1)}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+  el.innerHTML=html;
+};
+window.selectMemberTable=function(id){currentMemberId=id;renderTable();};
+window.setTableRange=function(days){tableRange=days;renderTable();};
+
+// ── TREND ──
+window.renderTrend=function(){
+  renderChips('trendChips','selectMemberTrend');
+  document.getElementById('trendTitle').textContent=currentMember()?(currentMember().name+' 趨勢'):'趨勢圖';
+  const pills=document.getElementById('metricPills');
+  if(pills)pills.innerHTML=METRICS.map(m=>`<button class="metric-pill ${activeMetric===m.key?'active':''}" onclick="setMetric('${m.key}')">${m.label}</button>`).join('');
+  const mi=METRICS.find(x=>x.key===activeMetric);
+  const card=document.getElementById('trendCard');
+  if(!currentMemberId){card.innerHTML=`<div class="no-data">請先選擇成員</div>`;return;}
+  const recs=currentRecords().filter(r=>r[activeMetric]);
+  if(recs.length<2){if(trendChart){trendChart.destroy();trendChart=null;}card.innerHTML=`<div class="no-data">至少需要 2 筆「${mi.label}」紀錄</div>`;return;}
+  const labels=recs.map(r=>r.date.slice(5)),values=recs.map(r=>parseFloat(r[activeMetric]));
+  const gv=(state.targets[currentMemberId]||{})[activeMetric];
+  const minV=Math.min(...values),maxV=Math.max(...values);
+  card.innerHTML=`<div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
+      <span style="font-size:36px;font-weight:800;letter-spacing:-0.03em">${values[values.length-1].toFixed(1)}</span>
+      <span style="font-size:14px;color:#444">${mi.unit}</span>
+      ${values.length>1?`<span style="font-size:12px;color:${values[values.length-1]>values[0]?'#FF6B6B':'#00FF87'}">${values[values.length-1]>values[0]?'▲':'▼'} ${Math.abs(values[values.length-1]-values[0]).toFixed(1)}</span>`:''}
+    </div>
+    <div style="font-size:11px;color:#444;margin-bottom:16px">最高 ${maxV.toFixed(1)}　最低 ${minV.toFixed(1)}　共 ${values.length} 筆</div>
+    <div class="chart-wrap"><canvas id="trendCanvas"></canvas></div>
+    <div class="legend">${mi.normal?`<span style="color:#333">▬ 正常範圍 ${mi.normal[0]}–${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#00FF87">▬ 目標 ${gv}</span>`:''}</div>`;
+  buildChart(labels,values,mi,gv);
+};
+window.selectMemberTrend=function(id){currentMemberId=id;renderTrend();};
+window.setMetric=function(k){activeMetric=k;renderTrend();};
+
+function buildChart(labels,values,mi,gv){
+  if(trendChart){trendChart.destroy();trendChart=null;}
+  const refPlugin={id:'refs',afterDraw(chart){
+    const{ctx,chartArea:{left,right},scales:{y}}=chart;
+    const lines=[];
+    if(mi.normal){lines.push({val:mi.normal[0],c:'rgba(0,255,135,0.2)'});lines.push({val:mi.normal[1],c:'rgba(255,107,107,0.2)'});}
+    if(gv)lines.push({val:parseFloat(gv),c:'rgba(0,255,135,0.5)'});
+    lines.forEach(l=>{try{const yp=y.getPixelForValue(l.val);ctx.save();ctx.strokeStyle=l.c;ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(right,yp);ctx.stroke();ctx.restore();}catch{}});
+  }};
+  trendChart=new Chart(document.getElementById('trendCanvas'),{
+    type:'line',
+    data:{labels,datasets:[{label:mi.label,data:values,borderColor:'#00FF87',backgroundColor:'rgba(0,255,135,0.04)',borderWidth:1.5,pointBackgroundColor:'#00FF87',pointRadius:3,pointHoverRadius:6,tension:0.4,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a0a0a',borderColor:'#1a1a1a',borderWidth:1,titleColor:'#555',bodyColor:'#fff',bodyFont:{size:16,weight:'800'},callbacks:{label:ctx=>ctx.raw.toFixed(1)+' '+mi.unit}}},scales:{x:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d'}},y:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d'}}}},
+    plugins:[refPlugin]
+  });
+}
+
+// ── MORE ──
+window.renderMore=function(){
+  const el=document.getElementById('moreContent');if(!el)return;
+  el.innerHTML=`
+    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">👥 成員對比</div><div class="mgmt-desc">選兩位成員比較指標</div></div><button class="btn btn-ghost" onclick="goCompare()">前往</button></div>
+    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">🎯 目標設定</div><div class="mgmt-desc">設定體重、體脂率目標</div></div><button class="btn btn-ghost" onclick="goTargets()">設定</button></div>
+    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📥 匯出 CSV</div><div class="mgmt-desc">下載量測紀錄表格</div></div><div style="display:flex;gap:6px"><button class="btn btn-mint" onclick="exportCSV('current')">目前成員</button><button class="btn btn-ghost" onclick="exportCSV('all')">全部</button></div></div>
+    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">💾 備份資料</div><div class="mgmt-desc">匯出 JSON 備份</div></div><button class="btn btn-purple" onclick="exportJSON()">匯出</button></div>
+    <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📤 還原資料</div><div class="mgmt-desc">從備份 JSON 還原</div></div><button class="btn btn-yellow" onclick="document.getElementById('importFile').click()">選擇檔案</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"></div>
+    <div class="mgmt-item" style="border-color:#2a0000"><div class="mgmt-info"><div class="mgmt-title" style="color:var(--red)">🗑 清除所有資料</div><div class="mgmt-desc">永久刪除雲端資料</div></div><button class="btn btn-red" onclick="clearAll()">清除</button></div>
+    <div style="padding:16px 0;border-top:1px solid #111;margin-top:4px"><div style="font-size:9px;color:#333;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">雲端同步</div><div id="storageInfo" style="font-size:13px;color:#888"></div></div>`;
+  updateStorageInfo();
+};
+window.goCompare=function(){renderCompare();showSubView('compare');};
+window.goTargets=function(){renderTargets();showSubView('targets');};
+
+function updateStorageInfo(){
+  const el=document.getElementById('storageInfo');if(!el)return;
+  const tot=Object.values(state.records).reduce((s,r)=>s+r.length,0);
+  el.textContent=`✅ 連線中　成員 ${state.members.length} 位　紀錄 ${tot} 筆`;
+}
+
+// ── ANALYSIS ──
+function renderAnalysis(){
+  const el=document.getElementById('analysisContent');if(!el)return;
+  const m=currentMember();
+  if(!currentMemberId||!m){el.innerHTML=`<div class="empty"><p>請選擇成員</p></div>`;return;}
+  const recs=currentRecords();if(!recs.length){el.innerHTML=`<div class="empty"><p>尚無量測紀錄</p></div>`;return;}
+  const latest=recs[recs.length-1],prev=recs.length>1?recs[recs.length-2]:null;
+
+  let out=`<div>`;
+  METRICS.forEach(mt=>{
+    const v=parseFloat(latest[mt.key]);if(!v||!mt.normal)return;
+    const[lo,hi]=mt.key==='bodyFat'?m.gender==='女'?[20,30]:[15,25]:mt.normal;
+    const bmiSt=mt.key==='bmi'?getBMIStatus(latest.bmi):null;
+    const st=bmiSt?bmiSt:{label:v<lo?'偏低':v>hi?'偏高':'正常',cls:v<lo?'badge-warn':v>hi?'badge-bad':'badge-ok'};
+    const pct=Math.min(100,Math.max(0,(v-lo*0.8)/((hi*1.2-lo*0.8))*100));
+    const d=prev&&prev[mt.key]?(parseFloat(latest[mt.key])-parseFloat(prev[mt.key])).toFixed(1):null;
+    out+=`<div class="analysis-row">
+      <div class="analysis-label">${mt.label}</div>
+      <div style="flex:1">
+        <div style="height:4px;background:#111;border-radius:2px;overflow:hidden;position:relative;margin-bottom:4px">
+          <div style="position:absolute;left:${(lo-lo*0.8)/((hi*1.2-lo*0.8))*100}%;width:${(hi-lo)/((hi*1.2-lo*0.8))*100}%;height:100%;background:rgba(0,255,135,0.1)"></div>
+          <div style="position:absolute;left:${pct}%;transform:translateX(-50%);width:6px;height:4px;background:${mt.color};border-radius:2px"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#333"><span>${lo}</span><span>${hi}</span></div>
+      </div>
+      <div style="font-size:16px;font-weight:800;width:56px;text-align:right;color:#fff">${v}${mt.unit}</div>
+      <span class="badge ${st.cls}">${st.label}</span>
+      ${d?`<span style="font-size:10px;color:${parseFloat(d)>0?'#FF6B6B':'#00FF87'};margin-left:2px">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}
+    </div>`;
+  });
+
+  if(recs.length>1){
+    const first=recs[0];
+    out+=`<div style="margin-top:20px;padding-top:16px;border-top:1px solid #111">
+      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">累計變化</div>
+      ${METRICS.filter(mt=>first[mt.key]&&latest[mt.key]).map(mt=>{
+        const df=(parseFloat(latest[mt.key])-parseFloat(first[mt.key])).toFixed(1);
+        return`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #0d0d0d">
+          <span style="font-size:13px;color:#666;text-transform:uppercase;letter-spacing:0.04em">${mt.label}</span>
+          <span style="font-size:16px;font-weight:800;color:${parseFloat(df)>0?'#FF6B6B':'#00FF87'}">${parseFloat(df)>0?'+':''}${df} ${mt.unit}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+  out+=`</div>`;
+  el.innerHTML=out;
+}
+
+// ── COMPARE ──
+function renderCompare(){
+  const el=document.getElementById('compareContent');if(!el)return;
+  if(state.members.length<2){el.innerHTML=`<div class="empty"><p>至少需要 2 位成員才能對比</p></div>`;return;}
+  const mA=compareA?state.members.find(m=>m.id===compareA):null;
+  const mB=compareB?state.members.find(m=>m.id===compareB):null;
+  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+    <div style="border-radius:12px;border:1.5px solid ${compareA?'#00FF87':'#1a1a1a'};overflow:hidden">
+      <div style="padding:10px 12px;border-bottom:1px solid #0d0d0d;display:flex;align-items:center;gap:6px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#00FF87"></div>
+        <span style="font-size:10px;color:#00FF87;font-weight:600;letter-spacing:0.06em">成員 A</span>
+      </div>
+      <div style="padding:6px">
+        ${state.members.map(m=>`<button onclick="compareA='${m.id}';${compareB===m.id?'compareB=null;':''}renderCompare()"
+          style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareA===m.id?'800':'400'};text-align:left;background:${compareA===m.id?'rgba(0,255,135,0.1)':'rgba(255,255,255,0.02)'};color:${compareA===m.id?'#00FF87':'#666'};opacity:${compareB===m.id?'0.3':'1'}">${compareA===m.id?'✓ ':''}${m.name}</button>`).join('')}
+      </div>
+    </div>
+    <div style="border-radius:12px;border:1.5px solid ${compareB?'#FFE66D':'#1a1a1a'};overflow:hidden">
+      <div style="padding:10px 12px;border-bottom:1px solid #0d0d0d;display:flex;align-items:center;gap:6px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#FFE66D"></div>
+        <span style="font-size:10px;color:#FFE66D;font-weight:600;letter-spacing:0.06em">成員 B</span>
+      </div>
+      <div style="padding:6px">
+        ${state.members.map(m=>`<button onclick="compareB='${m.id}';${compareA===m.id?'compareA=null;':''}renderCompare()"
+          style="width:100%;padding:10px 12px;margin-bottom:4px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:${compareB===m.id?'800':'400'};text-align:left;background:${compareB===m.id?'rgba(255,230,109,0.1)':'rgba(255,255,255,0.02)'};color:${compareB===m.id?'#FFE66D':'#666'};opacity:${compareA===m.id?'0.3':'1'}">${compareB===m.id?'✓ ':''}${m.name}</button>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  if(!compareA||!compareB){
+    html+=`<div style="text-align:center;padding:30px;color:#333;font-size:14px;border:1px dashed #1a1a1a;border-radius:12px">${!compareA&&!compareB?'請從左右各選一位成員':!compareA?'請選擇成員 A':'請選擇成員 B'}</div>`;
+    el.innerHTML=html;return;
+  }
+  const lA=getRecords(compareA).slice(-1)[0],lB=getRecords(compareB).slice(-1)[0];
+  html+=`<div class="cmp-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span style="font-size:16px;font-weight:800;color:#00FF87">${mA.name}</span>
+      <span style="font-size:12px;color:#333">vs</span>
+      <span style="font-size:16px;font-weight:800;color:#FFE66D">${mB.name}</span>
+    </div>
+    ${METRICS.map(mt=>{
+      const vA=lA?parseFloat(lA[mt.key]):null,vB=lB?parseFloat(lB[mt.key]):null;
+      if(!vA&&!vB)return'';
+      const mx=Math.max(vA||0,vB||0)||1;
+      const lb=mt.key==='bodyFat'||mt.key==='visceralFat'||mt.key==='bodyAge';
+      const win=vA&&vB?(lb?vA<vB?'A':vA>vB?'B':'':vA>vB?'A':vA<vB?'B':''):null;
+      return`<div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.04em">${mt.label}${mt.unit?' ('+mt.unit+')':''}</span>
+          ${win?`<span style="font-size:10px;color:${win==='A'?'#00FF87':'#FFE66D'};font-weight:700">▲ ${win==='A'?mA.name:mB.name}</span>`:''}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:15px;font-weight:800;color:#00FF87;width:52px;text-align:right">${vA??'—'}</span>
+          <div style="flex:1;height:6px;background:#0d0d0d;border-radius:3px;overflow:hidden;display:flex">
+            <div style="width:${vA?vA/mx*50:0}%;background:#00FF87;border-radius:3px 0 0 3px;margin-left:auto"></div>
+            <div style="width:${vB?vB/mx*50:0}%;background:#FFE66D;border-radius:0 3px 3px 0"></div>
+          </div>
+          <span style="font-size:15px;font-weight:800;color:#FFE66D;width:52px">${vB??'—'}</span>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+  el.innerHTML=html;
+}
+
+// ── TARGETS ──
+function renderTargets(){
+  const el=document.getElementById('targetsContent');if(!el)return;
+  if(!state.members.length){el.innerHTML=`<div class="empty"><p>尚無成員</p></div>`;return;}
+
+  // BMI reference info
+  el.innerHTML=`<div style="padding:12px;background:#080808;border-radius:10px;margin-bottom:20px;border:1px solid #111">
+    <div style="font-size:9px;color:#555;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">衛福部 BMI 標準</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">
+      <span style="color:#888">&lt; 18.5 過輕</span><span style="color:#888">18.5–24 正常</span>
+      <span style="color:#FFB347">24–27 過重</span><span style="color:#FF6B6B">27–30 輕度肥胖</span>
+      <span style="color:#FF6B6B">30–35 中度肥胖</span><span style="color:#FF6B6B">≥ 35 重度肥胖</span>
+    </div>
+  </div>
+  ${state.members.map(m=>`
+    <div style="border-bottom:1px solid #111;padding:16px 0;margin-bottom:4px">
+      <div style="font-size:16px;font-weight:800;margin-bottom:12px">${m.name}</div>
+      <div style="font-size:9px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">建議目標體重 (BMI 24) = ${(24*m.height/100*m.height/100).toFixed(1)} kg</div>
+      ${METRICS.filter(mt=>mt.goalable).map(mt=>`
+        <div class="target-row">
+          <div class="target-key">${mt.label}</div>
+          <input class="target-input" type="number" step="0.1" placeholder="—" value="${state.targets[m.id]?.[mt.key]||''}" id="tgt_${m.id}_${mt.key}">
+          <span style="font-size:11px;color:#444;margin-left:6px">${mt.unit}</span>
+        </div>`).join('')}
+      <button class="btn btn-mint" style="margin-top:12px;width:100%;font-size:13px;padding:10px" onclick="saveTargets('${m.id}')">儲存目標</button>
+    </div>`).join('')}`;
+}
+window.saveTargets=async function(mid){
+  if(!state.targets[mid])state.targets[mid]={};
+  METRICS.filter(m=>m.goalable).forEach(m=>{
+    const v=document.getElementById(`tgt_${mid}_${m.key}`)?.value;
+    if(v)state.targets[mid][m.key]=v;else delete state.targets[mid][m.key];
+  });
+  await _db.saveTargets(state.targets);
+  alert('目標已儲存！');
+};
+
+// ── RECORDS ──
+window.goAddRecord=function(fromView){
+  recordFromView=fromView||'home';
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('recDate').value=today;
+  document.getElementById('addRecordTitle').textContent='新增量測';
+  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');
+  showSubView('addRecord');
+};
+window.goBackFromRecord=function(){switchNav(recordFromView);};
+window.saveRecord=async function(){
+  if(!currentMemberId){alert('請先選擇成員');return;}
+  const rec={id:uid(),date:document.getElementById('recDate').value};
+  METRICS.forEach(m=>{const v=document.getElementById('rec_'+m.key)?.value;if(v)rec[m.key]=v;});
+  await _db.saveRecord(currentMemberId,rec);
+  switchNav(recordFromView);
+};
+window.deleteRecord=async function(rid){
+  if(!confirm('確定刪除此紀錄？'))return;
+  await _db.deleteRecord(currentMemberId,rid);
+};
+
+// ── MEMBER FORMS ──
+window.goAddMember=function(){
+  editingMemberId=null;currentGender='男';
+  document.getElementById('mName').value='';
+  document.getElementById('mBirth').value='1990';
+  document.getElementById('mHeight').value='170';
+  document.getElementById('mRemind').value='07:00';
+  document.getElementById('memberFormTitle').textContent='新增成員';
+  document.getElementById('saveMemberBtn').textContent='建立成員';
+  document.getElementById('deleteMemberBtn').style.display='none';
+  selectGender('男');showSubView('member');
+};
+window.goEditMember=function(){
+  const m=currentMember();if(!m)return;
+  editingMemberId=m.id;currentGender=m.gender;
+  document.getElementById('mName').value=m.name;
+  document.getElementById('mBirth').value=m.birthYear||1990;
+  document.getElementById('mHeight').value=m.height||170;
+  document.getElementById('mRemind').value=m.remindTime||'07:00';
+  document.getElementById('memberFormTitle').textContent='編輯成員';
+  document.getElementById('saveMemberBtn').textContent='儲存變更';
+  document.getElementById('deleteMemberBtn').style.display='block';
+  selectGender(m.gender||'男');showSubView('member');
+};
+window.selectGender=function(g){
+  currentGender=g;
+  document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('gBtn'+g).classList.add('active');
+};
+window.saveMember=async function(){
+  const name=document.getElementById('mName').value.trim();
+  if(!name){alert('請輸入姓名');return;}
+  const m={id:editingMemberId||uid(),name,gender:currentGender,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,remindTime:document.getElementById('mRemind').value,createdAt:Date.now()};
+  await _db.saveMember(m);
+  if(!editingMemberId)currentMemberId=m.id;
+  switchNav('home');
+};
+window.deleteMember=async function(){
+  if(!editingMemberId)return;
+  if(!confirm('確定要刪除此成員及所有紀錄？'))return;
+  await _db.deleteMember(editingMemberId);
+  if(currentMemberId===editingMemberId)currentMemberId=null;
+  editingMemberId=null;switchNav('home');
 };
 
 // ── DATA ──
-window.renderData=function(){updateStorageInfo();};
-window.updateStorageInfo=function(){const el=document.getElementById('storageInfo');if(!el)return;const tot=Object.values(state.records).reduce((s,r)=>s+r.length,0);el.innerHTML=`✅ 已連線雲端同步　|　成員：${state.members.length} 位　|　紀錄：${tot} 筆`;};
-window.exportCSV=function(mode){const ms=mode==='current'&&currentMemberId?[currentMember()]:state.members,ks=METRICS.map(m=>m.key),rows=[['姓名','日期',...METRICS.map(m=>m.label+'('+m.unit+')')].join(',')];ms.forEach(m=>{getRecords(m.id).forEach(r=>{rows.push([m.name,r.date,...ks.map(k=>r[k]||'')].join(','));});});dl(rows.join('\n'),'tanita_records.csv','text/csv');};
+window.exportCSV=function(mode){
+  const ms=mode==='current'&&currentMemberId?[currentMember()]:state.members;
+  const ks=METRICS.map(m=>m.key);
+  const rows=[['姓名','日期',...METRICS.map(m=>m.label+'('+m.unit+')')].join(',')];
+  ms.forEach(m=>{getRecords(m.id).forEach(r=>{rows.push([m.name,r.date,...ks.map(k=>r[k]||'')].join(','));});});
+  dl(rows.join('\n'),'tanita_records.csv','text/csv');
+};
 window.exportJSON=function(){dl(JSON.stringify(state,null,2),'tanita_backup.json','application/json');};
-window.importJSON=async function(e){const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=async ev=>{try{const imp=JSON.parse(ev.target.result);if(!imp.members||!imp.records)throw 0;if(!confirm('確定要將備份資料合併至雲端？'))return;for(const m of imp.members){await _db.saveMember(m);for(const r of(imp.records[m.id]||[])){await _db.saveRecord(m.id,r);}}if(imp.targets)await _db.saveTargets(imp.targets);alert('匯入成功！');}catch{alert('檔案格式錯誤');}e.target.value='';};reader.readAsText(f);};
-window.clearAll=async function(){if(!confirm('確定要從雲端永久刪除所有資料？此動作無法復原！'))return;await _db.clearAll();currentMemberId=null;compareA=null;compareB=null;switchNav('dashboard');};
+window.importJSON=async function(e){
+  const f=e.target.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    try{const imp=JSON.parse(ev.target.result);if(!imp.members||!imp.records)throw 0;if(!confirm('確定要將備份資料合併至雲端？'))return;for(const m of imp.members){await _db.saveMember(m);for(const r of(imp.records[m.id]||[])){await _db.saveRecord(m.id,r);}}if(imp.targets)await _db.saveTargets(imp.targets);alert('匯入成功！');}catch{alert('檔案格式錯誤');}e.target.value='';
+  };reader.readAsText(f);
+};
+window.clearAll=async function(){
+  if(!confirm('確定要從雲端永久刪除所有資料？'))return;
+  await _db.clearAll();currentMemberId=null;compareA=null;compareB=null;switchNav('home');
+};
 function dl(c,n,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click();}
 
-// ── TARGETS ──
-window.goTargets=function(){showSubView('targets');renderTargets();};
-window.renderTargets=function(){const el=document.getElementById('targetsContent');if(!el)return;if(!state.members.length){el.innerHTML=`<div class="empty"><p>尚無成員</p></div>`;return;}el.innerHTML=state.members.map(m=>`<div class="card"><div style="font-size:14px;font-weight:600;margin-bottom:12px">${m.name}</div>${METRICS.filter(x=>x.goalable).map(x=>`<div class="target-row"><div class="target-key">${x.label}</div><input class="target-input" type="number" step="0.1" placeholder="目標 ${x.unit}" value="${state.targets[m.id]?.[x.key]||''}" id="tgt_${m.id}_${x.key}"><span style="font-size:12px;color:var(--muted);margin-left:4px">${x.unit}</span></div>`).join('')}<button class="btn btn-teal" style="margin-top:8px;width:100%" onclick="saveTargets('${m.id}')">儲存目標</button></div>`).join('');};
-window.saveTargets=async function(mid){if(!state.targets[mid])state.targets[mid]={};METRICS.filter(m=>m.goalable).forEach(m=>{const v=document.getElementById(`tgt_${mid}_${m.key}`)?.value;if(v)state.targets[mid][m.key]=v;else delete state.targets[mid][m.key];});await _db.saveTargets(state.targets);alert('目標已儲存！');};
-
-// ── RECORDS ──
-window.goViewRecords=function(){document.getElementById('recordsTitle').textContent=(currentMember()?.name||'')+'的紀錄';showSubView('records');renderRecords();};
-function renderRecords(){const recs=[...currentRecords()].reverse(),el=document.getElementById('recordsList');if(!recs.length){el.innerHTML=`<div class="empty"><p>尚無量測紀錄</p></div>`;return;}el.innerHTML=recs.map((rec,i)=>{const prev=i<recs.length-1?recs[i+1]:null;return`<div class="record-item"><div class="record-header"><div class="record-date">${rec.date}</div><button class="btn btn-red" onclick="deleteRecord('${rec.id}')">🗑</button></div><div class="record-grid">${METRICS.filter(m=>rec[m.key]).map(m=>{const d=prev&&prev[m.key]?(parseFloat(rec[m.key])-parseFloat(prev[m.key])).toFixed(1):null;return`<div class="record-metric"><span>${m.label}：</span><strong style="color:${m.color}">${rec[m.key]}${m.unit}</strong>${d?` <span style="font-size:10px;color:${parseFloat(d)>0?'#FF6B6B':'#4ECDC4'}">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}</div>`;}).join('')}</div></div>`;}).join('');}
-window.deleteRecord=async function(rid){if(!confirm('確定刪除此紀錄？'))return;await _db.deleteRecord(currentMemberId,rid);};
-
-// ── ADD RECORD ──
-window.goAddRecord=function(){document.getElementById('recDate').value=new Date().toISOString().split('T')[0];document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');showSubView('addRecord');};
-window.saveRecord=async function(){const rec={id:uid(),date:document.getElementById('recDate').value};METRICS.forEach(m=>{const v=document.getElementById('rec_'+m.key)?.value;if(v)rec[m.key]=v;});await _db.saveRecord(currentMemberId,rec);goViewRecords();};
-
-// ── MEMBER FORMS ──
-window.goAddMember=function(){editingMemberId=null;currentGender='男';document.getElementById('mName').value='';document.getElementById('mBirth').value='1990';document.getElementById('mHeight').value='170';document.getElementById('memberFormTitle').textContent='新增成員';document.getElementById('saveMemberBtn').textContent='建立成員';document.getElementById('deleteMemberBtn').style.display='none';selectGender('男');showSubView('addMember');};
-window.goEditMember=function(){const m=currentMember();if(!m)return;editingMemberId=m.id;currentGender=m.gender;document.getElementById('mName').value=m.name;document.getElementById('mBirth').value=m.birthYear;document.getElementById('mHeight').value=m.height;document.getElementById('memberFormTitle').textContent='編輯成員';document.getElementById('saveMemberBtn').textContent='儲存變更';document.getElementById('deleteMemberBtn').style.display='block';selectGender(m.gender);showSubView('addMember');};
-window.selectGender=function(g){currentGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('active'));document.getElementById('gBtn'+g).classList.add('active');};
-window.saveMember=async function(){const name=document.getElementById('mName').value.trim();if(!name){alert('請輸入姓名');return;}const m={id:editingMemberId||uid(),name,gender:currentGender,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,createdAt:Date.now()};await _db.saveMember(m);if(!editingMemberId)currentMemberId=m.id;switchNav('dashboard');};
-window.deleteMember=async function(){if(!editingMemberId)return;if(!confirm('確定要刪除此成員及所有紀錄？'))return;await _db.deleteMember(editingMemberId);if(currentMemberId===editingMemberId)currentMemberId=null;editingMemberId=null;switchNav('dashboard');};
+// INIT
+switchNav('home');
 </script>
 </body>
 </html>
