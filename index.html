@@ -7,115 +7,116 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#090e1d;--bg2:#0d1525;--card:rgba(255,255,255,0.035);--border:rgba(255,255,255,0.08);--teal:#4ECDC4;--yellow:#FFE66D;--red:#FF6B6B;--green:#A8E6CF;--purple:#C3B1E1;--orange:#FFB347;--blue:#87CEEB;--pink:#DDA0DD;--cyan:#00CED1;--text:#e8eaf6;--muted:#6b7280;}
+:root{--mint:#00FF87;--yellow:#FFE66D;--red:#FF6B6B;--orange:#FFB347;--text:#ffffff;--muted:#888888;--dim:#444444;--border:#111111;--border2:#1a1a1a;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:var(--text);padding-bottom:90px;}
+body{background:#000;min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:#fff;padding-bottom:90px;}
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
 .login-logo{font-size:64px;margin-bottom:20px;}
-.login-title{font-size:26px;font-weight:700;margin-bottom:8px;line-height:1.3;}
-.login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;line-height:1.8;}
-.sync-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(78,205,196,0.1);border:1px solid rgba(78,205,196,0.25);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--teal);margin-bottom:20px;}
-.google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#333;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.login-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.3;letter-spacing:-0.03em;}
+.login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;line-height:1.9;}
+.sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #1a1a1a;border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:20px;letter-spacing:0.05em;}
+.google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#111;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .google-btn svg{width:20px;height:20px;flex-shrink:0;}
-header{background:rgba(255,255,255,0.025);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
-.logo-sub{font-size:9px;color:var(--teal);letter-spacing:3px;text-transform:uppercase;font-weight:500;}
-.logo-main{font-size:18px;font-weight:700;letter-spacing:-0.5px;}
+header{background:#000;border-bottom:1px solid #111;padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
+.logo-sub{font-size:9px;color:var(--mint);letter-spacing:4px;text-transform:uppercase;font-weight:500;}
+.logo-main{font-size:17px;font-weight:800;letter-spacing:-0.03em;}
 .user-chip{display:flex;align-items:center;gap:8px;}
-.user-avatar{width:30px;height:30px;border-radius:50%;border:2px solid rgba(78,205,196,0.4);}
-.sync-dot{width:8px;height:8px;border-radius:50%;background:#4ECDC4;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(9,14,29,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:200;}
-.nav-btn{flex:1;padding:10px 4px 8px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:10px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;}
-.nav-btn .nav-icon{font-size:19px;}
-.nav-btn.active{color:var(--teal);}
-.view{display:none;padding:20px 16px;}
+.user-avatar{width:28px;height:28px;border-radius:50%;border:1px solid #222;}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #111;display:flex;z-index:200;}
+.nav-btn{flex:1;padding:10px 4px 10px;background:none;border:none;color:#444;font-family:inherit;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;letter-spacing:0.03em;text-transform:uppercase;}
+.nav-btn .nav-icon{font-size:18px;}
+.nav-btn.active{color:var(--mint);}
+.view{display:none;padding:24px 20px;}
 .view.active{display:block;}
-#loadingOverlay{position:fixed;inset:0;background:rgba(9,14,29,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
-.spinner{width:40px;height:40px;border:3px solid rgba(78,205,196,0.2);border-top-color:#4ECDC4;border-radius:50%;animation:spin 0.8s linear infinite;}
+#loadingOverlay{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
+.spinner{width:32px;height:32px;border:2px solid #111;border-top-color:var(--mint);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:14px;}
-.member-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
-.chip{padding:10px 16px;border-radius:14px;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#bbb;font-size:14px;transition:all 0.2s;font-family:inherit;}
-.chip.active{background:linear-gradient(135deg,#4ECDC4,#44A8A0);border:none;color:#fff;font-weight:700;}
-.chip.add{border:1px dashed rgba(78,205,196,0.4);color:var(--teal);font-weight:500;background:none;}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.stat-cell{background:rgba(255,255,255,0.04);border-radius:12px;padding:12px 10px;}
-.stat-label{font-size:10px;color:var(--muted);margin-bottom:2px;}
-.stat-value{font-size:17px;font-weight:700;}
-.stat-unit{font-size:10px;font-weight:400;color:#555;margin-left:2px;}
-.stat-delta{font-size:10px;margin-top:2px;}
-.btn{border:none;border-radius:12px;padding:10px 16px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:all 0.2s;}
-.btn-teal{background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.35);color:var(--teal);}
-.btn-yellow{background:rgba(255,230,109,0.15);border:1px solid rgba(255,230,109,0.35);color:var(--yellow);}
-.btn-red{background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.35);color:var(--red);}
-.btn-purple{background:rgba(195,177,225,0.15);border:1px solid rgba(195,177,225,0.35);color:var(--purple);}
-.btn-green{background:rgba(168,230,207,0.15);border:1px solid rgba(168,230,207,0.35);color:var(--green);}
-.btn-full{display:block;width:100%;padding:14px 20px;border-radius:14px;font-size:15px;font-weight:700;text-align:center;}
-.btn-primary{background:linear-gradient(135deg,var(--teal),#44a8a0);color:#0a0f1e;}
-.btn-danger{background:linear-gradient(135deg,var(--red),#d44);color:#fff;}
-.btn-ghost{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#ccc;}
-.btn:disabled{opacity:0.4;cursor:not-allowed;}
-.btn-row{display:flex;gap:10px;margin-top:10px;}
-.back-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-.back-bar h2{font-size:18px;font-weight:700;}
-.field{margin-bottom:12px;}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;padding-left:2px;}
-.field input,.field select{width:100%;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text);font-size:16px;font-family:inherit;outline:none;}
-.field input:focus{border-color:rgba(78,205,196,0.5);}
-.section-label{font-size:11px;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin:14px 0 8px 2px;}
+.card{border-bottom:1px solid #111;padding:20px 0;margin-bottom:0;}
+.member-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.chip{padding:8px 16px;border-radius:20px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#666;font-size:13px;transition:all 0.2s;font-family:inherit;}
+.chip.active{border-color:var(--mint);color:var(--mint);font-weight:700;}
+.chip.add{border:1px dashed #222;color:#444;background:none;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#111;border:1px solid #111;border-radius:0;overflow:hidden;margin:0 -20px;}
+.stat-cell{background:#000;padding:16px 12px;}
+.stat-label{font-size:9px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;}
+.stat-value{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
+.stat-unit{font-size:10px;font-weight:400;color:var(--muted);margin-left:1px;}
+.stat-delta{font-size:10px;margin-top:3px;}
+.btn{border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all 0.2s;}
+.btn-teal{background:none;border:1px solid #1a3a38;color:var(--mint);}
+.btn-yellow{background:none;border:1px solid #3a3010;color:var(--yellow);}
+.btn-red{background:none;border:1px solid #3a1010;color:var(--red);}
+.btn-purple{background:none;border:1px solid #2a1a3a;color:#C3B1E1;}
+.btn-green{background:none;border:1px solid #1a3020;color:#A8E6CF;}
+.btn-full{display:block;width:100%;padding:16px 20px;border-radius:12px;font-size:15px;font-weight:800;text-align:center;letter-spacing:-0.01em;}
+.btn-primary{background:var(--mint);color:#000;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-ghost{background:none;border:1px solid #1a1a1a;color:#888;}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-row{display:flex;gap:10px;margin-top:16px;}
+.back-bar{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.back-bar h2{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
+.field{margin-bottom:0;border-bottom:1px solid #111;padding:14px 0;}
+.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
+.field input,.field select{width:100%;padding:0;border:none;background:none;color:#fff;font-size:18px;font-weight:700;font-family:inherit;outline:none;letter-spacing:-0.02em;}
+.field input::placeholder{color:#333;}
+.field input:focus{color:var(--mint);}
+.section-label{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin:24px 0 4px;}
 .gender-toggle{display:flex;gap:10px;}
-.gender-btn{flex:1;padding:12px;text-align:center;border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;font-weight:500;font-family:inherit;font-size:15px;transition:all 0.2s;}
-.gender-btn.active{background:rgba(78,205,196,0.15);border-color:var(--teal);color:var(--teal);}
-.metric-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.metric-pill{padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;border:none;font-family:inherit;font-weight:400;color:#aaa;background:rgba(255,255,255,0.06);transition:all 0.2s;}
-.chart-wrap{position:relative;height:220px;margin:10px 0;}
-.record-item{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;}
+.gender-btn{flex:1;padding:12px;text-align:center;border-radius:10px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#444;font-weight:600;font-family:inherit;font-size:15px;transition:all 0.2s;}
+.gender-btn.active{border-color:var(--mint);color:var(--mint);}
+.metric-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.metric-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #1a1a1a;font-family:inherit;font-weight:400;color:#666;background:none;transition:all 0.2s;}
+.chart-wrap{position:relative;height:200px;margin:10px 0;}
+.record-item{border-bottom:1px solid #111;padding:16px 0;}
 .record-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.record-date{font-size:14px;font-weight:600;color:var(--teal);}
-.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.record-metric{font-size:12px;}
+.record-date{font-size:13px;font-weight:700;color:var(--mint);}
+.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.record-metric{font-size:12px;color:#fff;}
 .record-metric span{color:var(--muted);}
-.empty{text-align:center;padding:50px 20px;}
-.empty p{color:var(--muted);font-size:14px;margin-bottom:20px;}
-.legend{display:flex;gap:14px;padding:4px 0;margin-top:6px;flex-wrap:wrap;}
-.legend span{font-size:11px;}
-.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.empty{text-align:center;padding:60px 20px;}
+.empty p{color:var(--dim);font-size:14px;margin-bottom:20px;}
+.legend{display:flex;gap:14px;padding:4px 0;margin-top:8px;flex-wrap:wrap;}
+.legend span{font-size:11px;color:var(--muted);}
+.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .top-row .actions{display:flex;gap:8px;flex-wrap:wrap;}
-.no-trend{text-align:center;color:var(--muted);padding:60px 20px;font-size:14px;}
-.score-ring{display:flex;align-items:center;gap:20px;padding:10px 0;}
-.score-num{font-size:52px;font-weight:700;line-height:1;}
-.score-label{font-size:12px;color:var(--muted);}
-.score-desc{font-size:14px;margin-top:4px;font-weight:500;}
+.no-trend{text-align:center;color:var(--dim);padding:60px 20px;font-size:14px;}
+.score-ring{display:flex;align-items:baseline;gap:16px;padding:12px 0 20px;}
+.score-num{font-size:64px;font-weight:800;line-height:1;letter-spacing:-0.04em;}
+.score-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.score-desc{font-size:14px;font-weight:700;}
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.compare-member{padding:10px 14px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:13px;color:#aaa;font-family:inherit;transition:all 0.2s;text-align:center;}
-.compare-member.sel-a{background:rgba(78,205,196,0.15);border-color:var(--teal);color:var(--teal);font-weight:600;}
-.compare-member.sel-b{background:rgba(255,230,109,0.15);border-color:var(--yellow);color:var(--yellow);font-weight:600;}
-.analysis-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.analysis-label{font-size:12px;color:#aaa;width:56px;flex-shrink:0;}
+.compare-member{padding:10px 14px;border-radius:10px;cursor:pointer;background:none;border:1px solid #1a1a1a;font-size:13px;color:#666;font-family:inherit;transition:all 0.2s;text-align:center;}
+.compare-member.sel-a{border-color:var(--mint);color:var(--mint);font-weight:700;}
+.compare-member.sel-b{border-color:var(--yellow);color:var(--yellow);font-weight:700;}
+.analysis-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.analysis-label{font-size:11px;color:var(--muted);width:56px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
 .analysis-bar-wrap{flex:1;}
-.analysis-val{font-size:12px;font-weight:600;width:52px;text-align:right;flex-shrink:0;}
-.badge{display:inline-block;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:600;}
-.badge-ok{background:rgba(78,205,196,0.15);color:var(--teal);}
-.badge-warn{background:rgba(255,179,71,0.15);color:var(--orange);}
-.badge-bad{background:rgba(255,107,107,0.15);color:var(--red);}
-.mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;}
+.analysis-val{font-size:13px;font-weight:700;width:52px;text-align:right;flex-shrink:0;color:#fff;}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.badge-ok{border:1px solid #003a1a;color:var(--mint);}
+.badge-warn{border:1px solid #3a2000;color:var(--orange);}
+.badge-bad{border:1px solid #3a0000;color:var(--red);}
+.mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
 .mgmt-info{flex:1;}
-.mgmt-title{font-size:14px;font-weight:600;margin-bottom:2px;}
+.mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;color:#fff;}
 .mgmt-desc{font-size:12px;color:var(--muted);}
-.target-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.target-key{font-size:13px;color:#aaa;width:60px;flex-shrink:0;}
-.target-input{flex:1;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text);font-size:14px;font-family:inherit;outline:none;}
+.target-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #0d0d0d;}
+.target-key{font-size:12px;color:var(--muted);width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
+.target-input{flex:1;padding:0;border:none;background:none;color:#fff;font-size:16px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
 </style>
 </head>
 <body>
 
 <div id="loadingOverlay">
   <div class="spinner"></div>
-  <div style="font-size:14px;color:var(--muted)">連線中...</div>
+  <div style="font-size:11px;color:#444;letter-spacing:0.1em;text-transform:uppercase">連線中</div>
 </div>
 
 <div id="loginScreen" style="display:none">
-  <div class="login-logo">🧬</div>
+  <div style="font-size:56px;margin-bottom:20px;filter:hue-rotate(100deg)">🧬</div>
   <div class="sync-badge">☁️ 即時雲端同步</div>
   <div class="login-title">Tanita BC-730<br>體組成管理</div>
   <div class="login-sub">登入後資料自動同步至雲端<br>手機、電腦、家人裝置皆可共用</div>
@@ -131,34 +132,34 @@ nav{position:fixed;bottom:0;left:0;right:0;background:rgba(9,14,29,0.97);backdro
     <div class="user-chip">
       <div class="sync-dot" title="已連線同步"></div>
       <img class="user-avatar" id="userAvatar" src="" alt="">
-      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="signOut()">登出</button>
+      <button style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit;letter-spacing:0.05em" onclick="signOut()">登出</button>
     </div>
   </header>
   <nav>
-    <button class="nav-btn active" id="nav-dashboard" onclick="switchNav('dashboard')"><span class="nav-icon">🏠</span>首頁</button>
-    <button class="nav-btn" id="nav-analysis" onclick="switchNav('analysis')"><span class="nav-icon">📊</span>分析</button>
-    <button class="nav-btn" id="nav-trend" onclick="switchNav('trend')"><span class="nav-icon">📈</span>趨勢</button>
-    <button class="nav-btn" id="nav-compare" onclick="switchNav('compare')"><span class="nav-icon">👥</span>對比</button>
-    <button class="nav-btn" id="nav-data" onclick="switchNav('data')"><span class="nav-icon">💾</span>資料</button>
+    <button class="nav-btn active" id="nav-dashboard" onclick="switchNav('dashboard')"><span class="nav-icon">◎</span>首頁</button>
+    <button class="nav-btn" id="nav-analysis" onclick="switchNav('analysis')"><span class="nav-icon">△</span>分析</button>
+    <button class="nav-btn" id="nav-trend" onclick="switchNav('trend')"><span class="nav-icon">⌇</span>趨勢</button>
+    <button class="nav-btn" id="nav-compare" onclick="switchNav('compare')"><span class="nav-icon">⊕</span>對比</button>
+    <button class="nav-btn" id="nav-data" onclick="switchNav('data')"><span class="nav-icon">≡</span>資料</button>
   </nav>
   <div class="view active" id="view-dashboard"><div class="member-chips" id="memberChips"></div><div id="dashContent"></div></div>
-  <div class="view" id="view-analysis"><div style="font-size:18px;font-weight:700;margin-bottom:16px">健康分析</div><div class="member-chips" id="analysisChips"></div><div id="analysisContent"></div></div>
+  <div class="view" id="view-analysis"><div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">健康分析</div><div class="member-chips" id="analysisChips"></div><div id="analysisContent"></div></div>
   <div class="view" id="view-trend">
-    <div style="font-size:18px;font-weight:700;margin-bottom:16px" id="trendTitle">趨勢圖</div>
+    <div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px" id="trendTitle">趨勢圖</div>
     <div class="member-chips" id="trendChips"></div>
     <div class="metric-pills" id="metricPills"></div>
-    <div id="compareToggleWrap" style="margin-bottom:12px;display:none"><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#aaa;cursor:pointer"><input type="checkbox" id="showAllToggle" onchange="renderTrend()" style="accent-color:var(--teal)"> 顯示所有成員對比</label></div>
-    <div class="card" id="trendCard"><div class="no-trend">選擇成員後顯示趨勢圖</div></div>
+    <div id="compareToggleWrap" style="margin-bottom:12px;display:none"><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#888;cursor:pointer"><input type="checkbox" id="showAllToggle" onchange="renderTrend()" style="accent-color:var(--teal)"> 顯示所有成員對比</label></div>
+    <div id="trendCard" style="padding:0"><div class="no-trend">選擇成員後顯示趨勢圖</div></div>
   </div>
-  <div class="view" id="view-compare"><div style="font-size:18px;font-weight:700;margin-bottom:6px">成員對比</div><div style="font-size:13px;color:var(--muted);margin-bottom:16px">選擇兩位成員，比較同一指標</div><div id="compareContent"></div></div>
+  <div class="view" id="view-compare"><div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">成員對比</div><div id="compareContent"></div></div>
   <div class="view" id="view-data">
-    <div style="font-size:18px;font-weight:700;margin-bottom:16px">資料管理</div>
+    <div style="font-size:11px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">資料管理</div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📥 匯出 CSV</div><div class="mgmt-desc">下載所有量測紀錄為試算表格式</div></div><div style="display:flex;gap:8px"><button class="btn btn-teal" onclick="exportCSV('current')">目前成員</button><button class="btn btn-ghost" onclick="exportCSV('all')">全部成員</button></div></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">💾 備份資料</div><div class="mgmt-desc">匯出 JSON 備份檔</div></div><button class="btn btn-purple" onclick="exportJSON()">匯出備份</button></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📤 還原資料</div><div class="mgmt-desc">從備份 JSON 合併至雲端</div></div><button class="btn btn-yellow" onclick="document.getElementById('importFile').click()">選擇檔案</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">🎯 目標設定</div><div class="mgmt-desc">為每位成員設定體重、體脂率目標</div></div><button class="btn btn-green" onclick="goTargets()">設定</button></div>
     <div class="mgmt-item" style="border-color:rgba(255,107,107,0.2)"><div class="mgmt-info"><div class="mgmt-title" style="color:var(--red)">🗑 清除所有資料</div><div class="mgmt-desc">從雲端永久刪除所有資料</div></div><button class="btn btn-red" onclick="clearAll()">清除</button></div>
-    <div style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.02);border-radius:14px;border:1px solid var(--border)"><div style="font-size:12px;color:var(--muted);margin-bottom:8px">雲端同步狀態</div><div id="storageInfo" style="font-size:13px;color:#aaa"></div></div>
+    <div style="margin-top:20px;padding:16px 0;border-top:1px solid #111"><div style="font-size:9px;color:#444;margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase">雲端同步狀態</div><div id="storageInfo" style="font-size:13px;color:#fff"></div></div>
   </div>
   <div class="view" id="view-records">
     <div class="back-bar" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:12px"><button class="btn btn-ghost" onclick="switchNav('dashboard')">← 返回</button><h2 id="recordsTitle">量測紀錄</h2></div><button class="btn btn-teal" onclick="goAddRecord()">＋ 新增</button></div>
@@ -386,7 +387,7 @@ window.renderDashboard=function(){
   const el=document.getElementById('dashContent');if(!el)return;
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
-      ?`<div class="empty"><div style="font-size:56px;margin-bottom:12px">🧬</div><div style="font-size:20px;font-weight:700;margin-bottom:8px">開始記錄健康數據</div><p>新增家庭成員，追蹤每次 Tanita 的量測結果</p><button class="btn btn-full btn-primary" style="max-width:260px;margin:0 auto" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
+      ?`<div class="empty"><div style="font-size:48px;margin-bottom:16px">🧬</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px">開始記錄</div><p>新增家庭成員，追蹤每次<br>Tanita BC-730 的量測結果</p><button class="btn btn-full btn-primary" style="max-width:240px;margin:20px auto 0" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
       :`<div class="empty"><p>請選擇上方成員</p></div>`;
     return;
   }
@@ -396,12 +397,47 @@ window.renderDashboard=function(){
     html=`<div class="card" style="text-align:center;padding:40px;border-style:dashed;border-color:rgba(78,205,196,0.3)"><div style="font-size:40px;margin-bottom:10px">📊</div><div style="color:var(--muted);font-size:14px">尚無量測紀錄</div></div>`;
   }else{
     const sc=calcScore(latest),scC=sc>=80?'#4ECDC4':sc>=60?'#FFE66D':'#FF6B6B',scL=sc>=80?'優良 💪':sc>=60?'尚可 📈':'需改善 ⚠️';
-    html+=`<div class="card"><div class="top-row"><div><div style="font-size:13px;color:var(--muted)">最新紀錄</div><div style="font-size:12px;color:var(--teal)">${latest.date}</div></div><div class="actions"><button class="btn btn-teal" onclick="goViewRecords()">紀錄</button><button class="btn btn-ghost" onclick="goEditMember()">✏️</button></div></div><div class="score-ring"><div><div class="score-num" style="color:${scC}">${sc}</div><div class="score-label">健康評分 / 100</div></div><div><div class="score-desc" style="color:${scC}">${scL}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">依 BC-730 九項指數</div></div></div></div>`;
+    html+=`<div style="padding:0 0 24px;border-bottom:1px solid #111;margin-bottom:0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div>
+          <div style="font-size:9px;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">${currentMember()?.name||''}</div>
+          <div style="font-size:9px;color:#444;letter-spacing:0.06em">${latest.date}</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="goViewRecords()" style="font-size:11px;padding:6px 12px">紀錄</button>
+          <button class="btn btn-ghost" onclick="goEditMember()" style="font-size:11px;padding:6px 12px">編輯</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+        <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#fff">${latest.weight||'—'}</span>
+        <span style="font-size:18px;color:#444;font-weight:400">kg</span>
+      </div>
+      <div style="font-size:12px;color:#888;margin-bottom:20px">健康評分 <span style="color:${scC};font-weight:700">${sc}</span> / 100 &nbsp;·&nbsp; <span style="color:${scC}">${scL}</span></div>
+    </div>`;
     html+=`<div class="card"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">量測數值</div><div class="stat-grid">${METRICS.map(m=>{const v=latest[m.key],pv=prev?.[m.key],d=v&&pv?(parseFloat(v)-parseFloat(pv)):null,ds=d!=null?`<div class="stat-delta" style="color:${d>0?'#FF6B6B':d<0?'#4ECDC4':'#666'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}${m.unit}</div>`:'',gs=targets[m.key]?`<div style="font-size:10px;color:#666;margin-top:2px">目標 ${targets[m.key]}${m.unit}</div>`:'';return`<div class="stat-cell" style="border:1px solid ${m.color}22"><div class="stat-label">${m.label}</div><div class="stat-value" style="color:${m.color}">${v||'—'}<span class="stat-unit">${m.unit}</span></div>${ds}${gs}</div>`;}).join('')}</div></div>`;
     const gks=METRICS.filter(m=>m.goalable&&targets[m.key]&&latest[m.key]);
-    if(gks.length){html+=`<div class="card"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">目標進度</div>${gks.map(m=>{const c=parseFloat(latest[m.key]),g=parseFloat(targets[m.key]),f=getRecords(currentMemberId).find(r=>r[m.key]),s=f?parseFloat(f[m.key]):c,p=Math.min(100,Math.max(0,Math.abs(c-s)/Math.abs(g-s||1)*100));return`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:#aaa">${m.label}</span><span style="color:${m.color}">${c}${m.unit} → 目標 ${g}${m.unit}</span></div><div style="height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div style="width:${p}%;height:100%;background:${m.color};border-radius:4px"></div></div></div>`;}).join('')}</div>`;}
+    if(gks.length){html+=`<div style="padding:20px 0;border-bottom:1px solid #111">
+      <div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">目標進度</div>
+      ${gks.map(m=>{
+        const c=parseFloat(latest[m.key]),g=parseFloat(targets[m.key]),f=getRecords(currentMemberId).find(r=>r[m.key]),s=f?parseFloat(f[m.key]):c,p=Math.min(100,Math.max(0,Math.abs(c-s)/Math.abs(g-s||1)*100));
+        return`<div style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.04em">${m.label}</span>
+            <span style="font-size:13px;font-weight:700;color:#fff">${c}${m.unit} <span style="color:#333">→</span> <span style="color:#00FF87">${g}${m.unit}</span></span>
+          </div>
+          <div style="height:1.5px;background:#111;border-radius:1px;overflow:hidden">
+            <div style="width:${p}%;height:100%;background:#00FF87;border-radius:1px;transition:width 0.6s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px">
+            <span style="font-size:9px;color:#333">${s.toFixed(1)}${m.unit}</span>
+            <span style="font-size:9px;color:#333">${Math.round(p)}%</span>
+            <span style="font-size:9px;color:#333">${g}${m.unit}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;}
   }
-  html+=`<button class="btn btn-full btn-primary" onclick="goAddRecord()">＋ 新增量測</button>`;
+  html+=`<div style="padding:20px 0"><button class="btn btn-full btn-primary" onclick="goAddRecord()">＋ 新增量測</button></div>`;
   el.innerHTML=html;
 };
 window.selectMember=function(id){currentMemberId=id;renderDashboard();};
@@ -414,8 +450,8 @@ window.renderAnalysis=function(){
   if(!currentMemberId){el.innerHTML=`<div class="empty"><p>請選擇成員</p></div>`;return;}
   const recs=currentRecords();if(!recs.length){el.innerHTML=`<div class="empty"><p>尚無量測紀錄</p></div>`;return;}
   const latest=recs[recs.length-1],prev=recs.length>1?recs[recs.length-2]:null;
-  let out=`<div class="card"><div style="font-size:14px;font-weight:600;margin-bottom:12px">指數評估</div>${METRICS.map(m=>{const v=parseFloat(latest[m.key]);if(!v||!m.normal)return'';const[lo,hi]=m.normal,st=v<lo?'偏低':v>hi?'偏高':'正常',bc=st==='正常'?'badge-ok':st==='偏低'?'badge-warn':'badge-bad',pct=Math.min(100,Math.max(0,(v-lo*0.8)/((hi*1.2-lo*0.8))*100)),d=prev&&prev[m.key]?(parseFloat(latest[m.key])-parseFloat(prev[m.key])).toFixed(1):null;return`<div class="analysis-row"><div class="analysis-label">${m.label}</div><div class="analysis-bar-wrap"><div style="height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;position:relative"><div style="position:absolute;left:${(lo-lo*0.8)/((hi*1.2-lo*0.8))*100}%;width:${(hi-lo)/((hi*1.2-lo*0.8))*100}%;height:100%;background:rgba(78,205,196,0.15)"></div><div style="position:absolute;left:${pct}%;transform:translateX(-50%);width:6px;height:8px;background:${m.color};border-radius:2px"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#444;margin-top:2px"><span>${lo}</span><span>${hi}</span></div></div><div class="analysis-val" style="color:${m.color}">${v}${m.unit}</div><span class="badge ${bc}">${st}</span>${d?`<span style="font-size:11px;color:${parseFloat(d)>0?'#FF6B6B':'#4ECDC4'};margin-left:4px">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}</div>`;}).join('')}</div>`;
-  if(recs.length>1){const first=recs[0];out+=`<div class="card"><div style="font-size:14px;font-weight:600;margin-bottom:12px">累計變化（初次 vs 最新）</div>${METRICS.filter(m=>first[m.key]&&latest[m.key]).map(m=>{const df=(parseFloat(latest[m.key])-parseFloat(first[m.key])).toFixed(1);return`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:#aaa">${m.label}</span><span style="font-size:14px;font-weight:600;color:${parseFloat(df)>0?'#FF6B6B':'#4ECDC4'}">${parseFloat(df)>0?'+':''}${df} ${m.unit}</span></div>`;}).join('')}</div>`;}
+  let out=`<div style="padding:0"><div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px">指數評估</div>${METRICS.map(m=>{const v=parseFloat(latest[m.key]);if(!v||!m.normal)return'';const[lo,hi]=m.normal,st=v<lo?'偏低':v>hi?'偏高':'正常',bc=st==='正常'?'badge-ok':st==='偏低'?'badge-warn':'badge-bad',pct=Math.min(100,Math.max(0,(v-lo*0.8)/((hi*1.2-lo*0.8))*100)),d=prev&&prev[m.key]?(parseFloat(latest[m.key])-parseFloat(prev[m.key])).toFixed(1):null;return`<div class="analysis-row"><div class="analysis-label">${m.label}</div><div class="analysis-bar-wrap"><div style="height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;position:relative"><div style="position:absolute;left:${(lo-lo*0.8)/((hi*1.2-lo*0.8))*100}%;width:${(hi-lo)/((hi*1.2-lo*0.8))*100}%;height:100%;background:rgba(78,205,196,0.15)"></div><div style="position:absolute;left:${pct}%;transform:translateX(-50%);width:6px;height:8px;background:${m.color};border-radius:2px"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#444;margin-top:2px"><span>${lo}</span><span>${hi}</span></div></div><div class="analysis-val" style="color:${m.color}">${v}${m.unit}</div><span class="badge ${bc}">${st}</span>${d?`<span style="font-size:11px;color:${parseFloat(d)>0?'#FF6B6B':'#4ECDC4'};margin-left:4px">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}</div>`;}).join('')}</div>`;
+  if(recs.length>1){const first=recs[0];out+=`<div style="padding:20px 0 0"><div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">累計變化</div>${METRICS.filter(m=>first[m.key]&&latest[m.key]).map(m=>{const df=(parseFloat(latest[m.key])-parseFloat(first[m.key])).toFixed(1);return`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #0d0d0d"><span style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.04em">${m.label}</span><span style="font-size:14px;font-weight:600;color:${parseFloat(df)>0?'#FF6B6B':'#4ECDC4'}">${parseFloat(df)>0?'+':''}${df} ${m.unit}</span></div>`;}).join('')}</div>`;}
   el.innerHTML=out;
 };
 window.selectMemberA=function(id){currentMemberId=id;renderAnalysis();};
@@ -425,21 +461,21 @@ window.renderTrend=function(){
   renderChips('trendChips','selectMemberT');
   document.getElementById('trendTitle').textContent=currentMember()?(currentMember().name+' 趨勢圖'):'趨勢圖';
   document.getElementById('compareToggleWrap').style.display=state.members.length>1?'block':'none';
-  document.getElementById('metricPills').innerHTML=METRICS.map(m=>`<button class="metric-pill ${activeMetric===m.key?'active':''}" style="${activeMetric===m.key?'background:'+m.color+';color:#111':''}" onclick="setMetric('${m.key}')">${m.label}</button>`).join('');
+  document.getElementById('metricPills').innerHTML=METRICS.map(m=>`<button class="metric-pill ${activeMetric===m.key?'active':''}" style="${activeMetric===m.key?'background:#00FF87;color:#000;border-color:#00FF87;font-weight:700':'border-color:#1a1a1a'}" onclick="setMetric('${m.key}')">${m.label}</button>`).join('');
   const mi=METRICS.find(x=>x.key===activeMetric),card=document.getElementById('trendCard'),showAll=document.getElementById('showAllToggle')?.checked&&state.members.length>1;
   if(showAll){
     const COLS=['#4ECDC4','#FFE66D','#FF6B6B','#A8E6CF','#DDA0DD'];
     const datasets=state.members.map((m,i)=>{const recs=getRecords(m.id).filter(r=>r[activeMetric]);return{label:m.name,data:recs.map(r=>({x:r.date.slice(5),y:parseFloat(r[activeMetric])})),borderColor:COLS[i%5],backgroundColor:COLS[i%5]+'22',borderWidth:2,pointRadius:4,tension:0.3,fill:false};}).filter(d=>d.data.length);
     if(!datasets.length){card.innerHTML=`<div class="no-trend">尚無資料</div>`;return;}
-    card.innerHTML=`<div style="font-size:14px;font-weight:600;color:${mi.color};margin-bottom:8px">${mi.label} 成員對比</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div>`;
+    card.innerHTML=`<div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label} 成員對比</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div>`;
     buildChart({datasets},mi);
   }else{
     if(!currentMemberId){card.innerHTML=`<div class="no-trend">請先選擇成員</div>`;return;}
     const recs=currentRecords().filter(r=>r[activeMetric]);
     if(recs.length<2){if(trendChart){trendChart.destroy();trendChart=null;}card.innerHTML=`<div class="no-trend">至少需要 2 筆「${mi.label}」紀錄</div>`;return;}
     const labels=recs.map(r=>r.date.slice(5)),values=recs.map(r=>parseFloat(r[activeMetric])),gv=(state.targets[currentMemberId]||{})[activeMetric];
-    card.innerHTML=`<div style="font-size:14px;font-weight:600;color:${mi.color};margin-bottom:4px">${mi.label}${mi.unit?' ('+mi.unit+')':''}</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div><div class="legend">${mi.normal?`<span style="color:#4ECDC4">─ 正常下限 ${mi.normal[0]}</span><span style="color:#FF6B6B">─ 正常上限 ${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#FFE66D">─ 目標 ${gv}</span>`:''}</div>`;
-    buildChart({labels,datasets:[{label:mi.label,data:values,borderColor:mi.color,backgroundColor:mi.color+'22',borderWidth:2.5,pointBackgroundColor:mi.color,pointRadius:5,pointHoverRadius:7,tension:0.3,fill:true}]},mi,gv);
+    card.innerHTML=`<div style="font-size:9px;color:#666;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div><div class="chart-wrap"><canvas id="trendCanvas"></canvas></div><div class="legend">${mi.normal?`<span style="color:#4ECDC4">─ 正常下限 ${mi.normal[0]}</span><span style="color:#FF6B6B">─ 正常上限 ${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#FFE66D">─ 目標 ${gv}</span>`:''}</div>`;
+    buildChart({labels,datasets:[{label:mi.label,data:values,borderColor:'#00FF87',backgroundColor:'rgba(0,255,135,0.04)',borderWidth:1.5,pointBackgroundColor:'#00FF87',pointRadius:3,pointHoverRadius:6,tension:0.4,fill:true}]},mi,gv);
   }
 };
 window.selectMemberT=function(id){currentMemberId=id;renderTrend();};
@@ -447,7 +483,7 @@ window.setMetric=function(k){activeMetric=k;renderTrend();};
 function buildChart({labels,datasets},mi,gv){
   if(trendChart){trendChart.destroy();trendChart=null;}
   const refPlugin={id:'refs',afterDraw(chart){const{ctx,chartArea:{left,right},scales:{y}}=chart;const ls=[];if(mi.normal){ls.push({val:mi.normal[0],color:'rgba(78,205,196,0.4)'});ls.push({val:mi.normal[1],color:'rgba(255,107,107,0.4)'});}if(gv)ls.push({val:parseFloat(gv),color:'rgba(255,230,109,0.6)'});ls.forEach(l=>{try{const yp=y.getPixelForValue(l.val);ctx.save();ctx.strokeStyle=l.color;ctx.setLineDash([5,5]);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(right,yp);ctx.stroke();ctx.restore();}catch{}});}};
-  trendChart=new Chart(document.getElementById('trendCanvas'),{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1,labels:{color:'#888',font:{size:11}}},tooltip:{backgroundColor:'rgba(10,15,30,0.95)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,titleColor:'#888',bodyFont:{size:15,weight:'700'},callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+' '+mi.unit}}},scales:{x:{ticks:{color:'#555',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#555',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}}},plugins:[refPlugin]});
+  trendChart=new Chart(document.getElementById('trendCanvas'),{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1,labels:{color:'#888',font:{size:11}}},tooltip:{backgroundColor:'#0a0a0a',borderColor:'#1a1a1a',borderWidth:1,titleColor:'#666',bodyColor:'#fff',bodyFont:{size:16,weight:'800'},callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+' '+mi.unit}}},scales:{x:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d',drawBorder:false}},y:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d',drawBorder:false}}}},plugins:[refPlugin]});
 }
 
 // ── COMPARE ──
@@ -524,7 +560,7 @@ window.renderCompare=function(){
         +'<div style="width:'+(vA?vA/mx*50:0)+'%;background:var(--teal);border-radius:4px 0 0 4px;margin-left:auto"></div>'
         +'<div style="width:'+(vB?vB/mx*50:0)+'%;background:var(--yellow);border-radius:0 4px 4px 0"></div>'
         +'</div>'
-        +'<span style="font-size:13px;font-weight:700;color:var(--yellow);width:48px">'+(vB??'—')+'</span>'
+        +'<span style="font-size:13px;font-weight:800;color:var(--yellow);width:48px">'+(vB??'—')+'</span>'
         +'</div></div>';
     }).join('')}
   </div>`;
@@ -552,7 +588,7 @@ function renderRecords(){const recs=[...currentRecords()].reverse(),el=document.
 window.deleteRecord=async function(rid){if(!confirm('確定刪除此紀錄？'))return;await _db.deleteRecord(currentMemberId,rid);};
 
 // ── ADD RECORD ──
-window.goAddRecord=function(){document.getElementById('recDate').value=new Date().toISOString().split('T')[0];document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' ('+m.unit+')':''}</label><input type="number" id="rec_${m.key}" placeholder="輸入${m.label}" step="0.1" style="border-color:${m.color}33"></div>`).join('');showSubView('addRecord');};
+window.goAddRecord=function(){document.getElementById('recDate').value=new Date().toISOString().split('T')[0];document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');showSubView('addRecord');};
 window.saveRecord=async function(){const rec={id:uid(),date:document.getElementById('recDate').value};METRICS.forEach(m=>{const v=document.getElementById('rec_'+m.key)?.value;if(v)rec[m.key]=v;});await _db.saveRecord(currentMemberId,rec);goViewRecords();};
 
 // ── MEMBER FORMS ──
