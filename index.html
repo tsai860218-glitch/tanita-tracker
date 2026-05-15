@@ -143,6 +143,24 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 
 /* NO DATA */
 .no-data{text-align:center;color:#333;padding:60px 20px;font-size:14px;}
+
+/* RECORD INPUT ROW - like the screenshot */
+.rec-input-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
+.rec-input-label{font-size:17px;font-weight:500;color:#fff;flex:1;}
+.rec-input-right{display:flex;align-items:baseline;gap:6px;}
+.rec-input-val{width:90px;padding:0;border:none;background:none;color:#fff;font-size:24px;font-weight:800;font-family:inherit;outline:none;text-align:right;letter-spacing:-0.02em;}
+.rec-input-val:focus{color:var(--mint);}
+.rec-input-val::placeholder{color:#2a2a2a;}
+.rec-input-unit{font-size:13px;color:#555;font-weight:400;min-width:28px;}
+.rec-date-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #111;margin-bottom:4px;}
+.rec-date-label{font-size:13px;color:#888;}
+.rec-date-input{background:none;border:none;color:#fff;font-size:15px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
+
+/* AVATAR PICKER */
+.avatar-preview{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;border:2px solid #1a1a1a;cursor:pointer;transition:border-color 0.2s;}
+.avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px;}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;}
+.avatar-opt.selected{border-color:var(--mint);}
 </style>
 </head>
 <body>
@@ -219,15 +237,25 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
   <!-- ADD RECORD (sub) -->
   <div class="view" id="view-addRecord">
     <div class="back-bar"><button class="btn btn-ghost" onclick="goBackFromRecord()">← 返回</button><h2 id="addRecordTitle">新增量測</h2></div>
-    <div class="field"><label>日期</label><input type="date" id="recDate"></div>
-    <div class="sec-label">主要指數</div>
+    <div class="rec-date-row">
+      <span class="rec-date-label">日期</span>
+      <input type="date" id="recDate" class="rec-date-input">
+    </div>
     <div id="mainFields"></div>
-    <div style="margin-top:20px"><button class="btn btn-full btn-primary" onclick="saveRecord()">儲存紀錄</button></div>
+    <div style="margin-top:24px"><button class="btn btn-full btn-primary" onclick="saveRecord()">儲存紀錄</button></div>
   </div>
 
   <!-- MEMBER FORM (sub) -->
   <div class="view" id="view-member">
     <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('home')">← 返回</button><h2 id="memberFormTitle">新增成員</h2></div>
+    <!-- Avatar picker -->
+    <div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid #111;margin-bottom:4px">
+      <div class="avatar-preview" id="avatarPreview" onclick="toggleAvatarPicker()">😊</div>
+      <div style="font-size:10px;color:#444;letter-spacing:0.08em;text-transform:uppercase">點擊選擇頭像</div>
+      <div id="avatarPicker" style="display:none;margin-top:16px">
+        <div class="avatar-grid" id="avatarGrid"></div>
+      </div>
+    </div>
     <div class="field"><label>姓名</label><input type="text" id="mName" placeholder="請輸入姓名"></div>
     <div class="field"><label>性別</label>
       <div class="gender-toggle" style="margin-top:4px">
@@ -327,7 +355,7 @@ function initListeners(uid){
 }
 
 window._db={
-  async saveMember(m){const uid=auth.currentUser.uid;await setDoc(doc(membersCol(uid),m.id),{name:m.name,gender:m.gender,birthYear:m.birthYear,height:m.height,remindTime:m.remindTime||'07:00',createdAt:m.createdAt||Date.now()});},
+  async saveMember(m){const uid=auth.currentUser.uid;await setDoc(doc(membersCol(uid),m.id),{name:m.name,gender:m.gender,avatar:m.avatar||'😊',birthYear:m.birthYear,height:m.height,remindTime:m.remindTime||'07:00',createdAt:m.createdAt||Date.now()});},
   async deleteMember(mid){const uid=auth.currentUser.uid;const rSnap=await getDocs(recordsCol(uid,mid));const batch=writeBatch(db);rSnap.forEach(r=>batch.delete(r.ref));batch.delete(doc(membersCol(uid),mid));await batch.commit();},
   async saveRecord(mid,rec){const uid=auth.currentUser.uid;const{id,...data}=rec;await setDoc(doc(recordsCol(uid,mid),id),data);},
   async deleteRecord(mid,rid){const uid=auth.currentUser.uid;await deleteDoc(doc(recordsCol(uid,mid),rid));},
@@ -412,7 +440,7 @@ window.showSubView=function(name){
 // ── CHIPS ──
 function renderChips(elId,onClickFn,showAdd=true){
   const el=document.getElementById(elId);if(!el)return;
-  el.innerHTML=state.members.map(m=>`<button class="chip ${m.id===currentMemberId?'active':''}" onclick="${onClickFn}('${m.id}')">${m.name}</button>`).join('')
+  el.innerHTML=state.members.map(m=>`<button class="chip ${m.id===currentMemberId?'active':''}" onclick="${onClickFn}('${m.id}')" style="display:flex;align-items:center;gap:6px">${m.avatar||'👤'} ${m.name}</button>`).join('')
     +(showAdd?`<button class="chip add" onclick="goAddMember()">＋ 新增</button>`:'');
 }
 
@@ -453,7 +481,7 @@ window.renderHome=function(){
     html+=`<div style="padding:0 0 20px;border-bottom:1px solid #111">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
         <div>
-          <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px">${m.name}　${m.remindTime||''}${m.remindTime?' 量測':''}${latest.date?' · '+latest.date:''}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:28px;line-height:1">${m.avatar||'👤'}</span><div><div style="font-size:14px;font-weight:700;color:#fff">${m.name}</div><div style="font-size:11px;color:#555">${m.remindTime?m.remindTime+' 量測':''} ${latest.date?'· '+latest.date:''}</div></div></div>
         </div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="goEditMember()">編輯</button>
@@ -589,7 +617,14 @@ window.calNext=function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}rende
 window.calDayClick=function(dateStr){
   document.getElementById('recDate').value=dateStr;
   document.getElementById('addRecordTitle').textContent='新增量測 · '+dateStr;
-  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');
+  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`
+    <div class="rec-input-row">
+      <span class="rec-input-label">${m.label}</span>
+      <div class="rec-input-right">
+        <input type="number" class="rec-input-val" id="rec_${m.key}" placeholder="—" step="0.1" inputmode="decimal">
+        <span class="rec-input-unit">${m.unit}</span>
+      </div>
+    </div>`).join('');
   recordFromView='calendar';
   showSubView('addRecord');
 };
@@ -879,7 +914,14 @@ window.goAddRecord=function(fromView){
   const today=new Date().toISOString().split('T')[0];
   document.getElementById('recDate').value=today;
   document.getElementById('addRecordTitle').textContent='新增量測';
-  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`<div class="field"><label>${m.label}${m.unit?' · '+m.unit:''}</label><input type="number" id="rec_${m.key}" placeholder="—" step="0.1"></div>`).join('');
+  document.getElementById('mainFields').innerHTML=METRICS.map(m=>`
+    <div class="rec-input-row">
+      <span class="rec-input-label">${m.label}</span>
+      <div class="rec-input-right">
+        <input type="number" class="rec-input-val" id="rec_${m.key}" placeholder="—" step="0.1" inputmode="decimal">
+        <span class="rec-input-unit">${m.unit}</span>
+      </div>
+    </div>`).join('');
   showSubView('addRecord');
 };
 window.goBackFromRecord=function(){switchNav(recordFromView);};
@@ -896,12 +938,34 @@ window.deleteRecord=async function(rid){
 };
 
 // ── MEMBER FORMS ──
+const AVATARS=['😊','😎','🧑','👦','👧','👨','👩','🧒','👴','👵','🧔','👱','🏃','💪','🧘','⚽','🎯','🌟','🦁','🐯','🐼','🐻','🦊','🐶','🐱','🐸'];
+let currentAvatar='😊';
+
+window.toggleAvatarPicker=function(){
+  const p=document.getElementById('avatarPicker');
+  p.style.display=p.style.display==='none'?'block':'none';
+  if(p.style.display==='block') renderAvatarGrid();
+};
+function renderAvatarGrid(){
+  document.getElementById('avatarGrid').innerHTML=AVATARS.map(a=>`
+    <div class="avatar-opt ${a===currentAvatar?'selected':''}" onclick="selectAvatar('${a}')">${a}</div>
+  `).join('');
+}
+window.selectAvatar=function(a){
+  currentAvatar=a;
+  document.getElementById('avatarPreview').textContent=a;
+  document.getElementById('avatarPicker').style.display='none';
+  renderAvatarGrid();
+};
+
 window.goAddMember=function(){
-  editingMemberId=null;currentGender='男';
+  editingMemberId=null;currentGender='男';currentAvatar='😊';
   document.getElementById('mName').value='';
   document.getElementById('mBirth').value='1990';
   document.getElementById('mHeight').value='170';
   document.getElementById('mRemind').value='07:00';
+  document.getElementById('avatarPreview').textContent='😊';
+  document.getElementById('avatarPicker').style.display='none';
   document.getElementById('memberFormTitle').textContent='新增成員';
   document.getElementById('saveMemberBtn').textContent='建立成員';
   document.getElementById('deleteMemberBtn').style.display='none';
@@ -909,11 +973,13 @@ window.goAddMember=function(){
 };
 window.goEditMember=function(){
   const m=currentMember();if(!m)return;
-  editingMemberId=m.id;currentGender=m.gender;
+  editingMemberId=m.id;currentGender=m.gender;currentAvatar=m.avatar||'😊';
   document.getElementById('mName').value=m.name;
   document.getElementById('mBirth').value=m.birthYear||1990;
   document.getElementById('mHeight').value=m.height||170;
   document.getElementById('mRemind').value=m.remindTime||'07:00';
+  document.getElementById('avatarPreview').textContent=currentAvatar;
+  document.getElementById('avatarPicker').style.display='none';
   document.getElementById('memberFormTitle').textContent='編輯成員';
   document.getElementById('saveMemberBtn').textContent='儲存變更';
   document.getElementById('deleteMemberBtn').style.display='block';
@@ -927,7 +993,7 @@ window.selectGender=function(g){
 window.saveMember=async function(){
   const name=document.getElementById('mName').value.trim();
   if(!name){alert('請輸入姓名');return;}
-  const m={id:editingMemberId||uid(),name,gender:currentGender,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,remindTime:document.getElementById('mRemind').value,createdAt:Date.now()};
+  const m={id:editingMemberId||uid(),name,gender:currentGender,avatar:currentAvatar,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,remindTime:document.getElementById('mRemind').value,createdAt:Date.now()};
   await _db.saveMember(m);
   if(!editingMemberId)currentMemberId=m.id;
   switchNav('home');
