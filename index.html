@@ -144,6 +144,26 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 /* NO DATA */
 .no-data{text-align:center;color:#333;padding:60px 20px;font-size:14px;}
 
+/* FAB */
+.fab{position:fixed;right:20px;bottom:90px;width:56px;height:56px;border-radius:50%;background:var(--mint);color:#000;border:none;font-size:28px;font-weight:800;cursor:pointer;z-index:150;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,255,135,0.3);transition:transform 0.15s;}
+.fab:active{transform:scale(0.93);}
+
+/* MEMBER AVATAR CIRCLES */
+.member-circles{display:flex;gap:14px;margin-bottom:20px;overflow-x:auto;padding:4px 0;}
+.member-circle{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;}
+.member-circle-avatar{width:54px;height:54px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid transparent;transition:all 0.2s;position:relative;}
+.member-circle-avatar.active-ring{border-color:var(--mint);box-shadow:0 0 0 3px rgba(0,255,135,0.2);}
+.member-circle-name{font-size:11px;color:#666;font-weight:500;max-width:56px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.member-circle-name.active-name{color:var(--mint);font-weight:700;}
+.member-circle-add{width:54px;height:54px;border-radius:50%;border:1.5px dashed #222;display:flex;align-items:center;justify-content:center;font-size:22px;color:#333;cursor:pointer;}
+
+/* STREAK BADGE */
+.streak-badge{display:inline-flex;align-items:center;gap:5px;background:#1a1000;border:1px solid #3a2800;border-radius:20px;padding:5px 12px;font-size:12px;color:#FFB347;font-weight:700;}
+
+/* METRICS TIERS */
+.metric-primary{font-size:22px;font-weight:800;}
+.metric-secondary{font-size:17px;font-weight:700;}
+
 /* RECORD INPUT ROW - like the screenshot */
 .rec-input-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
 .rec-input-label{font-size:17px;font-weight:500;color:#fff;flex:1;}
@@ -201,10 +221,12 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 
   <!-- HOME -->
   <div class="view active" id="view-home">
-    <div class="chips-row" id="homeChips"></div>
-    <div id="chipHint" style="display:none;font-size:10px;color:#333;margin:-12px 0 14px;letter-spacing:0.04em">長按成員名稱可編輯或刪除</div>
+    <div class="member-circles" id="homeCircles"></div>
     <div id="homeContent"></div>
   </div>
+
+  <!-- FAB -->
+  <button class="fab" id="fabBtn" onclick="fabClick()" style="display:none">＋</button>
 
   <!-- CALENDAR -->
   <div class="view" id="view-calendar">
@@ -438,7 +460,25 @@ window.showSubView=function(name){
   document.getElementById('view-'+name).classList.add('active');
 };
 
-// ── CHIPS ──
+// ── MEMBER CIRCLES (home) ──
+function renderMemberCircles(){
+  const el=document.getElementById('homeCircles');if(!el)return;
+  el.innerHTML=state.members.map(m=>`
+    <div class="member-circle"
+      onclick="selectMember('${m.id}')"
+      oncontextmenu="event.preventDefault();chipEditMenu('${m.id}')"
+      ontouchstart="chipTouchStart('${m.id}')" ontouchend="chipTouchEnd()" ontouchmove="chipTouchEnd()">
+      <div class="member-circle-avatar ${m.id===currentMemberId?'active-ring':''}">${m.avatar||'👤'}</div>
+      <div class="member-circle-name ${m.id===currentMemberId?'active-name':''}">${m.name}</div>
+    </div>`).join('')
+  +`<div class="member-circle" onclick="goAddMember()">
+      <div class="member-circle-add">＋</div>
+      <div class="member-circle-name">新增</div>
+    </div>`;
+}
+window.fabClick=function(){goAddRecord('home');};
+
+// ── CHIPS (for other views) ──
 function renderChips(elId,onClickFn,showAdd=true){
   const el=document.getElementById(elId);if(!el)return;
   el.innerHTML=state.members.map(m=>`
@@ -486,10 +526,10 @@ window.chipDeleteConfirm=async function(id){
 
 // ── HOME ──
 window.renderHome=function(){
-  renderChips('homeChips','selectMember');
-  // Add long-press hint if members exist
-  const hintEl=document.getElementById('chipHint');
-  if(hintEl)hintEl.style.display=state.members.length>0?'block':'none';
+  renderMemberCircles();
+  // Show/hide FAB
+  const fab=document.getElementById('fabBtn');
+  if(fab)fab.style.display=currentMemberId?'flex':'none';
   const el=document.getElementById('homeContent');if(!el)return;
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
@@ -566,22 +606,60 @@ window.renderHome=function(){
       </div>`;
     }
 
-    // Metrics grid
-    html+=`<div style="margin:0 -20px">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#0d0d0d">
-        ${METRICS.map(m2=>{
-          const v=latest[m2.key];if(!v)return'';
-          const pv=prev?.[m2.key];
-          const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
-          const ds=d!=null?`<div style="font-size:10px;margin-top:3px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
-          return`<div style="background:#000;padding:14px 12px">
-            <div style="font-size:9px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
-            <div style="font-size:19px;font-weight:800;letter-spacing:-0.03em;color:#fff">${v}<span style="font-size:10px;font-weight:400;color:#444;margin-left:1px">${m2.unit}</span></div>
-            ${ds}
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
+    // Streak
+    const allDates=recs.map(r=>r.date).sort((a,b)=>b.localeCompare(a));
+    let streak=0;
+    const td=new Date();
+    for(let i=0;i<allDates.length;i++){
+      const exp=new Date(td);exp.setDate(td.getDate()-i);
+      const expStr=exp.toISOString().split('T')[0];
+      if(allDates.includes(expStr))streak++;
+      else break;
+    }
+    if(streak>0)html+=`<div style="padding:12px 0;border-bottom:1px solid #111"><span class="streak-badge">🔥 連續記錄 ${streak} 天</span></div>`;
+
+    // Metrics: primary (weight, bodyFat, muscleMass) big, secondary rest
+    const PRIMARY=['bodyFat','muscleMass','bmi'];
+    const SECONDARY=['boneMass','visceralFat','bmr','bodyAge','waterContent'];
+    const primMetrics=METRICS.filter(x=>PRIMARY.includes(x.key)&&latest[x.key]);
+    const secMetrics=METRICS.filter(x=>SECONDARY.includes(x.key)&&latest[x.key]);
+
+    if(primMetrics.length){
+      html+=`<div style="margin:0 -20px;border-bottom:1px solid #0d0d0d">
+        <div style="display:grid;grid-template-columns:repeat(${primMetrics.length},1fr);gap:1px;background:#0d0d0d">
+          ${primMetrics.map(m2=>{
+            const v=latest[m2.key];const pv=prev?.[m2.key];
+            const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
+            const ds=d!=null?`<div style="font-size:10px;margin-top:4px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
+            const statusBmi=m2.key==='bmi'?getBMIStatus(v):null;
+            const statusBf=m2.key==='bodyFat'?getBodyFatStatus(v,m.gender):null;
+            const st=statusBmi||statusBf;
+            return`<div style="background:#000;padding:18px 14px">
+              <div style="font-size:9px;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
+              <div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#fff">${v}<span style="font-size:12px;font-weight:400;color:#444;margin-left:2px">${m2.unit}</span></div>
+              ${st?`<span class="badge ${st.cls}" style="margin-top:6px;display:inline-block">${st.label}</span>`:''}
+              ${ds}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
+    if(secMetrics.length){
+      html+=`<div style="margin:0 -20px">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#0d0d0d">
+          ${secMetrics.map(m2=>{
+            const v=latest[m2.key];const pv=prev?.[m2.key];
+            const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
+            const ds=d!=null?`<div style="font-size:10px;margin-top:3px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
+            return`<div style="background:#000;padding:14px 12px">
+              <div style="font-size:9px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
+              <div style="font-size:18px;font-weight:800;letter-spacing:-0.03em;color:#888">${v}<span style="font-size:10px;font-weight:400;color:#333;margin-left:1px">${m2.unit}</span></div>
+              ${ds}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
   } else {
     html+=`<div style="padding:24px 0;border-bottom:1px solid #111">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -637,9 +715,19 @@ window.renderCalendar=function(){
       const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
       const rec=recMap[dateStr];
       const isToday=dateStr===todayStr;
+      // Color by vs previous recorded weight
+      let wColor='#fff';
+      if(rec?.weight){
+        const sortedRecs=[...recs].filter(r=>r.date<dateStr&&r.weight).sort((a,b)=>b.date.localeCompare(a.date));
+        const prevW=sortedRecs[0]?.weight;
+        if(prevW){
+          const diff=parseFloat(rec.weight)-parseFloat(prevW);
+          wColor=diff<-0.1?'#00FF87':diff>0.1?'#FF6B6B':'#888';
+        }
+      }
       return`<div class="cal-day ${isToday?'today':''}" onclick="calDayClick('${dateStr}')">
         <div class="cal-num ${isToday?'today-num':''}">${d}</div>
-        ${rec?`<div class="cal-weight" style="color:${rec.weight?'#00FF87':'#555'}">${rec.weight||''}</div>`:''}
+        ${rec?.weight?`<div class="cal-weight" style="color:${wColor}">${rec.weight}</div>`:''}
       </div>`;
     }).join('')}
   </div>`;
@@ -794,12 +882,20 @@ window.renderMore=function(){
   el.innerHTML=`
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">👥 成員對比</div><div class="mgmt-desc">選兩位成員比較指標</div></div><button class="btn btn-ghost" onclick="goCompare()">前往</button></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">🎯 目標設定</div><div class="mgmt-desc">設定體重、體脂率目標</div></div><button class="btn btn-ghost" onclick="goTargets()">設定</button></div>
+    <div class="mgmt-item" id="notifItem"><div class="mgmt-info"><div class="mgmt-title">🔔 量測提醒通知</div><div class="mgmt-desc">允許瀏覽器在設定時間發送提醒</div></div><button class="btn btn-ghost" onclick="requestNotifPermission()" id="notifBtn">開啟通知</button></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📥 匯出 CSV</div><div class="mgmt-desc">下載量測紀錄表格</div></div><div style="display:flex;gap:6px"><button class="btn btn-mint" onclick="exportCSV('current')">目前成員</button><button class="btn btn-ghost" onclick="exportCSV('all')">全部</button></div></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">💾 備份資料</div><div class="mgmt-desc">匯出 JSON 備份</div></div><button class="btn btn-purple" onclick="exportJSON()">匯出</button></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📤 還原資料</div><div class="mgmt-desc">從備份 JSON 還原</div></div><button class="btn btn-yellow" onclick="document.getElementById('importFile').click()">選擇檔案</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"></div>
     <div class="mgmt-item" style="border-color:#2a0000"><div class="mgmt-info"><div class="mgmt-title" style="color:var(--red)">🗑 清除所有資料</div><div class="mgmt-desc">永久刪除雲端資料</div></div><button class="btn btn-red" onclick="clearAll()">清除</button></div>
     <div style="padding:16px 0;border-top:1px solid #111;margin-top:4px"><div style="font-size:9px;color:#333;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">雲端同步</div><div id="storageInfo" style="font-size:13px;color:#888"></div></div>`;
   updateStorageInfo();
+  // Update notification button status
+  setTimeout(()=>{
+    const nb=document.getElementById('notifBtn');
+    if(nb&&'Notification' in window){
+      nb.textContent=Notification.permission==='granted'?'✅ 已開啟':Notification.permission==='denied'?'❌ 已封鎖':'開啟通知';
+    }
+  },50);
 };
 window.goCompare=function(){renderCompare();showSubView('compare');};
 window.goTargets=function(){renderTargets();showSubView('targets');};
@@ -1045,10 +1141,51 @@ window.selectGender=function(g){
 window.saveMember=async function(){
   const name=document.getElementById('mName').value.trim();
   if(!name){alert('請輸入姓名');return;}
-  const m={id:editingMemberId||uid(),name,gender:currentGender,avatar:currentAvatar,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,remindTime:document.getElementById('mRemind').value,createdAt:Date.now()};
+  const remindTime=document.getElementById('mRemind').value;
+  const m={id:editingMemberId||uid(),name,gender:currentGender,avatar:currentAvatar,birthYear:+document.getElementById('mBirth').value,height:+document.getElementById('mHeight').value,remindTime,createdAt:Date.now()};
   await _db.saveMember(m);
   if(!editingMemberId)currentMemberId=m.id;
+  // Request notification permission if remind time set
+  if(remindTime&&'Notification' in window&&Notification.permission==='default'){
+    const perm=await Notification.requestPermission();
+    if(perm==='granted')scheduleReminders();
+  } else if(remindTime&&Notification.permission==='granted'){
+    scheduleReminders();
+  }
   switchNav('home');
+};
+
+// ── NOTIFICATIONS ──
+function scheduleReminders(){
+  // Clear old alarms (store in localStorage for persistence)
+  try{
+    const now=new Date();
+    state.members.forEach(m=>{
+      if(!m.remindTime)return;
+      const[h,min]=m.remindTime.split(':').map(Number);
+      const next=new Date();
+      next.setHours(h,min,0,0);
+      if(next<=now)next.setDate(next.getDate()+1);
+      const delay=next-now;
+      setTimeout(()=>{
+        if(Notification.permission==='granted'){
+          new Notification('Tanita BC-730 量測提醒',{
+            body:`${m.avatar||''}  ${m.name}，該量測體組成了！`,
+            icon:'/favicon.ico',
+            tag:'tanita-remind-'+m.id
+          });
+        }
+        scheduleReminders(); // reschedule next day
+      },delay);
+    });
+  }catch(e){console.warn('Notification error:',e);}
+}
+window.requestNotifPermission=async function(){
+  if(!('Notification' in window)){alert('您的瀏覽器不支援通知功能');return;}
+  const perm=await Notification.requestPermission();
+  if(perm==='granted'){scheduleReminders();alert('通知已開啟！');}
+  else alert('請在瀏覽器設定中允許通知權限');
+  renderMore();
 };
 window.deleteMember=async function(){
   if(!editingMemberId)return;
@@ -1082,6 +1219,10 @@ function dl(c,n,t){const a=document.createElement('a');a.href=URL.createObjectUR
 
 // INIT
 switchNav('home');
+// Auto-schedule if permission already granted
+if('Notification' in window && Notification.permission==='granted'){
+  setTimeout(scheduleReminders, 2000);
+}
 </script>
 </body>
 </html>
