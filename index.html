@@ -226,7 +226,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
   </div>
 
   <!-- FAB -->
-  <button class="fab" id="fabBtn" onclick="fabClick()" style="display:none">＋</button>
+  <button class="fab" id="fabBtn" onclick="fabClick()">＋</button>
 
   <!-- CALENDAR -->
   <div class="view" id="view-calendar">
@@ -476,7 +476,25 @@ function renderMemberCircles(){
       <div class="member-circle-name">新增</div>
     </div>`;
 }
-window.fabClick=function(){goAddRecord('home');};
+window.fabClick=function(){
+  if(!currentMemberId){
+    // Highlight the member circles to prompt selection
+    const el=document.getElementById('homeCircles');
+    if(el){el.style.outline='2px solid rgba(0,255,135,0.4)';el.style.borderRadius='12px';setTimeout(()=>{el.style.outline='none';},1200);}
+    // Show toast
+    showToast('請先選擇上方的成員');
+    return;
+  }
+  goAddRecord('home');
+};
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:160px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:500;white-space:nowrap;border:1px solid #333;';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2000);
+}
 
 // ── CHIPS (for other views) ──
 function renderChips(elId,onClickFn,showAdd=true){
@@ -527,14 +545,12 @@ window.chipDeleteConfirm=async function(id){
 // ── HOME ──
 window.renderHome=function(){
   renderMemberCircles();
-  // Show/hide FAB
-  const fab=document.getElementById('fabBtn');
-  if(fab)fab.style.display=currentMemberId?'flex':'none';
+
   const el=document.getElementById('homeContent');if(!el)return;
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
       ?`<div class="empty"><div style="font-size:48px;margin-bottom:16px">🧬</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px">開始記錄</div><p>新增家庭成員<br>追蹤每次量測結果</p><button class="btn btn-full btn-primary" style="max-width:240px;margin:0 auto" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
-      :`<div class="empty"><p>請選擇上方成員</p></div>`;
+      :`<div style="padding:16px 0;text-align:center"><div style="font-size:13px;color:#444;margin-bottom:6px">請點選上方成員</div><div style="font-size:11px;color:#2a2a2a">長按成員頭像可編輯或刪除</div></div>`;
     return;
   }
   const m=currentMember();
@@ -661,8 +677,8 @@ window.renderHome=function(){
       </div>`;
     }
   } else {
-    html+=`<div style="padding:24px 0;border-bottom:1px solid #111">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    html+=`<div style="padding:24px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-size:36px">${m.avatar||'👤'}</span>
           <div>
@@ -672,11 +688,13 @@ window.renderHome=function(){
         </div>
         <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px" onclick="goEditMember()">✏️ 編輯</button>
       </div>
-      <div style="font-size:14px;color:#333;padding:20px 0;text-align:center">尚無量測紀錄</div>
+      <button class="btn btn-full btn-primary" onclick="goAddRecord('home')" style="font-size:17px;padding:20px;border-radius:16px">
+        ＋ 新增第一筆量測
+      </button>
     </div>`;
   }
 
-  html+=`<div style="padding:16px 0"><button class="btn btn-full btn-primary" onclick="goAddRecord('home')">＋ 新增量測</button></div>`;
+  html+=`<div style="padding:16px 0 0"><button class="btn btn-full btn-primary" onclick="goAddRecord('home')" style="padding:18px;font-size:16px">＋ 新增量測</button></div>`;
   el.innerHTML=html;
 };
 
