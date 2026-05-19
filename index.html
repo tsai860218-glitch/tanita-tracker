@@ -14,7 +14,7 @@ body{background:var(--bg);min-height:100vh;font-family:'DM Sans','Noto Sans TC',
 /* LOGIN */
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
 .sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(0,192,106,0.3);background:rgba(0,192,106,0.08);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:24px;letter-spacing:0.05em;}
-.login-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.3;letter-spacing:-0.03em;}
+.login-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.3;letter-spacing:-0.03em;color:#111;}
 .login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;line-height:1.9;}
 .google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#111;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .google-btn svg{width:20px;height:20px;flex-shrink:0;}
@@ -58,8 +58,8 @@ nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px
 .btn-purple{background:none;border:1px solid rgba(150,120,200,0.3);color:#7C5CBF;}
 .btn-green{background:none;border:1px solid rgba(0,192,106,0.2);color:var(--mint);}
 .btn-full{display:block;width:100%;padding:16px;border-radius:12px;font-size:15px;font-weight:800;text-align:center;}
-.btn-primary{background:var(--mint);color:#fff;border:none;}
-.btn-danger{background:var(--red);color:#fff;border:none;}
+.btn-primary{background:var(--mint);color:#111;border:none;}
+.btn-danger{background:var(--red);color:#111;border:none;}
 .btn-row{display:flex;gap:10px;margin-top:16px;}
 .btn:disabled{opacity:0.3;cursor:not-allowed;}
 
@@ -90,7 +90,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px
 /* METRIC PILLS */
 .metric-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
 .metric-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);font-family:inherit;font-weight:400;color:var(--muted);background:var(--card);transition:all 0.2s;}
-.metric-pill.active{background:var(--mint);color:#fff;border-color:var(--mint);font-weight:700;}
+.metric-pill.active{background:var(--mint);color:#111;border-color:var(--mint);font-weight:700;}
 
 /* CHART */
 .chart-wrap{position:relative;height:200px;margin:8px 0;}
@@ -120,7 +120,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px
 /* DATA MGMT */
 .mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);}
 .mgmt-info{flex:1;}
-.mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;color:#111;}
 .mgmt-desc{font-size:12px;color:var(--muted);}
 .target-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
 .target-key{font-size:11px;color:var(--muted);width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
@@ -128,14 +128,14 @@ nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px
 
 /* BACK BAR */
 .back-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
-.back-bar h2{font-size:20px;font-weight:800;letter-spacing:-0.03em;}
+.back-bar h2{font-size:20px;font-weight:800;letter-spacing:-0.03em;color:#111;}
 
 /* EMPTY */
 .empty{text-align:center;padding:60px 20px;}
 .empty p{color:var(--muted);font-size:14px;margin-bottom:20px;}
 
 /* PAGE TITLE */
-.page-title{font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
+.page-title{font-size:9px;color:#888;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
 
 /* LEGEND */
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
@@ -237,7 +237,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px
 
   <!-- TREND -->
   <div class="view" id="view-trend">
-    <div class="page-title" id="trendTitle">趨勢圖</div>
+    <div class="page-title" id="trendTitle" style="color:#111">趨勢圖</div>
     <div class="chips-row" id="trendChips"></div>
     <div class="metric-pills" id="metricPills"></div>
     <div id="trendCard"><div class="no-data">選擇成員後顯示趨勢圖</div></div>
@@ -661,12 +661,12 @@ window.renderHome=function(){
     const bfV=parseFloat(latest.bodyFat);
     if(bfV){const[lo,hi]=m.gender==='女'?[20,30]:[15,25];const s=bfV>=lo&&bfV<=hi?100:(bfV>=lo*0.9&&bfV<=hi*1.1)?60:20;score+=s;scoreCount++;}
     const sc=scoreCount?Math.round(score/scoreCount):0;
-    const scC=sc>=80?'var(--mint)':sc>=60?'var(--orange)':'var(--red)';
+    const scC=sc>=80?'#00C06A':sc>=60?'#E07820':'#E05252';
 
     html+=`<div style="padding:0 0 20px;border-bottom:1px solid var(--border)">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
         <div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:28px;line-height:1">${m.avatar||'👤'}</span><div><div style="font-size:14px;font-weight:700;color:#fff">${m.name}</div><div style="font-size:11px;color:var(--muted)">${m.remindTime?m.remindTime+' 量測':''} ${latest.date?'· '+latest.date:''}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:28px;line-height:1">${m.avatar||'👤'}</span><div><div style="font-size:14px;font-weight:700;color:#111">${m.name}</div><div style="font-size:11px;color:#888">${m.remindTime?m.remindTime+' 量測':''} ${latest.date?'· '+latest.date:''}</div></div></div>
         </div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="goEditMember()">編輯</button>
@@ -674,7 +674,7 @@ window.renderHome=function(){
         </div>
       </div>
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
-        <span style="font-size:80px;font-weight:800;letter-spacing:-0.04em;line-height:1">${w||'—'}</span>
+        <span style="font-size:80px;font-weight:800;letter-spacing:-0.04em;line-height:1;color:#111">${w||'—'}</span>
         <span style="font-size:20px;color:var(--muted);font-weight:400">kg</span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
@@ -695,7 +695,7 @@ window.renderHome=function(){
       html+=`<div style="padding:16px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;justify-content:space-between;margin-bottom:10px">
           <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">目標體重進度</span>
-          <span style="font-size:13px;font-weight:700">${cur} <span style="color:var(--dim)">→</span> <span style="color:#00FF87">${goal} kg</span></span>
+          <span style="font-size:13px;font-weight:700;color:#111">${cur} <span style="color:var(--dim)">→</span> <span style="color:#00FF87">${goal} kg</span></span>
         </div>
         <div style="height:2px;background:var(--border);border-radius:1px;overflow:hidden">
           <div style="width:${pct}%;height:100%;background:#00FF87;border-radius:1px;transition:width 0.6s"></div>
@@ -768,11 +768,11 @@ window.renderHome=function(){
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-size:36px">${m.avatar||'👤'}</span>
           <div>
-            <div style="font-size:18px;font-weight:800;color:#fff">${m.name}</div>
-            <div style="font-size:11px;color:var(--muted)">${m.remindTime?m.remindTime+' 量測':'尚未設定提醒時間'}</div>
+            <div style="font-size:18px;font-weight:800;color:#111">${m.name}</div>
+            <div style="font-size:11px;color:#888">${m.remindTime?m.remindTime+' 量測':'尚未設定提醒時間'}</div>
           </div>
         </div>
-        <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px" onclick="goEditMember()">✏️ 編輯</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px;color:#111" onclick="goEditMember()">✏️ 編輯</button>
       </div>
       <button class="btn btn-full btn-primary" onclick="goAddRecord('home')" style="font-size:17px;padding:20px;border-radius:16px">
         ＋ 新增第一筆量測
@@ -808,7 +808,7 @@ window.renderCalendar=function(){
 
   let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
     <button class="btn btn-ghost" style="padding:6px 12px" onclick="calPrev()">‹</button>
-    <span style="font-size:16px;font-weight:700">${calYear}年${calMonth+1}月</span>
+    <span style="font-size:16px;font-weight:700;color:#111">${calYear}年${calMonth+1}月</span>
     <button class="btn btn-ghost" style="padding:6px 12px" onclick="calNext()">›</button>
   </div>
   <div class="cal-grid">
@@ -844,7 +844,7 @@ window.renderCalendar=function(){
       ${recent.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:13px;color:var(--muted)">${r.date}</span>
         <div style="display:flex;align-items:baseline;gap:4px">
-          <span style="font-size:22px;font-weight:800;color:#fff">${r.weight||'—'}</span>
+          <span style="font-size:22px;font-weight:800;color:#111">${r.weight||'—'}</span>
           <span style="font-size:11px;color:var(--muted)">kg</span>
         </div>
         <button class="btn btn-red" style="font-size:11px;padding:4px 8px" onclick="deleteRecord('${r.id}')">刪除</button>
@@ -927,7 +927,7 @@ window.renderTable=function(){
 
           return`<tr>
             <td>${dayLabel}</td>
-            <td style="font-size:16px;font-weight:800;color:#fff">${w?w.toFixed(1):'<span style="color:var(--dim)">-</span>'}</td>
+            <td style="font-size:16px;font-weight:800;color:#111">${w?w.toFixed(1):'<span style="color:var(--dim)">-</span>'}</td>
             <td style="font-weight:700;color:${diff==null?'var(--dim)':diff>0?'var(--red)':diff<0?'var(--mint)':'var(--muted)'};font-size:14px">${diff==null?'<span style="color:var(--dim)">-</span>':(diff>0?'+':'')+diff.toFixed(1)}</td>
             <td style="font-weight:700;color:${totalDiff==null?'var(--dim)':totalDiff>0?'var(--red)':totalDiff<0?'var(--mint)':'var(--muted)'};font-size:14px">${totalDiff==null?'<span style="color:var(--dim)">-</span>':(totalDiff>0?'+':'')+totalDiff.toFixed(1)}</td>
           </tr>`;
@@ -956,7 +956,7 @@ window.renderTrend=function(){
   const minV=Math.min(...values),maxV=Math.max(...values);
   card.innerHTML=`<div style="font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div>
     <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
-      <span style="font-size:36px;font-weight:800;letter-spacing:-0.03em">${values[values.length-1].toFixed(1)}</span>
+      <span style="font-size:36px;font-weight:800;letter-spacing:-0.03em;color:#111">${values[values.length-1].toFixed(1)}</span>
       <span style="font-size:14px;color:var(--muted)">${mi.unit}</span>
       ${values.length>1?`<span style="font-size:12px;color:${values[values.length-1]>values[0]?'#FF6B6B':'#00FF87'}">${values[values.length-1]>values[0]?'▲':'▼'} ${Math.abs(values[values.length-1]-values[0]).toFixed(1)}</span>`:''}
     </div>
@@ -1040,7 +1040,7 @@ function renderAnalysis(){
         </div>
         <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>${lo}</span><span>${hi}</span></div>
       </div>
-      <div style="font-size:16px;font-weight:800;width:56px;text-align:right;color:#fff">${v}${mt.unit}</div>
+      <div style="font-size:16px;font-weight:800;width:56px;text-align:right;color:#111">${v}${mt.unit}</div>
       <span class="badge ${st.cls}">${st.label}</span>
       ${d?`<span style="font-size:10px;color:${parseFloat(d)>0?'#FF6B6B':'#00FF87'};margin-left:2px">${parseFloat(d)>0?'▲':'▼'}${Math.abs(parseFloat(d))}</span>`:''}
     </div>`;
@@ -1054,7 +1054,7 @@ function renderAnalysis(){
         const df=(parseFloat(latest[mt.key])-parseFloat(first[mt.key])).toFixed(1);
         return`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
           <span style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">${mt.label}</span>
-          <span style="font-size:16px;font-weight:800;color:${parseFloat(df)>0?'#FF6B6B':'#00FF87'}">${parseFloat(df)>0?'+':''}${df} ${mt.unit}</span>
+          <span style="font-size:16px;font-weight:800;color:${parseFloat(df)>0?'var(--red)':'var(--mint)'}">${parseFloat(df)>0?'+':''}${df} ${mt.unit}</span>
         </div>`;
       }).join('')}
     </div>`;
@@ -1099,9 +1099,9 @@ function renderCompare(){
   const lA=getRecords(compareA).slice(-1)[0],lB=getRecords(compareB).slice(-1)[0];
   html+=`<div class="cmp-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <span style="font-size:16px;font-weight:800;color:#00FF87">${mA.name}</span>
+      <span style="font-size:16px;font-weight:800;color:var(--mint)">${mA.name}</span>
       <span style="font-size:12px;color:var(--dim)">vs</span>
-      <span style="font-size:16px;font-weight:800;color:#FFE66D">${mB.name}</span>
+      <span style="font-size:16px;font-weight:800;color:var(--yellow)">${mB.name}</span>
     </div>
     ${METRICS.map(mt=>{
       const vA=lA?parseFloat(lA[mt.key]):null,vB=lB?parseFloat(lB[mt.key]):null;
@@ -1115,12 +1115,12 @@ function renderCompare(){
           ${win?`<span style="font-size:10px;color:${win==='A'?'#00FF87':'#FFE66D'};font-weight:700">▲ ${win==='A'?mA.name:mB.name}</span>`:''}
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:15px;font-weight:800;color:#00FF87;width:52px;text-align:right">${vA??'—'}</span>
+          <span style="font-size:15px;font-weight:800;color:var(--mint);width:52px;text-align:right">${vA??'—'}</span>
           <div style="flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;display:flex">
             <div style="width:${vA?vA/mx*50:0}%;background:#00FF87;border-radius:3px 0 0 3px;margin-left:auto"></div>
             <div style="width:${vB?vB/mx*50:0}%;background:#FFE66D;border-radius:0 3px 3px 0"></div>
           </div>
-          <span style="font-size:15px;font-weight:800;color:#FFE66D;width:52px">${vB??'—'}</span>
+          <span style="font-size:15px;font-weight:800;color:var(--yellow);width:52px">${vB??'—'}</span>
         </div>
       </div>`;
     }).join('')}
