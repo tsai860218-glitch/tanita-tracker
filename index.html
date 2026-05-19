@@ -7,35 +7,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--mint:#00FF87;--yellow:#FFE66D;--red:#FF6B6B;--orange:#FFB347;--blue:#5BB8FF;}
+:root{--mint:#00C06A;--yellow:#E6A800;--red:#E05252;--orange:#E07820;--blue:#2E86C1;--bg:#F5F6FA;--bg2:#ECEEF4;--card:#fff;--border:#E0E3EC;--text:#1a1a2e;--muted:#7a7f9a;--dim:#b0b4c8;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#000;min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:#fff;padding-bottom:80px;}
+body{background:var(--bg);min-height:100vh;font-family:'DM Sans','Noto Sans TC',sans-serif;color:var(--text);padding-bottom:80px;}
 
 /* LOGIN */
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
-.sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #1a1a1a;border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:24px;letter-spacing:0.05em;}
+.sync-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(0,192,106,0.3);background:rgba(0,192,106,0.08);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--mint);margin-bottom:24px;letter-spacing:0.05em;}
 .login-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.3;letter-spacing:-0.03em;}
-.login-sub{font-size:14px;color:#666;margin-bottom:40px;line-height:1.9;}
+.login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;line-height:1.9;}
 .google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#111;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .google-btn svg{width:20px;height:20px;flex-shrink:0;}
 
 /* LOADING */
-#loadingOverlay{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
-.spinner{width:32px;height:32px;border:2px solid #111;border-top-color:var(--mint);border-radius:50%;animation:spin 0.8s linear infinite;}
+#loadingOverlay{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--mint);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
 /* HEADER */
-header{background:#000;border-bottom:1px solid #111;padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
 .logo-sub{font-size:9px;color:var(--mint);letter-spacing:4px;text-transform:uppercase;font-weight:500;}
-.logo-main{font-size:17px;font-weight:800;letter-spacing:-0.03em;}
+.logo-main{font-size:17px;font-weight:800;letter-spacing:-0.03em;color:var(--text);}
 .user-chip{display:flex;align-items:center;gap:10px;}
-.user-avatar{width:28px;height:28px;border-radius:50%;border:1px solid #222;}
+.user-avatar{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite;}
 
 /* NAV */
-nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #111;display:flex;z-index:200;}
-.nav-btn{flex:1;padding:10px 4px;background:none;border:none;color:#444;font-family:inherit;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;letter-spacing:0.03em;text-transform:uppercase;}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:200;}
+.nav-btn{flex:1;padding:10px 4px;background:none;border:none;color:var(--dim);font-family:inherit;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;letter-spacing:0.03em;text-transform:uppercase;}
 .nav-icon{font-size:20px;line-height:1;}
 .nav-btn.active{color:var(--mint);}
 
@@ -45,86 +45,86 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 
 /* MEMBER CHIPS */
 .chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;}
-.chip{padding:7px 16px;border-radius:20px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#666;font-size:13px;transition:all 0.2s;font-family:inherit;white-space:nowrap;flex-shrink:0;}
-.chip.active{border-color:var(--mint);color:var(--mint);font-weight:700;}
-.chip.add{border:1px dashed #222;color:#444;}
+.chip{padding:7px 16px;border-radius:20px;cursor:pointer;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:13px;transition:all 0.2s;font-family:inherit;white-space:nowrap;flex-shrink:0;}
+.chip.active{border-color:var(--mint);color:var(--mint);font-weight:700;background:rgba(0,192,106,0.08);}
+.chip.add{border:1px dashed var(--border);color:var(--dim);background:none;}
 
 /* BUTTONS */
 .btn{border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all 0.2s;}
-.btn-ghost{background:none;border:1px solid #1a1a1a;color:#888;}
-.btn-red{background:none;border:1px solid #2a0000;color:var(--red);}
-.btn-mint{background:none;border:1px solid #003a1a;color:var(--mint);}
-.btn-yellow{background:none;border:1px solid #3a3010;color:var(--yellow);}
-.btn-purple{background:none;border:1px solid #2a1a3a;color:#C3B1E1;}
-.btn-green{background:none;border:1px solid #1a3020;color:#A8E6CF;}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);}
+.btn-red{background:none;border:1px solid rgba(224,82,82,0.3);color:var(--red);}
+.btn-mint{background:none;border:1px solid rgba(0,192,106,0.3);color:var(--mint);}
+.btn-yellow{background:none;border:1px solid rgba(230,168,0,0.3);color:var(--yellow);}
+.btn-purple{background:none;border:1px solid rgba(150,120,200,0.3);color:#7C5CBF;}
+.btn-green{background:none;border:1px solid rgba(0,192,106,0.2);color:var(--mint);}
 .btn-full{display:block;width:100%;padding:16px;border-radius:12px;font-size:15px;font-weight:800;text-align:center;}
-.btn-primary{background:var(--mint);color:#000;border:none;}
+.btn-primary{background:var(--mint);color:#fff;border:none;}
 .btn-danger{background:var(--red);color:#fff;border:none;}
 .btn-row{display:flex;gap:10px;margin-top:16px;}
 .btn:disabled{opacity:0.3;cursor:not-allowed;}
 
 /* FORM FIELDS */
-.field{border-bottom:1px solid #111;padding:14px 0;}
-.field label{display:block;font-size:9px;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
-.field input,.field select{width:100%;padding:0;border:none;background:none;color:#fff;font-size:20px;font-weight:700;font-family:inherit;outline:none;letter-spacing:-0.02em;}
-.field input::placeholder{color:#2a2a2a;}
+.field{border-bottom:1px solid var(--border);padding:14px 0;}
+.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
+.field input,.field select{width:100%;padding:0;border:none;background:none;color:var(--text);font-size:20px;font-weight:700;font-family:inherit;outline:none;letter-spacing:-0.02em;}
+.field input::placeholder{color:var(--dim);}
 .field input:focus{color:var(--mint);}
-.sec-label{font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;padding:20px 0 4px;}
+.sec-label{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;padding:20px 0 4px;}
 .gender-toggle{display:flex;gap:10px;}
-.gender-btn{flex:1;padding:12px;text-align:center;border-radius:10px;cursor:pointer;background:none;border:1px solid #1a1a1a;color:#444;font-weight:600;font-family:inherit;font-size:15px;transition:all 0.2s;}
-.gender-btn.active{border-color:var(--mint);color:var(--mint);}
+.gender-btn{flex:1;padding:12px;text-align:center;border-radius:10px;cursor:pointer;background:none;border:1px solid var(--border);color:var(--muted);font-weight:600;font-family:inherit;font-size:15px;transition:all 0.2s;}
+.gender-btn.active{border-color:var(--mint);color:var(--mint);background:rgba(0,192,106,0.08);}
 
 /* RECORD TABLE */
 .rec-table{width:100%;border-collapse:collapse;font-size:14px;}
-.rec-table th{font-size:10px;color:#555;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-align:center;padding:10px 8px;border-bottom:1px solid #111;}
+.rec-table th{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-align:center;padding:10px 8px;border-bottom:1px solid var(--border);}
 .rec-table th:first-child{text-align:left;}
-.rec-table td{padding:14px 8px;border-bottom:1px solid #0d0d0d;text-align:center;vertical-align:middle;}
-.rec-table td:first-child{text-align:left;font-size:13px;color:#fff;}
-.rec-table tr:hover td{background:#080808;}
+.rec-table td{padding:14px 8px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle;}
+.rec-table td:first-child{text-align:left;font-size:13px;color:var(--text);}
+.rec-table tr:hover td{background:var(--bg2);}
 
 /* TIME RANGE TABS */
-.range-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid #1a1a1a;border-radius:10px;overflow:hidden;}
-.range-tab{flex:1;padding:8px 4px;background:none;border:none;color:#555;font-family:inherit;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.2s;text-align:center;}
-.range-tab.active{background:#1a1a1a;color:#fff;font-weight:700;}
+.range-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);}
+.range-tab{flex:1;padding:8px 4px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.2s;text-align:center;}
+.range-tab.active{background:var(--mint);color:var(--text);font-weight:700;}
 
 /* METRIC PILLS */
 .metric-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.metric-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #1a1a1a;font-family:inherit;font-weight:400;color:#666;background:none;transition:all 0.2s;}
-.metric-pill.active{background:var(--mint);color:#000;border-color:var(--mint);font-weight:700;}
+.metric-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);font-family:inherit;font-weight:400;color:var(--muted);background:var(--card);transition:all 0.2s;}
+.metric-pill.active{background:var(--mint);color:#fff;border-color:var(--mint);font-weight:700;}
 
 /* CHART */
 .chart-wrap{position:relative;height:200px;margin:8px 0;}
 
 /* CALENDAR */
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:#0d0d0d;border:1px solid #0d0d0d;border-radius:8px;overflow:hidden;margin-bottom:16px;}
-.cal-day-header{background:#000;padding:8px 4px;text-align:center;font-size:10px;color:#444;letter-spacing:0.04em;}
-.cal-day{background:#000;padding:6px 4px;min-height:54px;cursor:pointer;transition:background 0.15s;}
-.cal-day:hover{background:#0a0a0a;}
-.cal-day.today{background:#0a1a0a;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.cal-day-header{background:var(--bg2);padding:8px 4px;text-align:center;font-size:10px;color:var(--muted);letter-spacing:0.04em;font-weight:600;}
+.cal-day{background:var(--card);padding:6px 4px;min-height:54px;cursor:pointer;transition:background 0.15s;}
+.cal-day:hover{background:var(--bg2);}
+.cal-day.today{background:rgba(0,192,106,0.08);}
 .cal-day.other-month{opacity:0.3;}
-.cal-num{font-size:12px;font-weight:600;color:#888;margin-bottom:2px;text-align:center;}
+.cal-num{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px;text-align:center;}
 .cal-num.today-num{color:var(--mint);}
-.cal-weight{font-size:11px;font-weight:700;color:#fff;text-align:center;line-height:1.3;}
+.cal-weight{font-size:11px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;}
 
 /* ANALYSIS */
 .analysis-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.analysis-label{font-size:11px;color:#666;width:56px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
+.analysis-label{font-size:11px;color:var(--muted);width:56px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
-.badge-ok{border:1px solid #003a1a;color:var(--mint);}
-.badge-warn{border:1px solid #3a2000;color:var(--orange);}
-.badge-bad{border:1px solid #3a0000;color:var(--red);}
+.badge-ok{border:1px solid rgba(0,192,106,0.3);color:var(--mint);background:rgba(0,192,106,0.08);}
+.badge-warn{border:1px solid rgba(224,120,32,0.3);color:var(--orange);background:rgba(224,120,32,0.08);}
+.badge-bad{border:1px solid rgba(224,82,82,0.3);color:var(--red);background:rgba(224,82,82,0.08);}
 
 /* COMPARE */
-.cmp-card{border-top:1px solid #111;padding-top:20px;margin-top:4px;}
+.cmp-card{border-top:1px solid var(--border);padding-top:20px;margin-top:4px;}
 
 /* DATA MGMT */
-.mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
+.mgmt-item{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);}
 .mgmt-info{flex:1;}
 .mgmt-title{font-size:14px;font-weight:700;margin-bottom:2px;}
-.mgmt-desc{font-size:12px;color:#666;}
-.target-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #0d0d0d;}
-.target-key{font-size:11px;color:#666;width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
-.target-input{flex:1;padding:0;border:none;background:none;color:#fff;font-size:16px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
+.mgmt-desc{font-size:12px;color:var(--muted);}
+.target-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
+.target-key{font-size:11px;color:var(--muted);width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.04em;}
+.target-input{flex:1;padding:0;border:none;background:none;color:var(--text);font-size:16px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
 
 /* BACK BAR */
 .back-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
@@ -132,54 +132,54 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 
 /* EMPTY */
 .empty{text-align:center;padding:60px 20px;}
-.empty p{color:#444;font-size:14px;margin-bottom:20px;}
+.empty p{color:var(--muted);font-size:14px;margin-bottom:20px;}
 
 /* PAGE TITLE */
-.page-title{font-size:9px;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
+.page-title{font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
 
 /* LEGEND */
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
-.legend span{font-size:11px;color:#666;}
+.legend span{font-size:11px;color:var(--muted);}
 
 /* NO DATA */
-.no-data{text-align:center;color:#333;padding:60px 20px;font-size:14px;}
+.no-data{text-align:center;color:var(--muted);padding:60px 20px;font-size:14px;}
 
 /* FAB */
-.fab{position:fixed;right:20px;bottom:90px;width:56px;height:56px;border-radius:50%;background:var(--mint);color:#000;border:none;font-size:28px;font-weight:800;cursor:pointer;z-index:150;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,255,135,0.3);transition:transform 0.15s;}
+.fab{position:fixed;right:20px;bottom:90px;width:56px;height:56px;border-radius:50%;background:var(--mint);color:#000;border:none;font-size:28px;font-weight:800;cursor:pointer;z-index:150;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,192,106,0.25);transition:transform 0.15s;}
 .fab:active{transform:scale(0.93);}
 
 /* MEMBER AVATAR CIRCLES */
 .member-circles{display:flex;gap:14px;margin-bottom:20px;overflow-x:auto;padding:4px 0;}
 .member-circle{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;}
-.member-circle-avatar{width:54px;height:54px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid transparent;transition:all 0.2s;position:relative;}
-.member-circle-avatar.active-ring{border-color:var(--mint);box-shadow:0 0 0 3px rgba(0,255,135,0.2);}
-.member-circle-name{font-size:11px;color:#666;font-weight:500;max-width:56px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.member-circle-avatar{width:54px;height:54px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid transparent;transition:all 0.2s;position:relative;}
+.member-circle-avatar.active-ring{border-color:var(--mint);box-shadow:0 0 0 3px rgba(0,192,106,0.2);}
+.member-circle-name{font-size:11px;color:var(--muted);font-weight:500;max-width:56px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .member-circle-name.active-name{color:var(--mint);font-weight:700;}
-.member-circle-add{width:54px;height:54px;border-radius:50%;border:1.5px dashed #222;display:flex;align-items:center;justify-content:center;font-size:22px;color:#333;cursor:pointer;}
+.member-circle-add{width:54px;height:54px;border-radius:50%;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--dim);cursor:pointer;}
 
 /* STREAK BADGE */
-.streak-badge{display:inline-flex;align-items:center;gap:5px;background:#1a1000;border:1px solid #3a2800;border-radius:20px;padding:5px 12px;font-size:12px;color:#FFB347;font-weight:700;}
+.streak-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(230,168,0,0.1);border:1px solid rgba(230,168,0,0.3);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--yellow);font-weight:700;}
 
 /* METRICS TIERS */
 .metric-primary{font-size:22px;font-weight:800;}
 .metric-secondary{font-size:17px;font-weight:700;}
 
 /* RECORD INPUT ROW - like the screenshot */
-.rec-input-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #111;}
-.rec-input-label{font-size:17px;font-weight:500;color:#fff;flex:1;}
+.rec-input-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);}
+.rec-input-label{font-size:17px;font-weight:500;color:var(--text);flex:1;}
 .rec-input-right{display:flex;align-items:baseline;gap:6px;}
-.rec-input-val{width:90px;padding:0;border:none;background:none;color:#fff;font-size:24px;font-weight:800;font-family:inherit;outline:none;text-align:right;letter-spacing:-0.02em;}
+.rec-input-val{width:90px;padding:0;border:none;background:none;color:var(--text);font-size:24px;font-weight:800;font-family:inherit;outline:none;text-align:right;letter-spacing:-0.02em;}
 .rec-input-val:focus{color:var(--mint);}
-.rec-input-val::placeholder{color:#2a2a2a;}
-.rec-input-unit{font-size:13px;color:#555;font-weight:400;min-width:28px;}
-.rec-date-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #111;margin-bottom:4px;}
-.rec-date-label{font-size:13px;color:#888;}
-.rec-date-input{background:none;border:none;color:#fff;font-size:15px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
+.rec-input-val::placeholder{color:var(--dim);}
+.rec-input-unit{font-size:13px;color:var(--muted);font-weight:400;min-width:28px;}
+.rec-date-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.rec-date-label{font-size:13px;color:var(--muted);}
+.rec-date-input{background:none;border:none;color:var(--text);font-size:15px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
 
 /* AVATAR PICKER */
-.avatar-preview{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;border:2px solid #1a1a1a;cursor:pointer;transition:border-color 0.2s;}
+.avatar-preview{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;border:2px solid var(--border);background:var(--bg2);cursor:pointer;transition:border-color 0.2s;}
 .avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px;}
-.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;}
+.avatar-opt{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;background:var(--bg2);}
 .avatar-opt.selected{border-color:var(--mint);}
 </style>
 </head>
@@ -187,7 +187,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
 
 <div id="loadingOverlay">
   <div class="spinner"></div>
-  <div style="font-size:10px;color:#333;letter-spacing:0.12em;text-transform:uppercase;margin-top:8px">連線中</div>
+  <div style="font-size:10px;color:var(--dim);letter-spacing:0.12em;text-transform:uppercase;margin-top:8px">連線中</div>
 </div>
 
 <div id="loginScreen" style="display:none">
@@ -207,7 +207,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
     <div class="user-chip">
       <div class="sync-dot"></div>
       <img class="user-avatar" id="userAvatar" src="" alt="">
-      <button style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit" onclick="signOut()">登出</button>
+      <button style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit" onclick="signOut()">登出</button>
     </div>
   </header>
 
@@ -272,9 +272,9 @@ nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid 
   <div class="view" id="view-member">
     <div class="back-bar"><button class="btn btn-ghost" onclick="switchNav('home')">← 返回</button><h2 id="memberFormTitle">新增成員</h2></div>
     <!-- Avatar picker -->
-    <div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid #111;margin-bottom:4px">
+    <div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:4px">
       <div class="avatar-preview" id="avatarPreview" onclick="toggleAvatarPicker()">😊</div>
-      <div style="font-size:10px;color:#444;letter-spacing:0.08em;text-transform:uppercase">點擊選擇頭像</div>
+      <div style="font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase">點擊選擇頭像</div>
       <div id="avatarPicker" style="display:none;margin-top:16px">
         <div class="avatar-grid" id="avatarGrid"></div>
       </div>
@@ -476,15 +476,15 @@ const METRIC_ICONS={
 };
 
 const METRICS=[
-  {key:"weight",    label:"體重",    unit:"kg",  color:"#00FF87",normal:[50,80],   goalable:true},
-  {key:"bmi",       label:"BMI",     unit:"",    color:"#FFE66D",normal:[18.5,24], goalable:false},
-  {key:"bodyFat",   label:"體脂率",  unit:"%",   color:"#FF6B6B",normal:[15,25],   goalable:true},
-  {key:"muscleMass",label:"肌肉量",  unit:"kg",  color:"#5BB8FF",normal:[30,60],   goalable:true},
-  {key:"boneMass",  label:"骨量",    unit:"kg",  color:"#C3B1E1",normal:[2,3.5],   goalable:false},
-  {key:"visceralFat",label:"內臟脂肪",unit:"級", color:"#FFB347",normal:[1,9],     goalable:false},
-  {key:"bmr",       label:"基礎代謝",unit:"kcal",color:"#87CEEB",normal:[1200,2000],goalable:false},
-  {key:"bodyAge",   label:"身體年齡",unit:"歲",  color:"#DDA0DD",normal:[20,40],   goalable:false},
-  {key:"waterContent",label:"身體水分",unit:"%", color:"#00CED1",normal:[45,65],   goalable:false},
+  {key:"weight",      label:"體重",    unit:"kg",   color:"#00C06A",normal:[50,80],    goalable:true},
+  {key:"bodyFat",     label:"體脂率",  unit:"%",    color:"#E05252",normal:[15,25],    goalable:true},
+  {key:"boneMass",    label:"骨量",    unit:"kg",   color:"#7C5CBF",normal:[2,3.5],    goalable:false},
+  {key:"waterContent",label:"身體水分",unit:"%",   color:"#2E86C1",normal:[45,65],    goalable:false},
+  {key:"muscleMass",  label:"肌肉量",  unit:"kg",   color:"#2E86C1",normal:[30,60],    goalable:true},
+  {key:"bmi",         label:"體型判定",unit:"",     color:"#E07820",normal:[18.5,24],  goalable:false},
+  {key:"bmr",         label:"基礎代謝",unit:"kcal", color:"#E07820",normal:[1200,2000],goalable:false},
+  {key:"bodyAge",     label:"身體年齡",unit:"歲",   color:"#7C5CBF",normal:[20,40],    goalable:false},
+  {key:"visceralFat", label:"內臟脂肪",unit:"級",  color:"#E05252",normal:[1,9],      goalable:false},
 ];
 
 const WEEKDAYS=['日','一','二','三','四','五','六'];
@@ -577,7 +577,7 @@ window.fabClick=function(){
 function showToast(msg){
   const t=document.createElement('div');
   t.textContent=msg;
-  t.style.cssText='position:fixed;bottom:160px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:500;white-space:nowrap;border:1px solid #333;';
+  t.style.cssText='position:fixed;bottom:160px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--text);padding:10px 20px;border-radius:20px;font-size:13px;z-index:500;white-space:nowrap;border:1px solid #333;';
   document.body.appendChild(t);
   setTimeout(()=>t.remove(),2000);
 }
@@ -606,15 +606,15 @@ window.chipEditMenu=function(id){
   const existing=document.getElementById('chipMenu');if(existing)existing.remove();
   const menu=document.createElement('div');
   menu.id='chipMenu';
-  menu.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;border:1px solid #222;border-radius:16px;padding:8px;z-index:500;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.8)';
+  menu.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #e0e3ec;border-radius:16px;padding:8px;z-index:500;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.12)';
   menu.innerHTML=`
-    <div style="padding:12px 16px;font-size:13px;color:#666;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:8px">
+    <div style="padding:12px 16px;font-size:13px;color:var(--muted);border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:8px">
       <span style="font-size:20px">${m.avatar||'👤'}</span>
-      <span style="color:#fff;font-weight:700">${m.name}</span>
+      <span style="color:var(--text);font-weight:700">${m.name}</span>
     </div>
-    <button onclick="document.getElementById('chipMenu').remove();currentMemberId='${id}';goEditMember()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#fff;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;border-bottom:1px solid #1a1a1a">✏️ 編輯成員資料</button>
+    <button onclick="document.getElementById('chipMenu').remove();currentMemberId='${id}';goEditMember()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:var(--text);font-size:15px;font-family:inherit;text-align:left;cursor:pointer;border-bottom:1px solid #1a1a1a">✏️ 編輯成員資料</button>
     <button onclick="document.getElementById('chipMenu').remove();chipDeleteConfirm('${id}')" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#FF6B6B;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;border-bottom:1px solid #1a1a1a">🗑 刪除成員</button>
-    <button onclick="document.getElementById('chipMenu').remove()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:#666;font-size:15px;font-family:inherit;text-align:center;cursor:pointer">取消</button>
+    <button onclick="document.getElementById('chipMenu').remove()" style="display:block;width:100%;padding:14px 16px;background:none;border:none;color:var(--muted);font-size:15px;font-family:inherit;text-align:center;cursor:pointer">取消</button>
   `;
   document.body.appendChild(menu);
   // Tap outside to close
@@ -636,7 +636,7 @@ window.renderHome=function(){
   if(!currentMemberId){
     el.innerHTML=state.members.length===0
       ?`<div class="empty"><div style="font-size:48px;margin-bottom:16px">🧬</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px">開始記錄</div><p>新增家庭成員<br>追蹤每次量測結果</p><button class="btn btn-full btn-primary" style="max-width:240px;margin:0 auto" onclick="goAddMember()">＋ 新增第一位成員</button></div>`
-      :`<div style="padding:16px 0;text-align:center"><div style="font-size:13px;color:#444;margin-bottom:6px">請點選上方成員</div><div style="font-size:11px;color:#2a2a2a">長按成員頭像可編輯或刪除</div></div>`;
+      :`<div style="padding:16px 0;text-align:center"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">請點選上方成員</div><div style="font-size:11px;color:#2a2a2a">長按成員頭像可編輯或刪除</div></div>`;
     return;
   }
   const m=currentMember();
@@ -661,12 +661,12 @@ window.renderHome=function(){
     const bfV=parseFloat(latest.bodyFat);
     if(bfV){const[lo,hi]=m.gender==='女'?[20,30]:[15,25];const s=bfV>=lo&&bfV<=hi?100:(bfV>=lo*0.9&&bfV<=hi*1.1)?60:20;score+=s;scoreCount++;}
     const sc=scoreCount?Math.round(score/scoreCount):0;
-    const scC=sc>=80?'#00FF87':sc>=60?'#FFB347':'#FF6B6B';
+    const scC=sc>=80?'var(--mint)':sc>=60?'var(--orange)':'var(--red)';
 
-    html+=`<div style="padding:0 0 20px;border-bottom:1px solid #111">
+    html+=`<div style="padding:0 0 20px;border-bottom:1px solid var(--border)">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
         <div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:28px;line-height:1">${m.avatar||'👤'}</span><div><div style="font-size:14px;font-weight:700;color:#fff">${m.name}</div><div style="font-size:11px;color:#555">${m.remindTime?m.remindTime+' 量測':''} ${latest.date?'· '+latest.date:''}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:28px;line-height:1">${m.avatar||'👤'}</span><div><div style="font-size:14px;font-weight:700;color:#fff">${m.name}</div><div style="font-size:11px;color:var(--muted)">${m.remindTime?m.remindTime+' 量測':''} ${latest.date?'· '+latest.date:''}</div></div></div>
         </div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="goEditMember()">編輯</button>
@@ -675,14 +675,14 @@ window.renderHome=function(){
       </div>
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
         <span style="font-size:80px;font-weight:800;letter-spacing:-0.04em;line-height:1">${w||'—'}</span>
-        <span style="font-size:20px;color:#444;font-weight:400">kg</span>
+        <span style="font-size:20px;color:var(--muted);font-weight:400">kg</span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-        ${wd!=null?`<span style="font-size:13px;color:${wd>0?'#FF6B6B':'#00FF87'};font-weight:600">${wd>0?'▲':'▼'} ${Math.abs(wd).toFixed(1)} kg</span>`:''}
+        ${wd!=null?`<span style="font-size:13px;color:${wd>0?'var(--red)':'var(--mint)'};font-weight:600">${wd>0?'▲':'▼'} ${Math.abs(wd).toFixed(1)} kg</span>`:''}
         ${bmiSt?`<span class="badge ${bmiSt.cls}">BMI ${latest.bmi} ${bmiSt.label}</span>`:''}
         ${bfSt?`<span class="badge ${bfSt.cls}">體脂 ${latest.bodyFat}% ${bfSt.label}</span>`:''}
       </div>
-      <div style="font-size:11px;color:#555;margin-bottom:8px">健康評分 <span style="color:${scC};font-weight:800;font-size:16px">${sc}</span> <span style="color:#333">/ 100</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">健康評分 <span style="color:${scC};font-weight:800;font-size:16px">${sc}</span> <span style="color:var(--dim)">/ 100</span></div>
     </div>`;
 
     // Target progress
@@ -692,18 +692,18 @@ window.renderHome=function(){
       const firstRec=recs.find(r=>r.weight);
       const start=firstRec?parseFloat(firstRec.weight):cur;
       const pct=Math.min(100,Math.max(0,Math.abs(cur-start)/Math.abs(goal-start||1)*100));
-      html+=`<div style="padding:16px 0;border-bottom:1px solid #111">
+      html+=`<div style="padding:16px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-          <span style="font-size:11px;color:#666;text-transform:uppercase;letter-spacing:0.06em">目標體重進度</span>
-          <span style="font-size:13px;font-weight:700">${cur} <span style="color:#333">→</span> <span style="color:#00FF87">${goal} kg</span></span>
+          <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">目標體重進度</span>
+          <span style="font-size:13px;font-weight:700">${cur} <span style="color:var(--dim)">→</span> <span style="color:#00FF87">${goal} kg</span></span>
         </div>
-        <div style="height:2px;background:#111;border-radius:1px;overflow:hidden">
+        <div style="height:2px;background:var(--border);border-radius:1px;overflow:hidden">
           <div style="width:${pct}%;height:100%;background:#00FF87;border-radius:1px;transition:width 0.6s"></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:6px">
-          <span style="font-size:10px;color:#333">${start.toFixed(1)} kg</span>
+          <span style="font-size:10px;color:var(--dim)">${start.toFixed(1)} kg</span>
           <span style="font-size:10px;color:#00FF87">${Math.round(pct)}%</span>
-          <span style="font-size:10px;color:#333">${goal} kg</span>
+          <span style="font-size:10px;color:var(--dim)">${goal} kg</span>
         </div>
       </div>`;
     }
@@ -718,7 +718,7 @@ window.renderHome=function(){
       if(allDates.includes(expStr))streak++;
       else break;
     }
-    if(streak>0)html+=`<div style="padding:12px 0;border-bottom:1px solid #111"><span class="streak-badge">🔥 連續記錄 ${streak} 天</span></div>`;
+    if(streak>0)html+=`<div style="padding:12px 0;border-bottom:1px solid var(--border)"><span class="streak-badge">🔥 連續記錄 ${streak} 天</span></div>`;
 
     // Metrics: primary (weight, bodyFat, muscleMass) big, secondary rest
     const PRIMARY=['bodyFat','muscleMass','bmi'];
@@ -727,22 +727,18 @@ window.renderHome=function(){
     const secMetrics=METRICS.filter(x=>SECONDARY.includes(x.key)&&latest[x.key]);
 
     if(primMetrics.length){
-      html+=`<div style="margin:0 -20px;border-bottom:1px solid #0d0d0d">
-        <div style="display:grid;grid-template-columns:repeat(${primMetrics.length},1fr);gap:1px;background:#0d0d0d">
+      html+=`<div style="margin:0 -20px;border-bottom:1px solid var(--border)">
+        <div style="display:grid;grid-template-columns:repeat(${primMetrics.length},1fr);gap:1px;background:var(--border)">
           ${primMetrics.map(m2=>{
             const v=latest[m2.key];const pv=prev?.[m2.key];
             const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
-            const ds=d!=null?`<div style="font-size:10px;margin-top:4px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
+            const ds=d!=null?`<div style="font-size:10px;margin-top:4px;color:${d>0?'var(--red)':'var(--mint)'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
             const statusBmi=m2.key==='bmi'?getBMIStatus(v):null;
             const statusBf=m2.key==='bodyFat'?getBodyFatStatus(v,m.gender):null;
             const st=statusBmi||statusBf;
-            const icon=METRIC_ICONS[m2.key]||'';
-            return`<div style="background:#000;padding:18px 14px">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <div style="width:28px;height:28px;border-radius:50%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;color:${m2.color};flex-shrink:0">${icon}</div>
-                <div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
-              </div>
-              <div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:#fff">${v}<span style="font-size:12px;font-weight:400;color:#444;margin-left:2px">${m2.unit}</span></div>
+            return`<div style="background:var(--card);padding:18px 14px">
+              <div style="font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
+              <div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:var(--text)">${v}<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:2px">${m2.unit}</span></div>
               ${st?`<span class="badge ${st.cls}" style="margin-top:6px;display:inline-block">${st.label}</span>`:''}
               ${ds}
             </div>`;
@@ -752,18 +748,14 @@ window.renderHome=function(){
     }
     if(secMetrics.length){
       html+=`<div style="margin:0 -20px">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#0d0d0d">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)">
           ${secMetrics.map(m2=>{
             const v=latest[m2.key];const pv=prev?.[m2.key];
             const d=v&&pv?(parseFloat(v)-parseFloat(pv)):null;
-            const ds=d!=null?`<div style="font-size:10px;margin-top:3px;color:${d>0?'#FF6B6B':'#00FF87'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
-            const icon=METRIC_ICONS[m2.key]||'';
-            return`<div style="background:#000;padding:14px 12px">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-                <div style="width:22px;height:22px;border-radius:50%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;color:${m2.color};flex-shrink:0">${icon}</div>
-                <div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
-              </div>
-              <div style="font-size:18px;font-weight:800;letter-spacing:-0.03em;color:#888">${v}<span style="font-size:10px;font-weight:400;color:#333;margin-left:1px">${m2.unit}</span></div>
+            const ds=d!=null?`<div style="font-size:10px;margin-top:3px;color:${d>0?'var(--red)':'var(--mint)'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}</div>`:'';
+            return`<div style="background:var(--card);padding:14px 12px">
+              <div style="font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">${m2.label}</div>
+              <div style="font-size:18px;font-weight:800;letter-spacing:-0.03em;color:var(--muted)">${v}<span style="font-size:10px;font-weight:400;color:var(--dim);margin-left:1px">${m2.unit}</span></div>
               ${ds}
             </div>`;
           }).join('')}
@@ -777,7 +769,7 @@ window.renderHome=function(){
           <span style="font-size:36px">${m.avatar||'👤'}</span>
           <div>
             <div style="font-size:18px;font-weight:800;color:#fff">${m.name}</div>
-            <div style="font-size:11px;color:#555">${m.remindTime?m.remindTime+' 量測':'尚未設定提醒時間'}</div>
+            <div style="font-size:11px;color:var(--muted)">${m.remindTime?m.remindTime+' 量測':'尚未設定提醒時間'}</div>
           </div>
         </div>
         <button class="btn btn-ghost" style="font-size:12px;padding:8px 14px" onclick="goEditMember()">✏️ 編輯</button>
@@ -834,7 +826,7 @@ window.renderCalendar=function(){
         const prevW=sortedRecs[0]?.weight;
         if(prevW){
           const diff=parseFloat(rec.weight)-parseFloat(prevW);
-          wColor=diff<-0.1?'#00FF87':diff>0.1?'#FF6B6B':'#888';
+          wColor=diff<-0.1?'#00C06A':diff>0.1?'#E05252':'#aaa';
         }
       }
       return`<div class="cal-day ${isToday?'today':''}" onclick="calDayClick('${dateStr}')">
@@ -848,12 +840,12 @@ window.renderCalendar=function(){
   const recent=[...recs].reverse().slice(0,5);
   if(recent.length){
     html+=`<div style="margin-top:4px">
-      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">最近紀錄</div>
-      ${recent.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #0d0d0d">
-        <span style="font-size:13px;color:#888">${r.date}</span>
+      <div style="font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">最近紀錄</div>
+      ${recent.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:13px;color:var(--muted)">${r.date}</span>
         <div style="display:flex;align-items:baseline;gap:4px">
           <span style="font-size:22px;font-weight:800;color:#fff">${r.weight||'—'}</span>
-          <span style="font-size:11px;color:#444">kg</span>
+          <span style="font-size:11px;color:var(--muted)">kg</span>
         </div>
         <button class="btn btn-red" style="font-size:11px;padding:4px 8px" onclick="deleteRecord('${r.id}')">刪除</button>
       </div>`).join('')}
@@ -872,7 +864,7 @@ window.calDayClick=function(dateStr){
   document.getElementById('mainFields').innerHTML=METRICS.map(m=>`
     <div class="rec-input-row">
       <div style="display:flex;align-items:center;gap:12px;flex:1">
-        <div style="width:36px;height:36px;border-radius:50%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${m.color}">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${m.color}">
           ${METRIC_ICONS[m.key]||''}
         </div>
         <span class="rec-input-label">${m.label}</span>
@@ -935,9 +927,9 @@ window.renderTable=function(){
 
           return`<tr>
             <td>${dayLabel}</td>
-            <td style="font-size:16px;font-weight:800;color:#fff">${w?w.toFixed(1):'<span style="color:#333">-</span>'}</td>
-            <td style="font-weight:700;color:${diff==null?'#333':diff>0?'#FF6B6B':diff<0?'#00FF87':'#888'};font-size:14px">${diff==null?'<span style="color:#333">-</span>':(diff>0?'+':'')+diff.toFixed(1)}</td>
-            <td style="font-weight:700;color:${totalDiff==null?'#333':totalDiff>0?'#FF6B6B':totalDiff<0?'#00FF87':'#888'};font-size:14px">${totalDiff==null?'<span style="color:#333">-</span>':(totalDiff>0?'+':'')+totalDiff.toFixed(1)}</td>
+            <td style="font-size:16px;font-weight:800;color:#fff">${w?w.toFixed(1):'<span style="color:var(--dim)">-</span>'}</td>
+            <td style="font-weight:700;color:${diff==null?'var(--dim)':diff>0?'var(--red)':diff<0?'var(--mint)':'var(--muted)'};font-size:14px">${diff==null?'<span style="color:var(--dim)">-</span>':(diff>0?'+':'')+diff.toFixed(1)}</td>
+            <td style="font-weight:700;color:${totalDiff==null?'var(--dim)':totalDiff>0?'var(--red)':totalDiff<0?'var(--mint)':'var(--muted)'};font-size:14px">${totalDiff==null?'<span style="color:var(--dim)">-</span>':(totalDiff>0?'+':'')+totalDiff.toFixed(1)}</td>
           </tr>`;
         }).join('')}
       </tbody>
@@ -962,15 +954,15 @@ window.renderTrend=function(){
   const labels=recs.map(r=>r.date.slice(5)),values=recs.map(r=>parseFloat(r[activeMetric]));
   const gv=(state.targets[currentMemberId]||{})[activeMetric];
   const minV=Math.min(...values),maxV=Math.max(...values);
-  card.innerHTML=`<div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div>
+  card.innerHTML=`<div style="font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px">${mi.label}${mi.unit?' · '+mi.unit:''}</div>
     <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
       <span style="font-size:36px;font-weight:800;letter-spacing:-0.03em">${values[values.length-1].toFixed(1)}</span>
-      <span style="font-size:14px;color:#444">${mi.unit}</span>
+      <span style="font-size:14px;color:var(--muted)">${mi.unit}</span>
       ${values.length>1?`<span style="font-size:12px;color:${values[values.length-1]>values[0]?'#FF6B6B':'#00FF87'}">${values[values.length-1]>values[0]?'▲':'▼'} ${Math.abs(values[values.length-1]-values[0]).toFixed(1)}</span>`:''}
     </div>
-    <div style="font-size:11px;color:#444;margin-bottom:16px">最高 ${maxV.toFixed(1)}　最低 ${minV.toFixed(1)}　共 ${values.length} 筆</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px">最高 ${maxV.toFixed(1)}　最低 ${minV.toFixed(1)}　共 ${values.length} 筆</div>
     <div class="chart-wrap"><canvas id="trendCanvas"></canvas></div>
-    <div class="legend">${mi.normal?`<span style="color:#333">▬ 正常範圍 ${mi.normal[0]}–${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#00FF87">▬ 目標 ${gv}</span>`:''}</div>`;
+    <div class="legend">${mi.normal?`<span style="color:var(--dim)">▬ 正常範圍 ${mi.normal[0]}–${mi.normal[1]}</span>`:''} ${gv?`<span style="color:#00FF87">▬ 目標 ${gv}</span>`:''}</div>`;
   buildChart(labels,values,mi,gv);
 };
 window.selectMemberTrend=function(id){currentMemberId=id;renderTrend();};
@@ -981,14 +973,14 @@ function buildChart(labels,values,mi,gv){
   const refPlugin={id:'refs',afterDraw(chart){
     const{ctx,chartArea:{left,right},scales:{y}}=chart;
     const lines=[];
-    if(mi.normal){lines.push({val:mi.normal[0],c:'rgba(0,255,135,0.2)'});lines.push({val:mi.normal[1],c:'rgba(255,107,107,0.2)'});}
-    if(gv)lines.push({val:parseFloat(gv),c:'rgba(0,255,135,0.5)'});
+    if(mi.normal){lines.push({val:mi.normal[0],c:'rgba(0,192,106,0.4)'});lines.push({val:mi.normal[1],c:'rgba(224,82,82,0.4)'});}
+    if(gv)lines.push({val:parseFloat(gv),c:'rgba(0,192,106,0.7)'});
     lines.forEach(l=>{try{const yp=y.getPixelForValue(l.val);ctx.save();ctx.strokeStyle=l.c;ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(right,yp);ctx.stroke();ctx.restore();}catch{}});
   }};
   trendChart=new Chart(document.getElementById('trendCanvas'),{
     type:'line',
-    data:{labels,datasets:[{label:mi.label,data:values,borderColor:'#00FF87',backgroundColor:'rgba(0,255,135,0.04)',borderWidth:1.5,pointBackgroundColor:'#00FF87',pointRadius:3,pointHoverRadius:6,tension:0.4,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a0a0a',borderColor:'#1a1a1a',borderWidth:1,titleColor:'#555',bodyColor:'#fff',bodyFont:{size:16,weight:'800'},callbacks:{label:ctx=>ctx.raw.toFixed(1)+' '+mi.unit}}},scales:{x:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d'}},y:{ticks:{color:'#333',font:{size:10}},grid:{color:'#0d0d0d'}}}},
+    data:{labels,datasets:[{label:mi.label,data:values,borderColor:'#00C06A',backgroundColor:'rgba(0,192,106,0.06)',borderWidth:1.5,pointBackgroundColor:'#00C06A',pointRadius:3,pointHoverRadius:6,tension:0.4,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a0a0a',borderColor:'#1a1a1a',borderWidth:1,titleColor:'#555',bodyColor:'#fff',bodyFont:{size:16,weight:'800'},callbacks:{label:ctx=>ctx.raw.toFixed(1)+' '+mi.unit}}},scales:{x:{ticks:{color:'#aaa',font:{size:10}},grid:{color:'#e8eaf0'}},y:{ticks:{color:'#aaa',font:{size:10}},grid:{color:'#e8eaf0'}}}},
     plugins:[refPlugin]
   });
 }
@@ -1004,7 +996,7 @@ window.renderMore=function(){
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">💾 備份資料</div><div class="mgmt-desc">匯出 JSON 備份</div></div><button class="btn btn-purple" onclick="exportJSON()">匯出</button></div>
     <div class="mgmt-item"><div class="mgmt-info"><div class="mgmt-title">📤 還原資料</div><div class="mgmt-desc">從備份 JSON 還原</div></div><button class="btn btn-yellow" onclick="document.getElementById('importFile').click()">選擇檔案</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"></div>
     <div class="mgmt-item" style="border-color:#2a0000"><div class="mgmt-info"><div class="mgmt-title" style="color:var(--red)">🗑 清除所有資料</div><div class="mgmt-desc">永久刪除雲端資料</div></div><button class="btn btn-red" onclick="clearAll()">清除</button></div>
-    <div style="padding:16px 0;border-top:1px solid #111;margin-top:4px"><div style="font-size:9px;color:#333;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">雲端同步</div><div id="storageInfo" style="font-size:13px;color:#888"></div></div>`;
+    <div style="padding:16px 0;border-top:1px solid var(--border);margin-top:4px"><div style="font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">雲端同步</div><div id="storageInfo" style="font-size:13px;color:var(--muted)"></div></div>`;
   updateStorageInfo();
   // Update notification button status
   setTimeout(()=>{
@@ -1042,11 +1034,11 @@ function renderAnalysis(){
     out+=`<div class="analysis-row">
       <div class="analysis-label">${mt.label}</div>
       <div style="flex:1">
-        <div style="height:4px;background:#111;border-radius:2px;overflow:hidden;position:relative;margin-bottom:4px">
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;position:relative;margin-bottom:4px">
           <div style="position:absolute;left:${(lo-lo*0.8)/((hi*1.2-lo*0.8))*100}%;width:${(hi-lo)/((hi*1.2-lo*0.8))*100}%;height:100%;background:rgba(0,255,135,0.1)"></div>
           <div style="position:absolute;left:${pct}%;transform:translateX(-50%);width:6px;height:4px;background:${mt.color};border-radius:2px"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:9px;color:#333"><span>${lo}</span><span>${hi}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>${lo}</span><span>${hi}</span></div>
       </div>
       <div style="font-size:16px;font-weight:800;width:56px;text-align:right;color:#fff">${v}${mt.unit}</div>
       <span class="badge ${st.cls}">${st.label}</span>
@@ -1056,12 +1048,12 @@ function renderAnalysis(){
 
   if(recs.length>1){
     const first=recs[0];
-    out+=`<div style="margin-top:20px;padding-top:16px;border-top:1px solid #111">
-      <div style="font-size:9px;color:#555;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">累計變化</div>
+    out+=`<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">累計變化</div>
       ${METRICS.filter(mt=>first[mt.key]&&latest[mt.key]).map(mt=>{
         const df=(parseFloat(latest[mt.key])-parseFloat(first[mt.key])).toFixed(1);
-        return`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #0d0d0d">
-          <span style="font-size:13px;color:#666;text-transform:uppercase;letter-spacing:0.04em">${mt.label}</span>
+        return`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">${mt.label}</span>
           <span style="font-size:16px;font-weight:800;color:${parseFloat(df)>0?'#FF6B6B':'#00FF87'}">${parseFloat(df)>0?'+':''}${df} ${mt.unit}</span>
         </div>`;
       }).join('')}
@@ -1079,7 +1071,7 @@ function renderCompare(){
   const mB=compareB?state.members.find(m=>m.id===compareB):null;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
     <div style="border-radius:12px;border:1.5px solid ${compareA?'#00FF87':'#1a1a1a'};overflow:hidden">
-      <div style="padding:10px 12px;border-bottom:1px solid #0d0d0d;display:flex;align-items:center;gap:6px">
+      <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px">
         <div style="width:7px;height:7px;border-radius:50%;background:#00FF87"></div>
         <span style="font-size:10px;color:#00FF87;font-weight:600;letter-spacing:0.06em">成員 A</span>
       </div>
@@ -1089,7 +1081,7 @@ function renderCompare(){
       </div>
     </div>
     <div style="border-radius:12px;border:1.5px solid ${compareB?'#FFE66D':'#1a1a1a'};overflow:hidden">
-      <div style="padding:10px 12px;border-bottom:1px solid #0d0d0d;display:flex;align-items:center;gap:6px">
+      <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px">
         <div style="width:7px;height:7px;border-radius:50%;background:#FFE66D"></div>
         <span style="font-size:10px;color:#FFE66D;font-weight:600;letter-spacing:0.06em">成員 B</span>
       </div>
@@ -1101,14 +1093,14 @@ function renderCompare(){
   </div>`;
 
   if(!compareA||!compareB){
-    html+=`<div style="text-align:center;padding:30px;color:#333;font-size:14px;border:1px dashed #1a1a1a;border-radius:12px">${!compareA&&!compareB?'請從左右各選一位成員':!compareA?'請選擇成員 A':'請選擇成員 B'}</div>`;
+    html+=`<div style="text-align:center;padding:30px;color:var(--dim);font-size:14px;border:1px dashed #1a1a1a;border-radius:12px">${!compareA&&!compareB?'請從左右各選一位成員':!compareA?'請選擇成員 A':'請選擇成員 B'}</div>`;
     el.innerHTML=html;return;
   }
   const lA=getRecords(compareA).slice(-1)[0],lB=getRecords(compareB).slice(-1)[0];
   html+=`<div class="cmp-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <span style="font-size:16px;font-weight:800;color:#00FF87">${mA.name}</span>
-      <span style="font-size:12px;color:#333">vs</span>
+      <span style="font-size:12px;color:var(--dim)">vs</span>
       <span style="font-size:16px;font-weight:800;color:#FFE66D">${mB.name}</span>
     </div>
     ${METRICS.map(mt=>{
@@ -1119,12 +1111,12 @@ function renderCompare(){
       const win=vA&&vB?(lb?vA<vB?'A':vA>vB?'B':'':vA>vB?'A':vA<vB?'B':''):null;
       return`<div style="margin-bottom:14px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <span style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.04em">${mt.label}${mt.unit?' ('+mt.unit+')':''}</span>
+          <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">${mt.label}${mt.unit?' ('+mt.unit+')':''}</span>
           ${win?`<span style="font-size:10px;color:${win==='A'?'#00FF87':'#FFE66D'};font-weight:700">▲ ${win==='A'?mA.name:mB.name}</span>`:''}
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:15px;font-weight:800;color:#00FF87;width:52px;text-align:right">${vA??'—'}</span>
-          <div style="flex:1;height:6px;background:#0d0d0d;border-radius:3px;overflow:hidden;display:flex">
+          <div style="flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;display:flex">
             <div style="width:${vA?vA/mx*50:0}%;background:#00FF87;border-radius:3px 0 0 3px;margin-left:auto"></div>
             <div style="width:${vB?vB/mx*50:0}%;background:#FFE66D;border-radius:0 3px 3px 0"></div>
           </div>
@@ -1142,23 +1134,23 @@ function renderTargets(){
   if(!state.members.length){el.innerHTML=`<div class="empty"><p>尚無成員</p></div>`;return;}
 
   // BMI reference info
-  el.innerHTML=`<div style="padding:12px;background:#080808;border-radius:10px;margin-bottom:20px;border:1px solid #111">
-    <div style="font-size:9px;color:#555;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">衛福部 BMI 標準</div>
+  el.innerHTML=`<div style="padding:12px;background:var(--bg2);border-radius:10px;margin-bottom:20px;border:1px solid var(--border)">
+    <div style="font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">衛福部 BMI 標準</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">
-      <span style="color:#888">&lt; 18.5 過輕</span><span style="color:#888">18.5–24 正常</span>
+      <span style="color:var(--muted)">&lt; 18.5 過輕</span><span style="color:var(--muted)">18.5–24 正常</span>
       <span style="color:#FFB347">24–27 過重</span><span style="color:#FF6B6B">27–30 輕度肥胖</span>
       <span style="color:#FF6B6B">30–35 中度肥胖</span><span style="color:#FF6B6B">≥ 35 重度肥胖</span>
     </div>
   </div>
   ${state.members.map(m=>`
-    <div style="border-bottom:1px solid #111;padding:16px 0;margin-bottom:4px">
+    <div style="border-bottom:1px solid var(--border);padding:16px 0;margin-bottom:4px">
       <div style="font-size:16px;font-weight:800;margin-bottom:12px">${m.name}</div>
-      <div style="font-size:9px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">建議目標體重 (BMI 24) = ${(24*m.height/100*m.height/100).toFixed(1)} kg</div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">建議目標體重 (BMI 24) = ${(24*m.height/100*m.height/100).toFixed(1)} kg</div>
       ${METRICS.filter(mt=>mt.goalable).map(mt=>`
         <div class="target-row">
           <div class="target-key">${mt.label}</div>
           <input class="target-input" type="number" step="0.1" placeholder="—" value="${state.targets[m.id]?.[mt.key]||''}" id="tgt_${m.id}_${mt.key}">
-          <span style="font-size:11px;color:#444;margin-left:6px">${mt.unit}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:6px">${mt.unit}</span>
         </div>`).join('')}
       <button class="btn btn-mint" style="margin-top:12px;width:100%;font-size:13px;padding:10px" onclick="saveTargets('${m.id}')">儲存目標</button>
     </div>`).join('')}`;
@@ -1182,7 +1174,7 @@ window.goAddRecord=function(fromView){
   document.getElementById('mainFields').innerHTML=METRICS.map(m=>`
     <div class="rec-input-row">
       <div style="display:flex;align-items:center;gap:12px;flex:1">
-        <div style="width:36px;height:36px;border-radius:50%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${m.color}">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${m.color}">
           ${METRIC_ICONS[m.key]||''}
         </div>
         <span class="rec-input-label">${m.label}</span>
